@@ -76,7 +76,7 @@ _Getpid:
   trap #0x431
   jr r31
   nop
-.endproc
+.endproc _Getpid
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;End of JLT Defined Traps;;
