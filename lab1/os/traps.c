@@ -166,7 +166,7 @@ dointerrupt (unsigned int cause, unsigned int iar, unsigned int isr,
     //Begin JLT Added additional case for getpid trap//
     ///////////////////////////////////////////////////
     case TRAP_GET_PID:  
-      ProcessSetResult(GetCurrentPid(), -1);
+      ProcessSetResult(currentPCB, GetCurrentPid());
       break;
     ///////////////////////////////////////////////////  
     //End JLT Added additional case for getpid trap////

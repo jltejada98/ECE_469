@@ -768,8 +768,7 @@ void main (int argc, char *argv[])
 //Begin JLT defined Process///
 //////////////////////////////
 unsigned int GetCurrentPid(){
-  unsigned int get_pid = (pcbs - currentPCB)
-  return get_pid;
+  return (int)(currentPCB - pcbs);
 }
 //////////////////////////////
 ////End JLT defined Process///

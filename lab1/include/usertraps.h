@@ -16,7 +16,7 @@ void Exit();
 //Begin JLT Defied Traps//
 //////////////////////////
 
-unsigned int Getpid(); 
+int Getpid(); 
 
 
 //////////////////////////
