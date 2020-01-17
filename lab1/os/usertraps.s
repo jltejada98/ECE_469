@@ -66,3 +66,19 @@ _Printf:
 	nop
 .endproc _Printf
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;Start of JLT Defined Traps;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+.proc _Getpid
+.global _Getpid
+_Getpid:
+  trap #0x431
+  jr r31
+  nop
+.endproc
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;End of JLT Defined Traps;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

@@ -162,6 +162,15 @@ dointerrupt (unsigned int cause, unsigned int iar, unsigned int isr,
       dbprintf ('t', "Got a printf trap!\n");
       TrapPrintfHandler (trapArgs, isr & DLX_STATUS_SYSMODE);
       break;
+    ///////////////////////////////////////////////////
+    //Begin JLT Added additional case for getpid trap//
+    ///////////////////////////////////////////////////
+    case TRAP_GET_PID:  
+      ProcessSetResult(GetCurrentPid());
+      break;
+    ///////////////////////////////////////////////////  
+    //End JLT Added additional case for getpid trap////
+    ///////////////////////////////////////////////////  
     case TRAP_OPEN:
       // Get the arguments to the trap handler.  If this is a user mode trap,
       // copy them from user space.

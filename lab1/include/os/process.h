@@ -67,4 +67,14 @@ extern void ProcessSetResult (PCB *, uint32);
 extern void ProcessSleep ();
 extern void ProcessDestroy();
 
+///////////////////////////////////
+//Begin JL defined user processes//
+///////////////////////////////////
+unsigned int GetCurrentPid(); 
+///////////////////////////////////
+////End JL defined user processes//
+///////////////////////////////////
+
+
+
 #endif	/* _process_h_ */

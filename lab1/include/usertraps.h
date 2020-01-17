@@ -12,4 +12,15 @@ int Open(char *filename, int mode);
 void Printf(char *format, ...);
 void Exit();
 
+//////////////////////////
+//Begin JLT Defied Traps//
+//////////////////////////
+
+unsigned int Getpid(); 
+
+
+//////////////////////////
+////End JLT Defied Traps//
+//////////////////////////
+
 #endif

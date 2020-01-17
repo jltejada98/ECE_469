@@ -764,4 +764,12 @@ void main (int argc, char *argv[])
   exitsim();	// NEVER RETURNS!
 }
 
-
+//////////////////////////////
+//Begin JLT defined Process///
+//////////////////////////////
+unsigned int GetCurrentPid(){
+  return pcbs - currentPCB
+}
+//////////////////////////////
+////End JLT defined Process///
+//////////////////////////////
