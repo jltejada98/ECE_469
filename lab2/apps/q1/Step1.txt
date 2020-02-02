@@ -1,0 +1,4 @@
+(2 points) How many semaphores are available in DLXOS? (2 points) How many locks are available in DLXOS?
+(2 points) How is a semaphore created in DLXOS?
+(2 points) Explain how sem_signal and sem_wait work.
+(2 points) What is a handle and how is it used to access semaphores in DLXOS?
