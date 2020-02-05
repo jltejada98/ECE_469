@@ -1,4 +1,8 @@
-(2 points) How many semaphores are available in DLXOS? (2 points) How many locks are available in DLXOS?
-(2 points) How is a semaphore created in DLXOS?
-(2 points) Explain how sem_signal and sem_wait work.
-(2 points) What is a handle and how is it used to access semaphores in DLXOS?
+How many semaphores are available in DLXOS?
+    Maximum of 32.
+How many locks are available in DLXOS?
+    64
+How is a semaphore created in DLXOS?
+    Using the SemCreate function and passing a number of semaphores to be created.
+ Explain how sem_signal and sem_wait work.
+    sem_signal works by checking if there are items in the queue to work
