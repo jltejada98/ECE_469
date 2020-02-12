@@ -36,11 +36,23 @@ int main (int argc, char *argv[]){
       Exit();
     }
 
-    // ditoa(h_mem, h_mem_str);
+    s_procs_completed = sem_create(-(numprocs - 1));
 
+    if(s_procs_completed == SYNC_FAIL){
+      Printf("Bad sem_create in "); Printf(argv[0]); Printf("\n");
+      Exit();
+    }
+
+
+    // ditoa(h_mem, h_mem_str);
     process_create(PRODUCER_FILENAME);
     process_create(CONSUMER_FILENAME);
 
+
+    if (sem_wait(s_procs_completed) != SYNC_SUCCESS) {
+      Printf("Bad semaphore s_procs_completed (%d) in ", s_procs_completed); Printf(argv[0]); Printf("\n");
+      Exit();
+    }
 
     Printf("Sucess\n");
 
