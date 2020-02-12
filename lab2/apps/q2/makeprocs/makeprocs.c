@@ -38,7 +38,8 @@ int main (int argc, char *argv[]){
 
     // ditoa(h_mem, h_mem_str);
 
-    process_create() //Add agruments
+    process_create(PRODUCER_FILENAME);
+    process_create(CONSUMER_FILENAME);
 
 
     Printf("Sucess\n");
