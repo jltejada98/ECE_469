@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
   lock_t buffer_lock;
   uint32 h_mem;                   // Used to hold handle to shared memory page
   int i;
-  char resource[15] = "ABCDEFGHIJ";
+  char resource[25] = "ABCDEFGHIJ";
 
   if (argc != 4) { 
     Printf("Usage: "); Printf(argv[0]); Printf(" <handle_to_shared_memory_page> <handle_to_page_mapped_semaphore>\n"); 
@@ -36,9 +36,9 @@ int main(int argc, char const *argv[])
     lock_acquire(buffer_lock);
     if(!  ((cb->start + 1) % BUFFER_SIZE == cb->end) ) //Buffer not full
     {
-      cb->data[cb->end] = resource[i];
-      Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
       cb->end = (cb->end + 1) % BUFFER_SIZE;
+      cb->data[cb->end] = resource[i];
+      Printf("Producer %d inserted: %c %c\n", getpid(), resource[i], cb->data[cb->end]);
       Printf("CB:(%2d),(%2d)\n", cb->start, cb->end);
     }
     lock_release(buffer_lock);
