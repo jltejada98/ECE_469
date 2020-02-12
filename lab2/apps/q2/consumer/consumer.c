@@ -24,12 +24,12 @@ int int main(int argc, char const *argv[])
 
   Printf("Consumer Created\n");
 
-  for(int i = 0; i < 11; i++)
-  {
-    //Get lock
-    //Consume resource
-    //Release lock
-  }
+  // for(int i = 0; i < 11; i++)
+  // {
+  //   //Get lock
+  //   //Consume resource
+  //   //Release lock
+  // }
 
   //Signal semaphore
   if(sem_signal(s_procs_completed) != SYNC_SUCCESS){

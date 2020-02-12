@@ -18,13 +18,13 @@ int int main(int argc, char const *argv[])
 
   Printf("Producer_Created\n");
 
-  int i;
-  for(i = 0; i < 11; i++)
-  {
-    //Get lock
-    //Produce resource
-    //Release lock
-  }
+  // int i;
+  // for(i = 0; i < 11; i++)
+  // {
+  //   //Get lock
+  //   //Produce resource
+  //   //Release lock
+  // }
 
   //Signal semaphore
   if(sem_signal(s_procs_completed) != SYNC_SUCCESS){
