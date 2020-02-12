@@ -11,6 +11,7 @@ int main (int argc, char *argv[]){
     sem_t sem_procs_completed; // Semaphore used to wait until all spawned processes have completed
     char h_mem_str[10];             // Used as command-line argument to pass mem_handle to new processes
     char sem_procs_completed_str[10]; // Used as command-line argument to pass page_mapped handle to new processes
+    int i;
 
     if (argc != 2) {
         Printf("Usage: "); Printf(argv[0]); Printf(" <number of Producers/Consumers to create>\n");
@@ -47,7 +48,6 @@ int main (int argc, char *argv[]){
     // ditoa(h_mem, h_mem_str);
     ditoa(sem_procs_completed, sem_procs_completed_str);
     
-    int i;
     for(i = 0; i < (numprocs / 2); i++)
     {
         process_create(PRODUCER_FILENAME,sem_procs_completed_str, NULL);
