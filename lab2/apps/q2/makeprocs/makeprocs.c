@@ -4,8 +4,8 @@
 #include "spawn.h"
 #include "utility.h"
 
-void main (int argc, char *argv[]){
-    int num_procs = 0;
+int main (int argc, char *argv[]){
+    int numprocs = 0;
     buffer *bp;
     uint32 h_mem;                   // Used to hold handle to shared memory page
     sem_t s_procs_completed; // Semaphore used to wait until all spawned processes have completed
