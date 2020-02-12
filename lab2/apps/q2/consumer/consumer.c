@@ -34,6 +34,18 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
+  Printf("Beginning Producer Locking");
+  for(i = 0; i < 11; i++)
+  {
+    lock_acquire(buffer_lock);
+    if(cb->start != cb->end) //Buffer not empty
+    {
+      Printf("Consumer %d removed: %c\n", getpid(), resource[start]);
+      cb->start = (cb->start + 1) % BUFFER_SIZE;
+    }
+    lock_release(buffer_lock);
+  }
+
   //Signal semaphore
   Printf("Consumer Signaling Complete\n");
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){

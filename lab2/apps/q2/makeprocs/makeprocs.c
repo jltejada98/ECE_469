@@ -41,6 +41,8 @@ int main (int argc, char *argv[]){
       Printf("Could not map the shared page to virtual address in "); Printf(argv[0]); Printf(", exiting..\n");
       Exit();
     }
+    bp->start = 0;  //Init buffer to be empty
+    bp->end = bp->start;
 
     sem_procs_completed = sem_create(-(numprocs - 1));
     if(sem_procs_completed == SYNC_FAIL){
