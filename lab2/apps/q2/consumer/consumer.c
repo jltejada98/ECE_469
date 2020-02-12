@@ -9,7 +9,7 @@
 //semaphore, shared_memory
 
 
-int int main(int argc, char const *argv[])
+int main(int argc, char const *argv[])
 {
   //circular_buffer *cb
   sem_t s_procs_completed; 
