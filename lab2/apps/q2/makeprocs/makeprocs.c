@@ -45,8 +45,8 @@ int main (int argc, char *argv[]){
 
 
     // ditoa(h_mem, h_mem_str);
-    process_create(PRODUCER_FILENAME);
-    process_create(CONSUMER_FILENAME);
+    process_create(PRODUCER_FILENAME,s_procs_completed, NULL);
+    process_create(CONSUMER_FILENAME,s_procs_completed, NULL);
 
 
     if (sem_wait(s_procs_completed) != SYNC_SUCCESS) {
