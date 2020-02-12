@@ -50,7 +50,7 @@ int main (int argc, char *argv[]){
       Exit();
     }
 
-    buffer_lock = LockCreate();
+    buffer_lock = lock_create();
     if(buffer_lock == SYNC_FAIL)
     {
         Printf("Bad LockCreate in ");

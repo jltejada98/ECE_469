@@ -30,12 +30,12 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-  Printf("Beginning Locking")
+  Printf("Beginning Locking");
   for(i = 0; i < 11; i++)
   {
-    LockHandleAcquire(buffer_lock);
+    lock_acquire(buffer_lock);
     Printf("Add to buffer");
-    LockHandleRelease(buffer_lock);
+    lock_release(buffer_lock);
   }
 
   //Signal semaphore
