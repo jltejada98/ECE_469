@@ -35,7 +35,7 @@ int main(int argc, char const *argv[])
   for(i = 0; i < 11; i++)
   {
     lock_acquire(buffer_lock);
-    if(!  ((cb->start + 1) % BUFFER_SIZE == tail) ) //Buffer not full
+    if(!  ((cb->start + 1) % BUFFER_SIZE == cb->end) ) //Buffer not full
     {
       cb->data[cb->start] = resource[i];
       Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
