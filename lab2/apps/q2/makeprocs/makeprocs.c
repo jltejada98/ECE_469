@@ -36,7 +36,12 @@ int main (int argc, char *argv[]){
       Exit();
     }
 
-    Printf("Sucess");
+    // ditoa(h_mem, h_mem_str);
+
+    process_create() //Add agruments
+
+
+    Printf("Sucess\n");
 
     return 0;
 }

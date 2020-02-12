@@ -7,6 +7,7 @@
 int int main(int argc, char const *argv[])
 {
   //circular_buffer *cb
+  Printf("Consumer Created\n");
 
   for(int i = 0; i < 11; i++)
   {

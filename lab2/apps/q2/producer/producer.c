@@ -7,12 +7,13 @@
 int int main(int argc, char const *argv[])
 {
   //circular_buffer *cb
-  char array[11]
+  Printf("Producer_Created\n");
+  char array[11] = "Hello World";
 
   for(int i = 0; i < 11; i++)
   {
     //Get lock
-    //Consume resource
+    //Produce resource
     //Release lock
   }
 
