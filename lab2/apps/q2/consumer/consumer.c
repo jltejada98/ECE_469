@@ -34,7 +34,6 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-  Printf("Beginning Producer Locking");
   for(i = 0; i < 11; i++)
   {
     lock_acquire(buffer_lock);
@@ -47,7 +46,6 @@ int main(int argc, char const *argv[])
   }
 
   //Signal semaphore
-  Printf("Consumer Signaling Complete\n");
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
     Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
     Printf(argv[0]); 
