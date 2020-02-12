@@ -48,6 +48,7 @@ int main (int argc, char *argv[]){
     ditoa(sem_procs_completed, sem_procs_completed_str);
 
     Printf("Creating Processes... ");
+    process_create("ajs",sem_procs_completed_str, NULL);
     process_create(PRODUCER_FILENAME,sem_procs_completed_str, NULL);
     process_create(CONSUMER_FILENAME,sem_procs_completed_str, NULL);
     Printf("Done \n");
