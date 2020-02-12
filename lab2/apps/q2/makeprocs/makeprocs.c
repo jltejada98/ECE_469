@@ -8,9 +8,9 @@ int main (int argc, char *argv[]){
     int numprocs = 0;
     buffer *bp;
     uint32 h_mem;                   // Used to hold handle to shared memory page
-    sem_t s_procs_completed; // Semaphore used to wait until all spawned processes have completed
+    sem_t sem_procs_completed; // Semaphore used to wait until all spawned processes have completed
     char h_mem_str[10];             // Used as command-line argument to pass mem_handle to new processes
-    char s_procs_completed_str[10]; // Used as command-line argument to pass page_mapped handle to new processes
+    char sem_procs_completed_str[10]; // Used as command-line argument to pass page_mapped handle to new processes
 
     if (argc != 2) {
         Printf("Usage: "); Printf(argv[0]); Printf(" <number of Producers/Consumers to create>\n");
@@ -36,21 +36,24 @@ int main (int argc, char *argv[]){
       Exit();
     }
 
-    s_procs_completed = sem_create(-(numprocs - 1));
+    sem_procs_completed = sem_create(-(numprocs - 1));
 
-    if(s_procs_completed == SYNC_FAIL){
+    if(sem_procs_completed == SYNC_FAIL){
       Printf("Bad sem_create in "); Printf(argv[0]); Printf("\n");
       Exit();
     }
 
 
     // ditoa(h_mem, h_mem_str);
-    process_create(PRODUCER_FILENAME,s_procs_completed, NULL);
-    process_create(CONSUMER_FILENAME,s_procs_completed, NULL);
+    ditoa(sem_procs_completed, sem_procs_completed_str);
 
 
-    if (sem_wait(s_procs_completed) != SYNC_SUCCESS) {
-      Printf("Bad semaphore s_procs_completed (%d) in ", s_procs_completed); Printf(argv[0]); Printf("\n");
+    process_create(PRODUCER_FILENAME,sem_procs_completed_str, NULL);
+    process_create(CONSUMER_FILENAME,sem_procs_completed_str, NULL);
+
+
+    if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
+      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); Printf(argv[0]); Printf("\n");
       Exit();
     }
 
