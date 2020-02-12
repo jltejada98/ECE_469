@@ -47,10 +47,10 @@ int main (int argc, char *argv[]){
     // ditoa(h_mem, h_mem_str);
     ditoa(sem_procs_completed, sem_procs_completed_str);
 
-
+    Printf("Creating Processes... ");
     process_create(PRODUCER_FILENAME,sem_procs_completed_str, NULL);
     process_create(CONSUMER_FILENAME,sem_procs_completed_str, NULL);
-
+    Printf("Done \n");
 
     if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
       Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); Printf(argv[0]); Printf("\n");
