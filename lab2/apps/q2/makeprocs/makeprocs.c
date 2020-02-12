@@ -4,6 +4,11 @@
 #include "spawn.h"
 
 void main (int argc, char *argv[]){
+    Print("Hellow");
+
+    return 0;
+
+
     int numprocs = 0;               // Used to store number of processes to create
     int i;                          // Loop index variable
     missile_code *mc;               // Used to get address of shared memory page
