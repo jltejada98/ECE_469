@@ -18,7 +18,7 @@ int main (int argc, char *argv[]){
     }
 
     // Convert string from ascii command line argument to integer number
-    numprocs = dstrtol(argv[1], NULL, 10) * 2; // the "10" means base 10
+    numprocs = dstrtol(argv[1], NULL, 10) * 2; // the "10" means base 10, *2 because one producer and one consumer
     Printf("Creating %d processes\n", numprocs);
 
 
@@ -46,8 +46,9 @@ int main (int argc, char *argv[]){
 
     // ditoa(h_mem, h_mem_str);
     ditoa(sem_procs_completed, sem_procs_completed_str);
-
-    for(int i = 0; i < numprocs / 2; i++)
+    
+    int i;
+    for(i = 0; i < (numprocs / 2); i++)
     {
         process_create(PRODUCER_FILENAME,sem_procs_completed_str, NULL);
         process_create(CONSUMER_FILENAME,sem_procs_completed_str, NULL);
