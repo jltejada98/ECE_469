@@ -18,7 +18,7 @@ int main (int argc, char *argv[]){
     }
 
     // Convert string from ascii command line argument to integer number
-    numprocs = dstrtol(argv[1], NULL, 10); // the "10" means base 10
+    numprocs = dstrtol(argv[1], NULL, 10) * 2; // the "10" means base 10
     Printf("Creating %d processes\n", numprocs);
 
 
@@ -47,10 +47,11 @@ int main (int argc, char *argv[]){
     // ditoa(h_mem, h_mem_str);
     ditoa(sem_procs_completed, sem_procs_completed_str);
 
-    Printf("Creating Processes... ");
-    process_create(PRODUCER_FILENAME,sem_procs_completed_str, NULL);
-    process_create(CONSUMER_FILENAME,sem_procs_completed_str, NULL);
-    Printf("Done \n");
+    for(int i = 0; i < numprocs / 2; i++)
+    {
+        process_create(PRODUCER_FILENAME,sem_procs_completed_str, NULL);
+        process_create(CONSUMER_FILENAME,sem_procs_completed_str, NULL);
+    }
 
     if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
       Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); Printf(argv[0]); Printf("\n");

@@ -21,9 +21,6 @@ int main(int argc, char const *argv[])
 
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
 
-
-  Printf("Consumer Created\n");
-
   // for(int i = 0; i < 11; i++)
   // {
   //   //Get lock
@@ -32,6 +29,7 @@ int main(int argc, char const *argv[])
   // }
 
   //Signal semaphore
+  Printf("Consumer Created\n");
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
     Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
     Printf(argv[0]); 

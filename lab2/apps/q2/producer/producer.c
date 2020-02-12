@@ -16,8 +16,6 @@ int main(int argc, char const *argv[])
 
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
 
-  Printf("Producer_Created\n");
-
   // int i;
   // for(i = 0; i < 11; i++)
   // {
@@ -27,6 +25,7 @@ int main(int argc, char const *argv[])
   // }
 
   //Signal semaphore
+  Printf("Signaling Sem");
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
     Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
     Printf(argv[0]); 
