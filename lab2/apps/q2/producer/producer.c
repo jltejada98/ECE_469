@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-
+  Printf("Beginning Locking")
   for(i = 0; i < 11; i++)
   {
     LockHandleAcquire(buffer_lock);
