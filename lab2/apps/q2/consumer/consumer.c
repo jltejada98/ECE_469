@@ -40,7 +40,7 @@ int main(int argc, char const *argv[])
     lock_acquire(buffer_lock);
     if(cb->start != cb->end) //Buffer not empty
     {
-      Printf("Consumer %d removed: %c\n", getpid(), resource[start]);
+      Printf("Consumer %d removed: %c\n", getpid(), cb->data[start]);
       cb->start = (cb->start + 1) % BUFFER_SIZE;
     }
     lock_release(buffer_lock);
