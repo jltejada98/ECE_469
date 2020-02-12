@@ -4,6 +4,9 @@
 #include "spawn.h"
 #include "utility.h"
 
+// Jose and Josh make procs
+
+
 int main (int argc, char *argv[]){
     int numprocs = 0;
     buffer *bp;
@@ -45,13 +48,13 @@ int main (int argc, char *argv[]){
     }
 
 
-    // ditoa(h_mem, h_mem_str);
+    ditoa(h_mem, h_mem_str);
     ditoa(sem_procs_completed, sem_procs_completed_str);
-    
+
     for(i = 0; i < (numprocs / 2); i++)
     {
-        process_create(PRODUCER_FILENAME,sem_procs_completed_str, NULL);
-        process_create(CONSUMER_FILENAME,sem_procs_completed_str, NULL);
+        process_create(PRODUCER_FILENAME,sem_procs_completed_str, h_mem_str, NULL);
+        process_create(CONSUMER_FILENAME,sem_procs_completed_str, h_mem_str, NULL);
     }
 
     if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
