@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
   lock_t buffer_lock;
   uint32 h_mem;                   // Used to hold handle to shared memory page
   int i;
-  char resource[15] = "Hello World";
+  char resource[15] = "ABCDEFGHIJ";
 
   if (argc != 4) { 
     Printf("Usage: "); Printf(argv[0]); Printf(" <handle_to_shared_memory_page> <handle_to_page_mapped_semaphore>\n"); 
