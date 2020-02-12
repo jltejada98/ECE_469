@@ -1,7 +1,7 @@
 #include "lab2-api.h"
 #include "usertraps.h"
 #include "misc.h"
-
+#include "utility.h"
 #include "spawn.h"
 
 int int main(int argc, char const *argv[])
@@ -14,11 +14,12 @@ int int main(int argc, char const *argv[])
   //   Exit();
   // } 
 
-  s_procs_completed = dstrol(argv[1], NULL, 10);
+  s_procs_completed = dstrtol(argv[1], NULL, 10);
 
   Printf("Producer_Created\n");
 
-  for(int i = 0; i < 11; i++)
+  int i;
+  for(i = 0; i < 11; i++)
   {
     //Get lock
     //Produce resource

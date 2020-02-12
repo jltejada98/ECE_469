@@ -2,6 +2,7 @@
 #include "usertraps.h"
 #include "misc.h"
 #include "spawn.h"
+#include "utility.h"
 
 
 //Arguments
@@ -18,7 +19,7 @@ int int main(int argc, char const *argv[])
   //   Exit();
   // } 
 
-  s_procs_completed = dstrol(argv[1], NULL, 10);
+  s_procs_completed = dstrtol(argv[1], NULL, 10);
 
 
   Printf("Consumer Created\n");
