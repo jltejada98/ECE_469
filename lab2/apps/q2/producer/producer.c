@@ -39,6 +39,7 @@ int main(int argc, char const *argv[])
       cb->data[cb->end] = resource[i];
       Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
       cb->end = (cb->end + 1) % BUFFER_SIZE;
+      Printf("CB:(%2d),(%2d)", cb->start, cb->end);
     }
     lock_release(buffer_lock);
   }
