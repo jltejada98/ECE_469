@@ -4,7 +4,7 @@
 #include "spawn.h"
 
 void main (int argc, char *argv[]){
-    Print("Hellow");
+    Printf("Hellow");
 
     return 0;
 }
