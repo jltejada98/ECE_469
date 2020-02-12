@@ -1,5 +1,7 @@
 default:
 	cd makeprocs; make
+	cd producer; make
+	cd consumer; make
 
 clean:
 	cd makeprocs; make clean
