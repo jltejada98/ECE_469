@@ -8,6 +8,8 @@ int main(int argc, char const *argv[])
 {
   buffer *cb;
   sem_t sem_procs_completed; 
+  uint32 h_mem;                   // Used to hold handle to shared memory page
+
 
   if (argc != 3) { 
     Printf("Usage: "); Printf(argv[0]); Printf(" <handle_to_shared_memory_page> <handle_to_page_mapped_semaphore>\n"); 
