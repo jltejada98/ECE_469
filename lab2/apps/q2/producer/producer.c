@@ -31,18 +31,21 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-  lock_acquire(buffer_lock); //Changed lock outside of for loop.
-  for(i = 0; i < 11; i++)
-  {
-    if(!  ((cb->start + 1) % BUFFER_SIZE == cb->end) ) //Buffer not full
+  i = 0;
+  //Consider checking start pointer
+  while(i < 11){
+    lock_acquire(buffer_lock); //Changed lock outside of for loop.
+    if(!((cb->start + 1) % BUFFER_SIZE == cb->end)) //Buffer not full
     {
       cb->end = (cb->end + 1) % BUFFER_SIZE;
       cb->data[cb->end] = resource[i];
       Printf("Producer %d inserted: %c %c\n", getpid(), resource[i], cb->data[cb->end]);
       Printf("CB:(%2d),(%2d)\n", cb->start, cb->end);
+      i++;
     }
+    lock_release(buffer_lock);
   }
-  lock_release(buffer_lock);
+
 
   //Signal semaphore
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
