@@ -46,7 +46,6 @@ int main(int argc, char const *argv[])
     lock_release(buffer_lock);
   }
 
-
   //Signal semaphore
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
     Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
