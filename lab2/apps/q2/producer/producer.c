@@ -31,9 +31,9 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
+  lock_acquire(buffer_lock); //Changed lock outside of for loop.
   for(i = 0; i < 11; i++)
   {
-    lock_acquire(buffer_lock);
     if(!  ((cb->start + 1) % BUFFER_SIZE == cb->end) ) //Buffer not full
     {
       cb->end = (cb->end + 1) % BUFFER_SIZE;
@@ -41,8 +41,8 @@ int main(int argc, char const *argv[])
       Printf("Producer %d inserted: %c %c\n", getpid(), resource[i], cb->data[cb->end]);
       Printf("CB:(%2d),(%2d)\n", cb->start, cb->end);
     }
-    lock_release(buffer_lock);
   }
+  lock_release(buffer_lock);
 
   //Signal semaphore
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
