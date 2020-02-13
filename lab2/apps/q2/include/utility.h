@@ -1,4 +1,4 @@
-#define BUFFER_SIZE 20
+#define BUFFER_SIZE 5
 
 #define PRODUCER_FILENAME "producer.dlx.obj"
 #define CONSUMER_FILENAME "consumer.dlx.obj"
