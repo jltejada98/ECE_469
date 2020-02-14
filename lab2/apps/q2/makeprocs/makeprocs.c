@@ -25,7 +25,6 @@ int main (int argc, char *argv[]){
 
     // Convert string from ascii command line argument to integer number
     numprocs = dstrtol(argv[1], NULL, 10) * 2; // the "10" means base 10, *2 because one producer and one consumer
-    Printf("Creating %d processes\n", numprocs);
 
 
      // Allocate space for a shared memory page, which is exactly 64KB
@@ -75,8 +74,6 @@ int main (int argc, char *argv[]){
       Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); Printf(argv[0]); Printf("\n");
       Exit();
     }
-
-    Printf("Sucess\n");
 
     return 0;
 }

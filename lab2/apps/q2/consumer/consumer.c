@@ -42,7 +42,6 @@ int main(int argc, char const *argv[])
     {
       Printf("Consumer %d removed: %c\n", getpid(), cb->data[cb->start]);
       cb->start = (cb->start + 1) % BUFFER_SIZE;
-      Printf("CB:(%2d),(%2d)\n", cb->start, cb->end);
       i++;
     }
     lock_release(buffer_lock);
