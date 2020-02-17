@@ -5,12 +5,10 @@
 
 int main(int argc, char const *argv[])
 {
-  
-  sem_t sem_procs_sleeping;
-  atm *a; 
-  lock_t atm_lock;
-  uint32 h_mem;                   // Used to hold handle to shared memory page
-  int num_molecules;
+  sem_t sem_procs_completed; 
+  int num_to_create;
+  sem_t sem_water;
+
   int i;
 
   if (argc != 4) { 
@@ -18,40 +16,27 @@ int main(int argc, char const *argv[])
     Exit();
   } 
 
-  sem_procs_sleeping = dstrtol(argv[1], NULL, 10);
-  h_mem = dstrtol(argv[2], NULL, 10);
-  atm_lock = dstrtol(argv[3], NULL, 10);
-  num_molecules = dstrtol(argv[4], NULL, 10);
+  sem_procs_completed = dstrtol(argv[1], NULL, 10);
+  num_to_create = dstrtol(argv[2], NULL, 10);
+  sem_water = dstrtol(argv[3], NULL, 10);
 
-
-  a = (atm*) shmat(h_mem);
-  if(a == NULL)
+  for(i = 0; i < num_to_create; i++)
   {
-    Printf("Could not map virtual address to memory in ");
-    Printf(argv[0]);
-    Exit();
-  }
-
-  i = 0;
-  //Consider checking start pointer
-  while(i < num_molecules){
-    lock_acquire(atm_lock); //Changed lock outside of for loop.
-    if(!((cb->start + 1) % BUFFER_SIZE == cb->end)) //Buffer not full
+    if(sem_signal(sem_water) != SYNC_SUCCESS)
     {
-      cb->data[cb->end] = resource[i];
-      Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
-      cb->end = (cb->end + 1) % BUFFER_SIZE;
-      i++;
-    }
-    lock_release(atm_lock);
+      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
+      Printf(argv[0]); 
+      Printf(", exiting...\n");
+        Exit();
+      }
   }
 
-  //Signal semaphore
-  if(sem_signal(sem_procs_sleeping) != SYNC_SUCCESS){
-    Printf("Bad semaphore sem_procs_sleeping (%d) in ", sem_procs_sleeping); 
-    Printf(argv[0]); 
-    Printf(", exiting...\n");
-    Exit();
+  //Signal complete semaphore
+  if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
+  Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
+  Printf(argv[0]); 
+  Printf(", exiting...\n");
+  Exit();
   }
 
 

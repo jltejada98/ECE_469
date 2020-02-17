@@ -5,12 +5,11 @@
 
 int main(int argc, char const *argv[])
 {
-  buffer *cb;
   sem_t sem_procs_completed; 
-  lock_t buffer_lock;
-  uint32 h_mem;                   // Used to hold handle to shared memory page
+  int num_to_create;
+  sem_t sem_sulfate;
+
   int i;
-  char resource[11] = "Hello World";
 
   if (argc != 4) { 
     Printf("Usage: "); Printf(argv[0]); Printf(" <handle_to_shared_memory_page> <handle_to_page_mapped_semaphore>\n"); 
@@ -18,38 +17,26 @@ int main(int argc, char const *argv[])
   } 
 
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
-  h_mem = dstrtol(argv[2], NULL, 10);
-  buffer_lock = dstrtol(argv[3], NULL, 10);
+  num_to_create = dstrtol(argv[2], NULL, 10);
+  sem_sulfate = dstrtol(argv[3], NULL, 10);
 
+	for(i = 0; i < num_to_create; i++)
+	{
+		if(sem_signal(sem_sulfate) != SYNC_SUCCESS)
+		{
+			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
+			Printf(argv[0]); 
+			Printf(", exiting...\n");
+	  		Exit();
+	  	}
+	}
 
-  cb = (buffer*) shmat(h_mem);
-  if(cb == NULL)
-  {
-    Printf("Could not map virtual address to memory in ");
-    Printf(argv[0]);
-    Exit();
-  }
-
-  i = 0;
-  //Consider checking start pointer
-  while(i < 11){
-    lock_acquire(buffer_lock); //Changed lock outside of for loop.
-    if(!((cb->start + 1) % BUFFER_SIZE == cb->end)) //Buffer not full
-    {
-      cb->data[cb->end] = resource[i];
-      Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
-      cb->end = (cb->end + 1) % BUFFER_SIZE;
-      i++;
-    }
-    lock_release(buffer_lock);
-  }
-
-  //Signal semaphore
+  //Signal complete semaphore
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
-    Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-    Printf(argv[0]); 
-    Printf(", exiting...\n");
-    Exit();
+	Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
+	Printf(argv[0]); 
+	Printf(", exiting...\n");
+	Exit();
   }
 
 
