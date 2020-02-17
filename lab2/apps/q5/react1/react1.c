@@ -16,14 +16,18 @@ int main(int argc, char const *argv[])
   sem_t sem_o;
   int numReact;
   int i;
+  int count;
 
-	Printf("Process react1 started\n");
-  
+  count = 0;
+	Printf("CP: %d\n", count++);
+
 
   if (argc != 5) { 
     Printf("Incorrect Arguments for %s", argv[0]);
     Exit();
   } 
+
+	Printf("CP: %d\n", count++);
 
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
   sem_water = dstrtol(argv[2], NULL, 10);
@@ -33,9 +37,12 @@ int main(int argc, char const *argv[])
 
   Printf("Sem H: %d\n", sem_h);
   Printf("Sem O: %d\n", sem_o);
+	Printf("CP: %d\n", count++);
+  
 
   for(i = 0; i < numReact; i++)
   {
+	Printf("CP: %d\n", count++);
 
   	//Wait for resources
     if(sem_wait(sem_water) != SYNC_SUCCESS)
