@@ -67,10 +67,10 @@ int main(int argc, char const *argv[])
       cb->empty = 1;
     }
 
-    if(bufferWasFull)
-    {
+    //if(bufferWasFull)
+    //{
       cond_signal(cond_not_full);
-    }
+    //}
     
     lock_release(buffer_lock);
   }
