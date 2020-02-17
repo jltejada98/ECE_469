@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
   int bufferWasFull;
   int i;
 
-  if (argc != 4) { 
+  if (argc != 6) { 
     Printf("Usage: "); Printf(argv[0]); Printf(" <handle_to_shared_memory_page> <handle_to_page_mapped_semaphore>\n"); 
     Exit();
   } 
