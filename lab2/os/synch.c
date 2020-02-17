@@ -331,6 +331,11 @@ int LockHandleRelease(lock_t lock) {
 //--------------------------------------------------------------------------
 cond_t CondCreate(lock_t lock) {
   // Your code goes here
+  if (lock >= MAX_LOCKS)
+  {
+    printf("FATAL ERROR: could not initialize condition variable lock.\n");
+    return SYNC_FAIL;
+  }
   cond_t cond_var;
   uint32 intrval;
 
@@ -347,17 +352,20 @@ cond_t CondCreate(lock_t lock) {
   //Check if condition variable cannot be created.
   if(cond_var >= MAX_CONDS) return SYNC_FAIL;
 
-  //Check if lock is valid.
-  if(CondInit(&conds[cond_var], lock) != SYNC_SUCCESS) return SYNC_FAIL;
+  //Create Queue
+  if(CondInit(&conds[cond_var]) != SYNC_SUCCESS) return SYNC_FAIL;
+  conds[cond_var]->lock = lock;
 
   return cond_var;
-
-
-  return SYNC_FAIL;
 }
 
-int CondInit(Cond *cond, lock_t lock ){
-  
+int CondInit(Cond *c){
+  if(!c) return SYNC_FAIL;
+  if (AQueueInit(&c->waiting) != QUEUE_SUCCESS){
+    printf("FATAL ERROR: could not initialize condition variable waiting queue in CondInit!\n");
+    exitsim();
+  }
+  return SYNC_SUCCESS;
 }
 
 //---------------------------------------------------------------------------
@@ -383,9 +391,38 @@ int CondInit(Cond *cond, lock_t lock ){
 //	"actually" wake up until the process calling CondHandleSignal or
 //	CondHandleBroadcast releases the lock explicitly.
 //---------------------------------------------------------------------------
+int CondWait(Cond *cd){
+  Link  *l;
+  int   intrval;
+    
+  //What do we need to do with the lock?
+  if (!cd) return SYNC_FAIL;
+
+  intrval = DisableIntrs ();
+  dbprintf ('I', "CondWait: Old interrupt value was 0x%x.\n", intrval);
+  dbprintf ('s', "SemWait: Proc %d waiting on sem %d.\n", GetCurrentPid(), (int)(cd-conds));
+  l = AQueueAllocLink ((void *)currentPCB);
+  if(l = NULL){
+    printf("FATAL ERROR: could not allocate link for conditional variable queue in CondWait!\n");
+    exitsim();
+  }
+  if (AQueueInsertLast (&cd->waiting, l) != QUEUE_SUCCESS){
+    printf("FATAL ERROR: could not insert new link into conditional variable waiting queue in CondWait!\n");
+    exitsim();
+  }
+  ProcessSleep();
+
+  RestoreIntrs (intrval);
+  return SYNC_SUCCESS;
+}
+
+
 int CondHandleWait(cond_t c) {
   // Your code goes here
-  return SYNC_SUCCESS;
+  if(c < 0) return SYNC_FAIL;
+  if(c >= MAX_CONDS) return SYNC_FAIL;
+  if(!conds[c].inuse) return SYNC_FAIL;
+  return CondWait(&conds[c]);
 }
 
 
