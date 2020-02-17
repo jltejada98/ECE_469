@@ -25,6 +25,9 @@ int main(int argc, char const *argv[])
   sem_o = dstrtol(argv[4], NULL, 10);
   numReact = dstrtol(argv[5], NULL, 10);
 
+  Printf("Sem H: %d\n", sem_h);
+  Printf("Sem O: %d\n", sem_o);
+
   for(i = 0; i < numReact; i++)
   {
 
@@ -43,9 +46,8 @@ int main(int argc, char const *argv[])
 			Printf(", exiting...\n");
 			Exit();
     }
-    
-    Printf("Sem H: %d\n", sem_h);
-    Printf("Sem O: %d\n", sem_o);
+
+
 
     //Generate resources
     if(sem_signal(sem_h) != SYNC_SUCCESS)
