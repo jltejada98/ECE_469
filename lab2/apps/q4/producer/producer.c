@@ -42,14 +42,14 @@ int main(int argc, char const *argv[])
 
     lock_acquire(buffer_lock); //Changed lock outside of for loop.
 
-    if(((cb->start + 1) % BUFFER_SIZE) == cb->end) //Buffer full
+    if(cb->start == cb->end && !cb->empty) //Buffer full
     {
       Printf("Producer: Buffer full, Waiting\n");
       cond_wait(cond_not_full);
       Printf("Producer: Continuing\n");
     }  
 
-    if (cb->start == cb->end) //Buffer empty
+    if (cb->start == cb->end && cb->empty) //Buffer empty
     {
       bufferWasEmpty = 1;
     }
@@ -62,6 +62,7 @@ int main(int argc, char const *argv[])
     cb->data[cb->end] = resource[i];
     Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
     cb->end = (cb->end + 1) % BUFFER_SIZE;
+    cb->empty = 0;
     
     if (bufferWasEmpty)
     {

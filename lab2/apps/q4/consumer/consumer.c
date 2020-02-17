@@ -43,14 +43,14 @@ int main(int argc, char const *argv[])
   for(i = 0; i < 11; i++)
   {
     lock_acquire(buffer_lock);
-    if(cb->start == cb->end) //Buffer empty
+    if(cb->start == cb->end && cb->empty) //Buffer empty
     {
       Printf("Consumer: Buffer empty, waiting\n");
       cond_wait(cond_not_empty);
       Printf("Consumer: Continuing\n");
     }
 
-    if(((cb->start + 1) % BUFFER_SIZE) == cb->end)  //Buffer full
+    if(cb->start == cb->end && !cb->empty)  //Buffer full
     { 
       bufferWasFull = 1;
     }
@@ -62,6 +62,10 @@ int main(int argc, char const *argv[])
     //Consume resource
     Printf("Consumer %d removed: %c\n", getpid(), cb->data[cb->start]);
     cb->start = (cb->start + 1) % BUFFER_SIZE;
+    if(cb->start == cb->end)
+    {
+      cb->empty = 1;
+    }
 
     if(bufferWasFull)
     {
