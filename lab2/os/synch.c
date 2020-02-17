@@ -358,7 +358,7 @@ cond_t CondCreate(lock_t lock) {
   if(CondInit(&conds[cond_var]) != SYNC_SUCCESS) return SYNC_FAIL;
   //Associate Lock
   conds[cond_var].lock = lock;
-  if (AQueueInit (&(conds[cond_var]->waiting)) != QUEUE_SUCCESS) {
+  if (AQueueInit (&(conds[cond_var].waiting)) != QUEUE_SUCCESS) {
     printf("FATAL ERROR: could not initialize semaphore waiting queue in SemInit!\n");
     exitsim();
   }
