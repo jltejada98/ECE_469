@@ -60,7 +60,7 @@ typedef struct Cond {
   Queue waiting; //Waiting processes go here.
   uint32  inuse;    //indicates whether the condition variable is being 
   //used by any process
-  (Lock *) lock; //Associated lock to conditional variable.
+  lock_t lock; //Associated lock to conditional variable.
 } Cond;
 
 int CondInit(Cond *);
