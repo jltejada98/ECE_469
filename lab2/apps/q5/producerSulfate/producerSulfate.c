@@ -2,7 +2,6 @@
 #include "usertraps.h"
 #include "misc.h"
 #include "utility.h"
-#include "spawn.h"
 
 int main(int argc, char const *argv[])
 {
