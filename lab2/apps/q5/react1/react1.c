@@ -10,7 +10,7 @@
 
 int main(int argc, char const *argv[])
 {
-  sem_t sem_procs_completed, sem_t sem_water, sem_h, sem_o;
+  sem_t sem_procs_completed, sem_water, sem_h, sem_o;
   int numReact;
   int i;
 
@@ -27,6 +27,8 @@ int main(int argc, char const *argv[])
 
   for(i = 0; i < numReact; i++)
   {
+
+  	//Wait for resources
     if(sem_wait(sem_water) != SYNC_SUCCESS)
     {
 			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
@@ -42,6 +44,30 @@ int main(int argc, char const *argv[])
 			Exit();
     }
 
+
+    //Generate resources
+    if(sem_signal(sem_h) != SYNC_SUCCESS)
+    {
+			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
+			Printf(argv[0]); 
+			Printf(", exiting...\n");
+			Exit();
+    }
+    if(sem_signal(sem_h) != SYNC_SUCCESS)
+    {
+			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
+			Printf(argv[0]); 
+			Printf(", exiting...\n");
+			Exit();
+    }
+    if(sem_signal(sem_o) != SYNC_SUCCESS)
+    {
+			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
+			Printf(argv[0]); 
+			Printf(", exiting...\n");
+			Exit();
+    }
+    
     Printf("(1) H2O -> 2 H2 + O2 reacted, PID: %d", getpid());
   }
 
