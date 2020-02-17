@@ -395,7 +395,6 @@ int CondWait(Cond *cd){
   Link  *l;
   int   intrval;
     
-  //What do we need to do with the lock?
   if (!cd) return SYNC_FAIL;
 
   intrval = DisableIntrs ();
@@ -410,6 +409,10 @@ int CondWait(Cond *cd){
     printf("FATAL ERROR: could not insert new link into conditional variable waiting queue in CondWait!\n");
     exitsim();
   }
+  if(LockHandleRelease(&locks[cd->lock]) == SYNC_FAIL) { //Do we need to release lock?
+    printf("FATAL ERROR: could not release lock in conditional variable in CondWait!\n");
+    exitsim();
+  } 
   ProcessSleep();
 
   RestoreIntrs (intrval);
