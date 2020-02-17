@@ -28,7 +28,8 @@ int main(int argc, char const *argv[])
       Printf(argv[0]); 
       Printf(", exiting...\n");
         Exit();
-      }
+    }
+    Printf("H2O injected into Radeon atmosphere, PID: %d \n", getpid())
   }
 
   //Signal complete semaphore
