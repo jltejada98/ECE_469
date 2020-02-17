@@ -111,7 +111,7 @@ int main (int argc, char *argv[]){
     Printf("%d H2's left over. ", (2*numReact1) - numReact3);
     Printf("%d O2's left over. ", (numReact1 + numReact2 - numReact3));
     Printf("%d SO2's left over. ", numReact2 - numReact3);
-    Printf("%d H2SO4's created. ", numReact3);
+    Printf("%d H2SO4's created. \n", numReact3);
 
     return 0;
 }
