@@ -13,7 +13,7 @@ int main(int argc, char const *argv[])
   int i;
   char resource[11] = "Hello World";
 
-  if (argc != 4) { 
+  if (argc != 5) { 
     Printf("Usage: "); Printf(argv[0]); Printf(" <handle_to_shared_memory_page> <handle_to_page_mapped_semaphore>\n"); 
     Exit();
   } 
