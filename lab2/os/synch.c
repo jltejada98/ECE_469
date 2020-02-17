@@ -414,6 +414,8 @@ int CondWait(Cond *cd){
   }
   if (AQueueInsertLast (&(cd->waiting), l) != QUEUE_SUCCESS){
     printf("FATAL ERROR: could not insert new link into conditional variable waiting queue in CondWait!\n");
+    if(!(&cd->waiting)) printf("Queue was NULL\n");
+    if(!l) printf("Link was NULL\n");
     exitsim();
   }
   if(LockHandleRelease(cd->lock) == SYNC_FAIL) { //Do we need to release lock?
