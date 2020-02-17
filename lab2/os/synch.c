@@ -411,7 +411,7 @@ int CondWait(Cond *cd){
     printf("FATAL ERROR: could not insert new link into conditional variable waiting queue in CondWait!\n");
     exitsim();
   }
-  if(LockHandleRelease(&locks[cd->lock]) == SYNC_FAIL) { //Do we need to release lock?
+  if(LockHandleRelease(cd->lock) == SYNC_FAIL) { //Do we need to release lock?
     printf("FATAL ERROR: could not release lock in conditional variable in CondWait!\n");
     exitsim();
   } 
