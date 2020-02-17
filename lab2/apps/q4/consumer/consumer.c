@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
       Printf("Consumer: Continuing\n");
     }
 
-    if((cb->start + 1) % BUFFER_SIZE == cb->end)  //Buffer full
+    if(((cb->start + 1) % BUFFER_SIZE) == cb->end)  //Buffer full
     { 
       bufferWasFull = 1;
     }

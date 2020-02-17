@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
 
     lock_acquire(buffer_lock); //Changed lock outside of for loop.
 
-    if(((cb->start + 1) % BUFFER_SIZE == cb->end)) //Buffer full
+    if(((cb->start + 1) % BUFFER_SIZE) == cb->end) //Buffer full
     {
       Printf("Producer: Buffer full, Waiting\n");
       cond_wait(cond_not_full);
