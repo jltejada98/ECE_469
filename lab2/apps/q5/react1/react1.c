@@ -10,10 +10,15 @@
 
 int main(int argc, char const *argv[])
 {
-	Printf("Process react1 started");
-  sem_t sem_procs_completed, sem_water, sem_h, sem_o;
+  sem_t sem_procs_completed;
+  sem_t sem_water;
+  sem_t sem_h;
+  sem_t sem_o;
   int numReact;
   int i;
+
+	Printf("Process react1 started\n");
+  
 
   if (argc != 5) { 
     Printf("Incorrect Arguments for %s", argv[0]);
