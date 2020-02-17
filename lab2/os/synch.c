@@ -330,14 +330,16 @@ int LockHandleRelease(lock_t lock) {
 //	should return handle of the condition variable.
 //--------------------------------------------------------------------------
 cond_t CondCreate(lock_t lock) {
+  cond_t cond_var;
+  int intrval;
+
   // Your code goes here
   if (lock >= MAX_LOCKS)
   {
     printf("FATAL ERROR: could not initialize condition variable lock.\n");
     return SYNC_FAIL;
   }
-  cond_t cond_var;
-  uint32 intrval;
+  
 
   //Grabbing a conditional variable should be an atomic operation
   intrval = DisableIntrs();
@@ -394,7 +396,7 @@ int CondInit(Cond *c){
 //---------------------------------------------------------------------------
 int CondWait(Cond *cd){
   Link  *l;
-  int   intrval;
+  int  intrval;
     
   if (!cd) return SYNC_FAIL;
 
@@ -416,7 +418,7 @@ int CondWait(Cond *cd){
   } 
   ProcessSleep();
 
-  RestoreIntrs (intrval);
+  RestoreIntrs(intrval);
   return SYNC_SUCCESS;
 }
 
