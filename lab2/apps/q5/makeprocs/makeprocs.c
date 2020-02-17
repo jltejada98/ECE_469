@@ -98,9 +98,9 @@ int main (int argc, char *argv[]){
     //All of process creation
     process_create(PRODUCER_FILENAME_1,sem_procs_completed_str, num_water_init_str, sem_water_str, NULL);
     process_create(PRODUCER_FILENAME_2,sem_procs_completed_str, num_sulfate_init_str, sem_sulfate_str, NULL);
-    process_create(REACT_FILENAME_1,sem_procs_completed_str, sem_water_str, sem_h_str, sem_o_str, numReact1, NULL);
-    //process_create(REACT_FILENAME_2,sem_procs_completed_str, sem_sulfate_str, sem_s02_str, sem_o_str, numReact2, NULL);
-    //process_create(REACT_FILENAME_3,sem_procs_completed_str, sem_h_str, sem_o_str, sem_s02_str, sem_h_sulfate_str, numReact3, NULL);
+    process_create(REACT_FILENAME_1,sem_procs_completed_str, sem_water_str, sem_h_str, sem_o_str, numReact1_str, NULL);
+    //process_create(REACT_FILENAME_2,sem_procs_completed_str, sem_sulfate_str, sem_s02_str, sem_o_str, numReact2_str, NULL);
+    //process_create(REACT_FILENAME_3,sem_procs_completed_str, sem_h_str, sem_o_str, sem_s02_str, sem_h_sulfate_str, numReact3_str, NULL);
 
 
     if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
