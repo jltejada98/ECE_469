@@ -12,7 +12,7 @@ int main (int argc, char *argv[]){
     int numReact2;
     int numReact3;
     
-    sem_t sem_procs_sleeping; // keeps track if all child processes are sleeping
+    sem_t sem_procs_completed; // keeps track if all child processes are sleeping
     sem_t sem_water;
     sem_t sem_h;
     sem_t sem_o;
@@ -26,7 +26,7 @@ int main (int argc, char *argv[]){
     char num_water_init_str[10];
     char num_sulfate_init_str[10];
 
-    char sem_procs_sleeping_str[10]; // Used as command-line argument to pass page_mapped handle to new processes
+    char sem_procs_completed_str[10]; // Used as command-line argument to pass page_mapped handle to new processes
     char sem_water_str[10];
     char sem_h_str[10];
     char sem_o_str[10];
@@ -53,7 +53,7 @@ int main (int argc, char *argv[]){
     numReact3 = min3(numReact1 * 2, numReact1 + numReact2, numReact2);   //Find minimum of H2, O2, and S04 molecules
 
     //Initalize all the semaphores
-    sem_procs_sleeping = sem_create(-(numprocs - 1));
+    sem_procs_completed = sem_create(-(numprocs - 1));
     sem_water = sem_create(0);
     sem_h = sem_create(0);
     sem_o = sem_create(0);
@@ -62,7 +62,7 @@ int main (int argc, char *argv[]){
     sem_s02 = sem_create(0);
 
     //Error check all the semaphores
-    if(sem_procs_sleeping == SYNC_FAIL ||
+    if(sem_procs_completed == SYNC_FAIL ||
         sem_water == SYNC_FAIL ||
         sem_h == SYNC_FAIL ||
         sem_h == SYNC_FAIL ||
@@ -81,7 +81,7 @@ int main (int argc, char *argv[]){
     ditoa(num_water_init, num_water_init_str);
     ditoa(num_sulfate_init, num_sulfate_init_str);
 
-    ditoa(sem_procs_sleeping, sem_procs_sleeping_str);
+    ditoa(sem_procs_completed, sem_procs_completed_str);
     ditoa(sem_water, sem_water_str);
     ditoa(sem_h, sem_h_str);
     ditoa(sem_o, sem_o_str);
@@ -95,15 +95,15 @@ int main (int argc, char *argv[]){
 
 
     //All of process creation
-    process_create(PRODUCER_FILENAME_1,sem_procs_sleeping_str, num_water_init_str, sem_water_str, NULL);
-    process_create(PRODUCER_FILENAME_2,sem_procs_sleeping_str, num_sulfate_init_str, sem_sulfate_str, NULL);
-    process_create(REACT_FILENAME_1,sem_procs_sleeping_str, sem_water_str, sem_h_str, sem_o_str, NULL);
-    process_create(REACT_FILENAME_2,sem_procs_sleeping_str, sem_sulfate_str, sem_s02_str, sem_o_str, NULL);
-    process_create(REACT_FILENAME_3,sem_procs_sleeping_str, sem_h_str, sem_o_str, sem_s02_str, sem_h_sulfate_str, NULL);
+    process_create(PRODUCER_FILENAME_1,sem_procs_completed_str, num_water_init_str, sem_water_str, NULL);
+    process_create(PRODUCER_FILENAME_2,sem_procs_completed_str, num_sulfate_init_str, sem_sulfate_str, NULL);
+    process_create(REACT_FILENAME_1,sem_procs_completed_str, sem_water_str, sem_h_str, sem_o_str, NULL);
+    process_create(REACT_FILENAME_2,sem_procs_completed_str, sem_sulfate_str, sem_s02_str, sem_o_str, NULL);
+    process_create(REACT_FILENAME_3,sem_procs_completed_str, sem_h_str, sem_o_str, sem_s02_str, sem_h_sulfate_str, NULL);
 
 
-    if (sem_wait(sem_procs_sleeping) != SYNC_SUCCESS) {
-      Printf("Bad semaphore sem_procs_sleeping (%d) in ", sem_procs_sleeping); Printf(argv[0]); Printf("\n");
+    if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
+      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); Printf(argv[0]); Printf("\n");
       Exit();
     }
 
