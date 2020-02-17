@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
   int bufferWasEmpty;
 
   int i;
-  char resource[11] = "Hello World";
+  char resource[11] = "Hello_World";
 
   if (argc != 6) { 
     Printf("Usage: "); Printf(argv[0]); Printf(" <handle_to_shared_memory_page> <handle_to_page_mapped_semaphore>\n"); 
@@ -40,15 +40,13 @@ int main(int argc, char const *argv[])
   bufferWasEmpty = 0;
   for(i=0; i<11; i++){
 
-    Printf("Producer Requesting Lock\n");
     lock_acquire(buffer_lock); //Changed lock outside of for loop.
-    Printf("Producer Aquired Lock\n");
 
     if(((cb->start + 1) % BUFFER_SIZE == cb->end)) //Buffer full
     {
-      Printf("Producer waiting for not full\n");
+      Printf("Producer: Buffer full, Waiting");
       cond_wait(cond_not_full);
-      Printf("Producer rx not full\n");
+      Printf("Producer: Continuing\n");
     }  
 
     if (cb->start == cb->end) //Buffer empty
@@ -62,7 +60,6 @@ int main(int argc, char const *argv[])
 
     //Produce resource
     cb->data[cb->end] = resource[i];
-    Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
     cb->end = (cb->end + 1) % BUFFER_SIZE;
     
     if (bufferWasEmpty)
