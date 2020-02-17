@@ -38,7 +38,6 @@ int main(int argc, char const *argv[])
   for(i=0; i<11; i++){
 
     lock_acquire(buffer_lock); //Changed lock outside of for loop.
-
     if(cb->start == cb->end && !cb->empty) //Buffer full
     {
       cond_wait(cond_not_full);
