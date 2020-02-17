@@ -47,6 +47,10 @@ int main (int argc, char *argv[]){
     }
     bp->start = 0;  //Init buffer to be empty
     bp->end = bp->start;
+    for(int i = 0; i < BUFFER_SIZE; i++)
+    {
+      bp->data[i] = 'X'; 
+    }
 
     sem_procs_completed = sem_create(-(numprocs - 1));
     if(sem_procs_completed == SYNC_FAIL){

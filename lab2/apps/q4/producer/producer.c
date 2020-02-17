@@ -44,7 +44,7 @@ int main(int argc, char const *argv[])
 
     if(((cb->start + 1) % BUFFER_SIZE == cb->end)) //Buffer full
     {
-      Printf("Producer: Buffer full, Waiting");
+      Printf("Producer: Buffer full, Waiting\n");
       cond_wait(cond_not_full);
       Printf("Producer: Continuing\n");
     }  
