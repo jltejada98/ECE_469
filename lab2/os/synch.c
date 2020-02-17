@@ -357,7 +357,7 @@ cond_t CondCreate(lock_t lock) {
   //Create Queue
   if(CondInit(&conds[cond_var]) != SYNC_SUCCESS) return SYNC_FAIL;
   //Associate Lock
-  conds[cond_var]->lock = lock;
+  conds[cond_var].lock = lock;
 
   return cond_var;
 }
@@ -471,7 +471,7 @@ int CondSignal(Cond * cond_var){
         exitsim();
     }
     dbprintf ('s', "CondSignal: Putting PID %d. in Lock %d 's queue\n", (int)(GetPidFromAddress(pcb)), cond_var->lock);
-    AQueueInsertFirst(&(locks[cond_var->lock])->waiting, l);
+    AQueueInsertFirst(&((locks[cond_var->lock]).waiting), l);
   }
   RestoreIntrs(intrs);
   return SYNC_SUCCESS;
