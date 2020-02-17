@@ -43,7 +43,9 @@ int main(int argc, char const *argv[])
 			Printf(", exiting...\n");
 			Exit();
     }
-
+    
+    Printf("Sem H: %d\n", sem_h);
+    Printf("Sem O: %d\n", sem_o);
 
     //Generate resources
     if(sem_signal(sem_h) != SYNC_SUCCESS)
@@ -67,7 +69,7 @@ int main(int argc, char const *argv[])
 			Printf(", exiting...\n");
 			Exit();
     }
-    
+
     Printf("(1) H2O -> 2 H2 + O2 reacted, PID: %d", getpid());
   }
 
