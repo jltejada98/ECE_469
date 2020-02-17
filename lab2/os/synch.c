@@ -14,6 +14,10 @@
 static Sem sems[MAX_SEMS]; 	// All semaphores in the system
 static Lock locks[MAX_LOCKS];   // All locks in the system
 
+//Added code for q3
+static Cond conds[MAX_CONDS]; //All condition variables in the system
+//End Added code for q3
+
 extern struct PCB *currentPCB; 
 //----------------------------------------------------------------------
 //	SynchModuleInit
@@ -28,9 +32,11 @@ int SynchModuleInit() {
   }
   for(i=0; i<MAX_LOCKS; i++) {
     // Your stuff for initializing locks goes here
+    locks[i].inuse = 0;
   }
   for(i=0; i<MAX_CONDS; i++) {
     // Your stuff for initializing Condition variables goes here
+    conds[i].inuse = 0;
   }
   dbprintf ('p', "SynchModuleInit: Leaving SynchModuleInit\n");
   return SYNC_SUCCESS;
@@ -325,7 +331,33 @@ int LockHandleRelease(lock_t lock) {
 //--------------------------------------------------------------------------
 cond_t CondCreate(lock_t lock) {
   // Your code goes here
+  cond_t cond_var;
+  uint32 intrval;
+
+  //Grabbing a conditional variable should be an atomic operation
+  intrval = DisableIntrs();
+  for(cond_var = 0; cond_var < MAX_CONDS; cond_var++){
+    if (conds[cond_var].inuse == 0)
+    {
+      conds[cond_var].inuse = 1;
+      break;
+    }
+  }
+  RestoreIntrs(intrval);
+  //Check if condition variable cannot be created.
+  if(cond_var >= MAX_CONDS) return SYNC_FAIL;
+
+  //Check if lock is valid.
+  if(CondInit(&conds[cond_var], lock) != SYNC_SUCCESS) return SYNC_FAIL;
+
+  return cond_var;
+
+
   return SYNC_FAIL;
+}
+
+int CondInit(Cond *cond, lock_t lock ){
+  
 }
 
 //---------------------------------------------------------------------------
