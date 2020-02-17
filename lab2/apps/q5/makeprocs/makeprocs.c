@@ -107,6 +107,13 @@ int main (int argc, char *argv[]){
     }
 
 
+    Printf("%d H2O's left over. %d H2's left over. %d O2's left over. %d SO2's left over. %d H2SO4's created.", 
+        num_water_init - (2*numReact1),
+        (2*numReact1) - numReact3,
+        (numReact1 + numReact2 - numReact3),
+        numReact2 - numReact3,
+        numReact3);
+
     return 0;
 }
 
