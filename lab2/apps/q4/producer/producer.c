@@ -60,6 +60,7 @@ int main(int argc, char const *argv[])
 
     //Produce resource
     cb->data[cb->end] = resource[i];
+    Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
     cb->end = (cb->end + 1) % BUFFER_SIZE;
     
     if (bufferWasEmpty)
@@ -67,7 +68,6 @@ int main(int argc, char const *argv[])
       cond_signal(cond_not_empty);
     }
 
-    Printf("Producer Releasing Lock\n");
     lock_release(buffer_lock);
   }
 
