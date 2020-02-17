@@ -17,7 +17,6 @@ int main(int argc, char const *argv[])
   uint32 h_mem;                   // Used to hold handle to shared memory page
   cond_t cond_not_empty;
   cond_t cond_not_full;
-  int bufferWasFull;
   int i;
 
   if (argc != 6) { 
@@ -39,24 +38,12 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-  bufferWasFull = 0;
   for(i = 0; i < 11; i++)
   {
     lock_acquire(buffer_lock);
     if(cb->start == cb->end && cb->empty) //Buffer empty
     {
-      Printf("Consumer: Buffer empty, waiting\n");
       cond_wait(cond_not_empty);
-      Printf("Consumer: Continuing\n");
-    }
-
-    if(cb->start == cb->end && !cb->empty)  //Buffer full
-    { 
-      bufferWasFull = 1;
-    }
-    else
-    {
-      bufferWasFull = 0;
     }
     
     //Consume resource
@@ -67,10 +54,7 @@ int main(int argc, char const *argv[])
       cb->empty = 1;
     }
 
-    //if(bufferWasFull)
-    //{
-      cond_signal(cond_not_full);
-    //}
+    cond_signal(cond_not_full);
     
     lock_release(buffer_lock);
   }

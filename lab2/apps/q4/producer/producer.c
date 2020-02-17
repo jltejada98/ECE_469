@@ -12,10 +12,8 @@ int main(int argc, char const *argv[])
   uint32 h_mem;                   // Used to hold handle to shared memory page
   cond_t cond_not_empty;
   cond_t cond_not_full;
-  int bufferWasEmpty;
-
   int i;
-  char resource[11] = "Hello_World";
+  char resource[11] = "Hello World";
 
   if (argc != 6) { 
     Printf("Usage: "); Printf(argv[0]); Printf(" <handle_to_shared_memory_page> <handle_to_page_mapped_semaphore>\n"); 
@@ -37,26 +35,13 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-  bufferWasEmpty = 0;
   for(i=0; i<11; i++){
 
     lock_acquire(buffer_lock); //Changed lock outside of for loop.
-
     if(cb->start == cb->end && !cb->empty) //Buffer full
     {
-      Printf("Producer: Buffer full, Waiting\n");
       cond_wait(cond_not_full);
-      Printf("Producer: Continuing\n");
     }  
-
-    if (cb->start == cb->end && cb->empty) //Buffer empty
-    {
-      bufferWasEmpty = 1;
-    }
-    else
-    {
-      bufferWasEmpty = 0;
-    }
 
     //Produce resource
     cb->data[cb->end] = resource[i];
@@ -64,10 +49,7 @@ int main(int argc, char const *argv[])
     cb->end = (cb->end + 1) % BUFFER_SIZE;
     cb->empty = 0;
     
-    if (bufferWasEmpty)
-    {
-      cond_signal(cond_not_empty);
-    }
+    cond_signal(cond_not_empty);
 
     lock_release(buffer_lock);
   }
