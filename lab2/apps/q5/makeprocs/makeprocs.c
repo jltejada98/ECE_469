@@ -3,10 +3,15 @@
 #include "misc.h"
 #include "utility.h"
 
+int min(int a, int b, int c);
 
 int main (int argc, char *argv[]){
     int numprocs = 5;
     lock_t atm_lock; //Lock for atmosphere
+
+    int numReact1;
+    int numReact2;
+    int numReact3;
     
     sem_t sem_procs_sleeping; // keeps track if all child processes are sleeping
     sem_t sem_water;
@@ -29,7 +34,11 @@ int main (int argc, char *argv[]){
     char sem_sulfate_str[10];
     char sem_h_sulfate_str[10];
     char sem_s02_str[10];
-    int i;
+
+    char numReact1_str[10];
+    char numReact2_str[10];
+    char numReact3_str[10];
+
 
     if (argc != 3) {
         Printf("Usage: "); Printf(argv[0]); Printf(" <number of H2O molecules> <number of SO4 molecules>\n");
@@ -39,6 +48,10 @@ int main (int argc, char *argv[]){
     // Convert string from ascii command line argument to integer number
     num_water_init = dstrtol(argv[1], NULL, 10); // the "10" means base 10
     num_sulfate_init = dstrtol(argv[2], NULL, 10); // the "10" means base 10
+
+    numReact1 = num_water_init / 2;
+    numReact2 = num_sulfate_init;
+    numReact3 = min(numReact1 * 2, numReact1 + numReact2, numReact2);   //Find minimum of H2, O2, and S04 molecules
 
     //Initalize all the semaphores
     sem_procs_sleeping = sem_create(-(numprocs - 1));
@@ -77,6 +90,11 @@ int main (int argc, char *argv[]){
     ditoa(sem_h_sulfate, sem_h_sulfate_str);
     ditoa(sem_s02, sem_s02_str);
 
+    ditoa(numReact1, numReact1_str);
+    ditoa(numReact2, numReact2_str);
+    ditoa(numReact3, numReact3_str);
+
+
     //All of process creation
     process_create(PRODUCER_FILENAME_1,sem_procs_sleeping_str, num_water_init_str, sem_water_str, NULL);
     process_create(PRODUCER_FILENAME_2,sem_procs_sleeping_str, num_sulfate_init_str, sem_sulfate_str, NULL);
@@ -90,11 +108,21 @@ int main (int argc, char *argv[]){
       Exit();
     }
 
-    while(reactionRunning)
-    {
-        reactionRunning = 0;
-
-    }
 
     return 0;
+}
+
+int min(int a, int b, int c){
+    if(a < b && a < c)
+    {
+        return a;
+    }
+    else if(b < a && b < c)
+    {
+        return b;
+    }
+    else if(c < a && c < b)
+    {
+        return c;
+    }
 }
