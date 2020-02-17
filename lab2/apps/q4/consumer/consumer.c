@@ -64,7 +64,7 @@ int main(int argc, char const *argv[])
     if(bufferWasFull)
       cond_signal(cond_not_full);
     
-    Printf("Consumer Releasing Lock\n")
+    Printf("Consumer Releasing Lock\n");
     lock_release(buffer_lock);
   }
 

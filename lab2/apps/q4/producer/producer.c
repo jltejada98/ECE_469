@@ -64,7 +64,7 @@ int main(int argc, char const *argv[])
     if (bufferWasEmpty)
       cond_signal(cond_not_empty);
 
-    Printf("Producer Releasing Lock")
+    Printf("Producer Releasing Lock");
     lock_release(buffer_lock);
   }
 
