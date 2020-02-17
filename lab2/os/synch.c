@@ -354,7 +354,9 @@ cond_t CondCreate(lock_t lock) {
 
   //Create Queue
   if(CondInit(&conds[cond_var]) != SYNC_SUCCESS) return SYNC_FAIL;
-  conds[cond_var]->lock = lock;
+  //Associate Lock
+  conds[cond_var]->lock = &locks[lock]; //Passing structure.
+
 
   return cond_var;
 }
