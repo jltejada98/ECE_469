@@ -47,7 +47,7 @@ int main (int argc, char *argv[]){
     }
     bp->start = 0;  //Init buffer to be empty
     bp->end = bp->start;
-    for(int i = 0; i < BUFFER_SIZE; i++)
+    for(i = 0; i < BUFFER_SIZE; i++)
     {
       bp->data[i] = 'X'; 
     }
