@@ -99,5 +99,6 @@ int main (int argc, char *argv[]){
       Exit();
     }
 
+    Printf("Make procs exiting normally...\n")
     return 0;
 }
