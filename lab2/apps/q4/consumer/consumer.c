@@ -41,7 +41,7 @@ int main(int argc, char const *argv[])
   for(i = 0; i < 11; i++)
   {
     lock_acquire(buffer_lock);
-    if(cb->start == cb->end && cb->empty) //Buffer empty
+    while(cb->start == cb->end && cb->empty) //Buffer empty
     {
       cond_wait(cond_not_empty);
     }
