@@ -40,6 +40,7 @@ int main(int argc, char const *argv[])
   Exit();
   }
 
+  Printf("Process Exiting...\n");
 
 
   return 0;
