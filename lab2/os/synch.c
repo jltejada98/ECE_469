@@ -408,7 +408,7 @@ int CondWait(Cond *cd){
   dbprintf ('I', "CondWait: Old interrupt value was 0x%x.\n", intrval);
   dbprintf ('s', "SemWait: Proc %d waiting on sem %d.\n", GetCurrentPid(), (int)(cd-conds));
   l = AQueueAllocLink ((void *)currentPCB);
-  if(l = NULL){
+  if(l == NULL){
     printf("FATAL ERROR: could not allocate link for conditional variable queue in CondWait!\n");
     exitsim();
   }
