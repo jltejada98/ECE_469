@@ -52,9 +52,13 @@ int main(int argc, char const *argv[])
     }  
 
     if (cb->start == cb->end) //Buffer empty
+    {
       bufferWasEmpty = 1;
+    }
     else
+    {
       bufferWasEmpty = 0;
+    }
 
     //Produce resource
     cb->data[cb->end] = resource[i];
@@ -62,7 +66,9 @@ int main(int argc, char const *argv[])
     cb->end = (cb->end + 1) % BUFFER_SIZE;
     
     if (bufferWasEmpty)
+    {
       cond_signal(cond_not_empty);
+    }
 
     Printf("Producer Releasing Lock");
     lock_release(buffer_lock);
