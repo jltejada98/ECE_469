@@ -1,7 +1,7 @@
 
 
-SRCS=consumer.c
-EXEC=consumer.dlx.obj
+SRCS=react1.c
+EXEC=react1.dlx.obj
 
 include ../Makerules
 
