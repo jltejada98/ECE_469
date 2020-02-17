@@ -57,6 +57,9 @@ int LockRelease(Lock *);
 
 typedef struct Cond {
   // Your code goes here
+  Queue waiting; //Waiting processes go here.
+  uint32  inuse;    //indicates whether the condition variable is being 
+  //used by any process
 } Cond;
 
 int CondInit(Cond *);
