@@ -15,6 +15,8 @@ int main(int argc, char const *argv[])
   sem_t sem_procs_completed; 
   lock_t buffer_lock;
   uint32 h_mem;                   // Used to hold handle to shared memory page
+  cond_t cond_not_empty;
+  cond_t cond_not_full;
   int i;
 
   if (argc != 4) { 
@@ -25,6 +27,8 @@ int main(int argc, char const *argv[])
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
   h_mem = dstrtol(argv[2], NULL, 10);
   buffer_lock = dstrtol(argv[3], NULL, 10);
+  cond_not_empty = dstrtol(argv[4], NULL, 10);
+  cond_not_full = dstrtol(argv[5], NULL, 10);
 
   cb = (buffer*) shmat(h_mem);
   if(cb == NULL)
@@ -35,15 +39,15 @@ int main(int argc, char const *argv[])
   }
 
   i = 0;
-  while(i < 11)
+  for(i = 0; i < 11; i++)
   {
     lock_acquire(buffer_lock);
-    if(cb->start != cb->end) //Buffer not empty
-    {
-      Printf("Consumer %d removed: %c\n", getpid(), cb->data[cb->start]);
-      cb->start = (cb->start + 1) % BUFFER_SIZE;
-      i++;
-    }
+    if(cb->start == cb->end) //Buffer not empty
+      cond_wait(cond_not_empty);
+    
+    Printf("Consumer %d removed: %c\n", getpid(), cb->data[cb->start]);
+    cb->start = (cb->start + 1) % BUFFER_SIZE;
+    
     lock_release(buffer_lock);
   }
 
