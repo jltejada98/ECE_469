@@ -357,7 +357,6 @@ cond_t CondCreate(lock_t lock) {
   //Associate Lock
   conds[cond_var]->lock = lock;
 
-
   return cond_var;
 }
 
@@ -451,9 +450,36 @@ int CondHandleWait(cond_t c) {
 //	for such a process to run, the process invoking CondHandleSignal
 //	must explicitly release the lock after the call is complete.
 //---------------------------------------------------------------------------
-int CondHandleSignal(cond_t c) {
-  // Your code goes here
+int CondSignal(Cond * cond_var){
+  Link *l;
+  int intrs;
+  PCB * pcb;
+
+  if(!cond_var) return SYNC_FAIL;
+
+  intrs = DisableIntrs();
+  dbprintf ('s', "CondSignal: Process %d Signalling on cond_var %d,.\n", GetCurrentPid(), (int)(cond_var-conds));
+
+  if (!AQueueEmpty(&(cond_var->waiting)))
+  {
+    l = AQueueFirst(&(cond_var->waiting));
+    pcb = (PCB *)AQueueObject(l);
+    if(AQueueRemove(&l) != QUEUE_SUCCESS){
+      printf("FATAL ERROR: could not remove link from Cond Var queue in CondSignal!\n");
+        exitsim();
+    }
+    dbprintf ('s', "CondSignal: Putting PID %d. in Lock %d 's queue\n", (int)(GetPidFromAddress(pcb)), cond_var->lock);
+    AQueueInsertFirst(&(locks[cond_var->lock])->waiting, l);
+  }
+  RestoreIntrs(intrs);
   return SYNC_SUCCESS;
+}
+
+int CondHandleSignal(cond_t c) {
+  if (c < 0) return SYNC_FAIL;
+  if (c >= MAX_CONDS) return SYNC_FAIL;
+  if (!conds[c].inuse)    return SYNC_FAIL;
+  return CondSignal(&conds[c]);
 }
 
 //---------------------------------------------------------------------------
