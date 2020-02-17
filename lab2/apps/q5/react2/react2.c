@@ -64,7 +64,6 @@ int main(int argc, char const *argv[])
   }
 
 
-  Printf("Process Exiting...\n");
 
   return 0;
 }
