@@ -19,11 +19,10 @@ int main(int argc, char const *argv[])
   int count;
 
   count = 0;
-	Printf("CP: %d\n", count++);
 
 
-  if (argc != 5) { 
-    Printf("Incorrect Arguments for %s", argv[0]);
+  if (argc != 6) { 
+    Printf("Incorrect Arguments for %s\n", argv[0]);
     Exit();
   } 
 
@@ -34,12 +33,9 @@ int main(int argc, char const *argv[])
   sem_o = dstrtol(argv[4], NULL, 10);
   numReact = dstrtol(argv[5], NULL, 10);
 
-  Printf("Sem H: %d\n", sem_h);
-  Printf("Sem O: %d\n", sem_o);
 
   for(i = 0; i < numReact; i++)
   {
-	Printf("In loop\n");
 
   	//Wait for resources
     if(sem_wait(sem_water) != SYNC_SUCCESS)
