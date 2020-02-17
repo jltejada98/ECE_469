@@ -10,6 +10,7 @@ int main(int argc, char const *argv[])
   sem_t sem_procs_completed; 
   lock_t buffer_lock;
   uint32 h_mem;                   // Used to hold handle to shared memory page
+  cond_t cond_var;
   int i;
   char resource[11] = "Hello World";
 
@@ -21,6 +22,7 @@ int main(int argc, char const *argv[])
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
   h_mem = dstrtol(argv[2], NULL, 10);
   buffer_lock = dstrtol(argv[3], NULL, 10);
+  cond_var = dstrtol(argv[4], NULL, 10);
 
 
   cb = (buffer*) shmat(h_mem);
@@ -31,19 +33,17 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-  i = 0;
   //Consider checking start pointer
-  while(i < 11){
+  for(i=0; i<11; i++){
     lock_acquire(buffer_lock); //Changed lock outside of for loop.
     if(!((cb->start + 1) % BUFFER_SIZE == cb->end)) //Buffer not full
     {
-      cb->data[cb->end] = resource[i];
-      Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
-      cb->end = (cb->end + 1) % BUFFER_SIZE;
-      i++;
+      
     }
-    lock_release(buffer_lock);
+    cond_signal(cond_var);
   }
+
+  
 
   //Signal semaphore
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
