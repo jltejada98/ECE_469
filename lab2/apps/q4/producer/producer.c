@@ -40,15 +40,11 @@ int main(int argc, char const *argv[])
   bufferWasEmpty = 0;
   for(i=0; i<11; i++){
 
-    Printf("Producer Requesting Lock\n");
     lock_acquire(buffer_lock); //Changed lock outside of for loop.
-    Printf("Producer Aquired Lock\n");
 
     if(((cb->start + 1) % BUFFER_SIZE == cb->end)) //Buffer full
     {
-      Printf("Producer waiting for not full\n");
       cond_wait(cond_not_full);
-      Printf("Producer rx not full\n");
     }  
 
     if (cb->start == cb->end) //Buffer empty
@@ -70,7 +66,6 @@ int main(int argc, char const *argv[])
       cond_signal(cond_not_empty);
     }
 
-    Printf("Producer Releasing Lock");
     lock_release(buffer_lock);
   }
 
