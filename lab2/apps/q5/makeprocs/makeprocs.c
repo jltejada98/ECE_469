@@ -93,8 +93,6 @@ int main (int argc, char *argv[]){
     ditoa(numReact2, numReact2_str);
     ditoa(numReact3, numReact3_str);
 
-    Printf("Sem H: %d\n", sem_h);
-    Printf("Sem O: %d\n", sem_o);
     //All of process creation
     process_create(PRODUCER_FILENAME_1,sem_procs_completed_str, num_water_init_str, sem_water_str, NULL);
     process_create(PRODUCER_FILENAME_2,sem_procs_completed_str, num_sulfate_init_str, sem_sulfate_str, NULL);
