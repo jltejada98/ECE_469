@@ -52,7 +52,7 @@ int main(int argc, char const *argv[])
       Exit();
     }
 
-    Printf("(2) SO4 -> SO2 + O2 reacted, PID: %d", getpid());
+    Printf("(2) SO4 -> SO2 + O2 reacted, PID: %d\n", getpid());
   }
 
   //Signal semaphore

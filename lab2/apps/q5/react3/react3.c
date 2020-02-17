@@ -60,7 +60,7 @@ int main(int argc, char const *argv[])
       Exit();
     }
 
-    Printf("(3) H2 + O2 + SO2 -> H2SO4 reacted, PID: %d", getpid());
+    Printf("(3) H2 + O2 + SO2 -> H2SO4 reacted, PID: %d\n", getpid());
   }
 
   //Signal semaphore
