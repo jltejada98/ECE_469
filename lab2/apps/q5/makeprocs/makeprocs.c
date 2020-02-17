@@ -50,7 +50,7 @@ int main (int argc, char *argv[]){
 
     numReact1 = num_water_init / 2;
     numReact2 = num_sulfate_init;
-    numReact3 = min(numReact1 * 2, numReact1 + numReact2, numReact2);   //Find minimum of H2, O2, and S04 molecules
+    numReact3 = min3(numReact1 * 2, numReact1 + numReact2, numReact2);   //Find minimum of H2, O2, and S04 molecules
 
     //Initalize all the semaphores
     sem_procs_sleeping = sem_create(-(numprocs - 1));
