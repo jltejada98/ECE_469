@@ -13,8 +13,8 @@ int main (int argc, char *argv[]){
     uint32 h_mem;                   // Used to hold handle to shared memory page
     sem_t sem_procs_completed; // Semaphore used to wait until all spawned processes have completed
     lock_t buffer_lock; //Lock for buffer
-    cont_t cond_not_empty; //Condition variable.
-    cont_t cond_not_full; //Condition variable.
+    cond_t cond_not_empty; //Condition variable.
+    cond_t cond_not_full; //Condition variable.
     char h_mem_str[10];             // Used as command-line argument to pass mem_handle to new processes
     char sem_procs_completed_str[10]; // Used as command-line argument to pass page_mapped handle to new processes
     char buffer_lock_str[10];   //Used as command-line argument for lock
