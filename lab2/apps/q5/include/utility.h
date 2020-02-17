@@ -4,10 +4,3 @@
 #define REACT_FILENAME_2 "react2.dlx.obj"
 #define REACT_FILENAME_3 "react3.dlx.obj"
 
-typedef struct atm{
-  int water;
-  int h;
-  int o;
-  int sulfate;
-  int h_sulfate;
-}atm;
