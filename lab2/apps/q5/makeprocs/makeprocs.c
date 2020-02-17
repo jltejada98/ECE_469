@@ -7,7 +7,6 @@ int min(int a, int b, int c);
 
 int main (int argc, char *argv[]){
     int numprocs = 5;
-    lock_t atm_lock; //Lock for atmosphere
 
     int numReact1;
     int numReact2;
@@ -121,7 +120,7 @@ int min(int a, int b, int c){
     {
         return b;
     }
-    else if(c < a && c < b)
+    else(c < a && c < b)
     {
         return c;
     }
