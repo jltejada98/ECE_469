@@ -36,7 +36,6 @@ int main(int argc, char const *argv[])
 
   Printf("Sem H: %d\n", sem_h);
   Printf("Sem O: %d\n", sem_o);
-  Printf("")
 
   for(i = 0; i < numReact; i++)
   {
