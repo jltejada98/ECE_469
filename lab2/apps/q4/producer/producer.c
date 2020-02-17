@@ -48,6 +48,7 @@ int main(int argc, char const *argv[])
     Printf("Producer %d inserted: %c\n", getpid(), resource[i]);
     cb->end = (cb->end + 1) % BUFFER_SIZE;
     cb->empty = 0;
+    
     cond_signal(cond_not_empty);
 
     lock_release(buffer_lock);
