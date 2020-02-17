@@ -42,21 +42,22 @@ int main(int argc, char const *argv[])
   bufferWasFull = 0;
   for(i = 0; i < 11; i++)
   {
-    Printf("");
+    Printf("Consumer Requesting Lock\n");
     lock_acquire(buffer_lock);
-    Printf("");
+    Printf("Consumer Aquired Lock\n");
     if(cb->start == cb->end) //Buffer empty
     {
-      Printf("");
+      Printf("Consumer waiting for not empty\n");
       cond_wait(cond_not_empty);
-      Printf("");
+      Printf("Consumer rx not empty\n");
     }
 
     if((cb->start + 1) % BUFFER_SIZE == cb->end)  //Buffer full
     { 
       bufferWasFull = 1;
     }
-    else{
+    else
+    {
       bufferWasFull = 0;
     }
     
@@ -69,7 +70,7 @@ int main(int argc, char const *argv[])
       cond_signal(cond_not_full);
     }
     
-    Printf("");
+    Printf("Consumer Releasing Lock\n");
     lock_release(buffer_lock);
   }
 
