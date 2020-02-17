@@ -35,7 +35,6 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-  bufferWasEmpty = 0;
   for(i=0; i<11; i++){
 
     lock_acquire(buffer_lock); //Changed lock outside of for loop.
