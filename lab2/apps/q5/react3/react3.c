@@ -10,7 +10,7 @@
 
 int main(int argc, char const *argv[])
 {
-  sem_t sem_procs_completed, sem_h, sem_0, sem_s02, sem_h_sulfate;
+  sem_t sem_procs_completed, sem_h, sem_o, sem_s02, sem_h_sulfate;
   int numReact;
   int i;
 
