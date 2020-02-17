@@ -330,14 +330,16 @@ int LockHandleRelease(lock_t lock) {
 //	should return handle of the condition variable.
 //--------------------------------------------------------------------------
 cond_t CondCreate(lock_t lock) {
+  cond_t cond_var;
+  int intrval;
+
   // Your code goes here
   if (lock >= MAX_LOCKS)
   {
     printf("FATAL ERROR: could not initialize condition variable lock.\n");
     return SYNC_FAIL;
   }
-  cond_t cond_var;
-  uint32 intrval;
+  
 
   //Grabbing a conditional variable should be an atomic operation
   intrval = DisableIntrs();
@@ -356,7 +358,6 @@ cond_t CondCreate(lock_t lock) {
   if(CondInit(&conds[cond_var]) != SYNC_SUCCESS) return SYNC_FAIL;
   //Associate Lock
   conds[cond_var]->lock = lock;
-
 
   return cond_var;
 }
@@ -395,7 +396,7 @@ int CondInit(Cond *c){
 //---------------------------------------------------------------------------
 int CondWait(Cond *cd){
   Link  *l;
-  int   intrval;
+  int  intrval;
     
   if (!cd) return SYNC_FAIL;
 
@@ -417,7 +418,7 @@ int CondWait(Cond *cd){
   } 
   ProcessSleep();
 
-  RestoreIntrs (intrval);
+  RestoreIntrs(intrval);
   return SYNC_SUCCESS;
 }
 
@@ -451,9 +452,36 @@ int CondHandleWait(cond_t c) {
 //	for such a process to run, the process invoking CondHandleSignal
 //	must explicitly release the lock after the call is complete.
 //---------------------------------------------------------------------------
-int CondHandleSignal(cond_t c) {
-  // Your code goes here
+int CondSignal(Cond * cond_var){
+  Link *l;
+  int intrs;
+  PCB * pcb;
+
+  if(!cond_var) return SYNC_FAIL;
+
+  intrs = DisableIntrs();
+  dbprintf ('s', "CondSignal: Process %d Signalling on cond_var %d,.\n", GetCurrentPid(), (int)(cond_var-conds));
+
+  if (!AQueueEmpty(&(cond_var->waiting)))
+  {
+    l = AQueueFirst(&(cond_var->waiting));
+    pcb = (PCB *)AQueueObject(l);
+    if(AQueueRemove(&l) != QUEUE_SUCCESS){
+      printf("FATAL ERROR: could not remove link from Cond Var queue in CondSignal!\n");
+        exitsim();
+    }
+    dbprintf ('s', "CondSignal: Putting PID %d. in Lock %d 's queue\n", (int)(GetPidFromAddress(pcb)), cond_var->lock);
+    AQueueInsertFirst(&(locks[cond_var->lock])->waiting, l);
+  }
+  RestoreIntrs(intrs);
   return SYNC_SUCCESS;
+}
+
+int CondHandleSignal(cond_t c) {
+  if (c < 0) return SYNC_FAIL;
+  if (c >= MAX_CONDS) return SYNC_FAIL;
+  if (!conds[c].inuse)    return SYNC_FAIL;
+  return CondSignal(&conds[c]);
 }
 
 //---------------------------------------------------------------------------
