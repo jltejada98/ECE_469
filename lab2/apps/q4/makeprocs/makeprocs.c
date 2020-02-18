@@ -48,11 +48,7 @@ int main (int argc, char *argv[]){
     bp->start = 0;  //Init buffer to be empty
     bp->end = bp->start;
     bp->empty = 1;
-    for(i = 0; i < BUFFER_SIZE; i++)
-    {
-      bp->data[i] = 'X'; 
-    }
-
+    
     sem_procs_completed = sem_create(-(numprocs - 1));
     if(sem_procs_completed == SYNC_FAIL){
       Printf("Bad sem_create in ");
@@ -104,6 +100,5 @@ int main (int argc, char *argv[]){
       Exit();
     }
 
-    Printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\nMake procs exiting normally...\n");
     return 0;
 }
