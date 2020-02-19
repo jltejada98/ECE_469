@@ -26,22 +26,23 @@ void MboxModuleInit() {
 
 	for(i = 0; i < MBOX_NUM_MBOXES; i++)
 	{
-		if(AQueueInit(&(msgs[i].ready_msgs)) == QUEUE_FAIL)
+		if(AQueueInit(&(mboxes[i].ready_msgs)) == QUEUE_FAIL)
 		{
 			printf("Could not initialize ready_msgs queue for mailbox %d", i);
 			exitsim();	
 		}
-		if(AQueueInit(&(msgs[i].procs_tx)) == QUEUE_FAIL)
+		if(AQueueInit(&(mboxes[i].procs_tx)) == QUEUE_FAIL)
 		{
 			printf("Could not initialize procs_tx queue for mailbox %d", i);
 			exitsim();	
 		}
-		if(AQueueInit(&(msgs[i].procs_rx)) == QUEUE_FAIL)
+		if(AQueueInit(&(mboxes[i].procs_rx)) == QUEUE_FAIL)
 		{
 			printf("Could not initialize procs_rx queue for mailbox %d", i);
 			exitsim();	
 		}
-		msgs[i].inuse = 0;
+		mboxes[i].inuse = 0;
+		mboxes[i].num_procs_open = 0;
 
 	}
 	for(i = 0; i < MBOX_NUM_BUFFERS; i++)
@@ -62,7 +63,24 @@ void MboxModuleInit() {
 //
 //-------------------------------------------------------
 mbox_t MboxCreate() {
-  return MBOX_FAIL;
+	int i;
+	mbox_t box = MBOX_FAIL;
+	uint32 key;
+
+	key = DisableIntrs();
+
+	for(i = 0; i < MBOX_NUM_MBOXES; i++)
+	{
+		if(mboxes[i].inuse == 0)
+		{
+			mboxes[i].inuse = 1;
+			box = i;
+			break;
+		}
+	}
+	
+	RestoreIntrs(key);
+	return box;	
 }
 
 //-------------------------------------------------------
@@ -80,7 +98,8 @@ mbox_t MboxCreate() {
 //
 //-------------------------------------------------------
 int MboxOpen(mbox_t handle) {
-  return MBOX_FAIL;
+
+	return MBOX_FAIL;
 }
 
 //-------------------------------------------------------
@@ -97,7 +116,7 @@ int MboxOpen(mbox_t handle) {
 //
 //-------------------------------------------------------
 int MboxClose(mbox_t handle) {
-  return MBOX_FAIL;
+	return MBOX_FAIL;
 }
 
 //-------------------------------------------------------

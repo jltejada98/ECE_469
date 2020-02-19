@@ -17,6 +17,7 @@ typedef struct mbox {
 	Queue ready_msgs;
 	Queue procs_rx;
 	Queue procs_tx;
+	int num_procs_open;
 	int inuse;
 } mbox;
 
