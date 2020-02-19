@@ -41,8 +41,12 @@ void MboxModuleInit() {
 			printf("Could not initialize procs_rx queue for mailbox %d", i);
 			exitsim();	
 		}
+
 		mboxes[i].inuse = 0;
 		mboxes[i].num_procs_open = 0;
+		mboxes[i].lock = INVALID_LOCK;
+		mboxes[i].boxNotEmpty = INVALID_COND;
+		mboxes[i].boxNotFull = INVALID_COND;
 
 	}
 	for(i = 0; i < MBOX_NUM_BUFFERS; i++)
@@ -75,6 +79,27 @@ mbox_t MboxCreate() {
 		{
 			mboxes[i].inuse = 1;
 			box = i;
+
+			mboxes[i].lock = LockCreate();
+			if (mboxes[i].lock == INVALID_LOCK)
+			{
+				printf("Could not initialize lock for mailbox %d", i);
+				exitsim();
+			}
+
+			mboxes[i].boxNotFull = CondCreate(&(mboxes[i].lock));
+			if(mboxes[i].boxNotFull == INVALID_LOCK)
+			{
+				printf("Could not initialize cond var for mailbox %d", i);
+				exitsim();
+			}
+
+			mboxes[i].boxNotEmpty = CondCreate(&(mboxes[i].lock));
+			if(mboxes[i].boxNotFull == INVALID_LOCK)
+			{
+				printf("Could not initialize cond var for mailbox %d", i);
+				exitsim();
+			}
 			break;
 		}
 	}
@@ -130,6 +155,7 @@ int MboxOpen(mbox_t handle) {
 //-------------------------------------------------------
 int MboxClose(mbox_t handle) {
 	mbox* box;
+	mbox_message* msg;
 	int key;
 
 	key = DisableIntrs();
@@ -138,29 +164,27 @@ int MboxClose(mbox_t handle) {
 	(box->num_procs_open)--;
 	if(box->num_procs_open == 0)
 	{
-		if(AQueueLength(&(box->ready_msgs)))
+		while(AQueueLength(&(box->ready_msgs)))
 		{
-			(box->num_procs_open)++;
-			return MBOX_FAIL;
+			msg = AqueueFirst(&(box->ready_msgs));
+			if(AQueueRemove(&(msg)) == QUEUE_FAIL){
+				printf("Fatal error: Could not remove messages from queue when attempting to dealocate mailbox %d\n", handle);
+				exitsim();
+			}
 		}
-		if(AQueueLength(&(box->procs_rx)))
-		{
-			//Fatal error?
-			(box->num_procs_open)++;
-			return MBOX_FAIL;
-		}
-		if(AQueueLength(&(box->procs_tx)))
-		{
-			//Fatal error?
-			(box->num_procs_open)++;
-			return MBOX_FAIL;
-		}
+		mboxes[i].inuse = 0;
+		mboxes[i].num_procs_open = 0;
+		mboxes[i].lock = INVALID_LOCK;
+		mboxes[i].boxNotEmpty = INVALID_COND;
+		mboxes[i].boxNotFull = INVALID_COND;
 	}
 	else if (box->num_procs_open < 0)
 	{
 		printf("Fatal error: Attempting to close mailbox, mailbox now has negative number with it open %d\n", handle);
 		exitsim();
 	}
+
+
 
 	RestoreIntrs(key);
 
@@ -193,8 +217,10 @@ int MboxSend(mbox_t handle, int length, void* message) {
 	if()
 
 
-	if(length > MBOX_MAX_MESSAGE_LENGTH)
-		return MBOX_FAIL;
+	while(length > MBOX_MAX_MESSAGE_LENGTH)
+	{
+		cond_wait()
+	}
 
 	RestoreIntrs(key);
 	return MBOX_SUCCESS;
