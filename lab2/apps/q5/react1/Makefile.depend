@@ -1,0 +1,3 @@
+work/react1.o: react1.c ../../../include/lab2-api.h \
+ ../../../include/usertraps.h ../../../include/misc.h \
+ ../include/utility.h

@@ -1,10 +1,10 @@
 ; Linked by DLX-LD.
-; MemSize 122880
-; Data size: 37960
-; Text size: 65736
+; MemSize 126976
+; Data size: 39292
+; Text size: 70044
 ; Stack size: 8192
 .text 0x1000
-.data 0x12000
+.data 0x13000
 ; Compiled by GCC
 .text
 .align 2
@@ -12477,11 +12477,21 @@ L16_LF5:
 L19_LF5:
 	lw	r1,-12(r30)
 	slei	r2,r1,#63
-	bnez	r2,L21_LF5
+	bnez	r2,L22_LF5
 	nop; delay slot nop
 	j	L20_LF5
 	nop; delay slot nop
 L22_LF5:
+	lhi	r1,((_locks_LF5)>>16)&0xffff
+	addui	r1,r1,(_locks_LF5)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	add	r1,r1,r2
+	addi	r2,r0,#0
+	sw	16(r1),r2
 L21_LF5:
 	lw	r2,-12(r30)
 	addi	r1,r2,#1
@@ -12496,11 +12506,21 @@ L20_LF5:
 L23_LF5:
 	lw	r1,-12(r30)
 	slei	r2,r1,#31
-	bnez	r2,L25_LF5
+	bnez	r2,L26_LF5
 	nop; delay slot nop
 	j	L24_LF5
 	nop; delay slot nop
 L26_LF5:
+	lhi	r1,((_conds_LF5)>>16)&0xffff
+	addui	r1,r1,(_conds_LF5)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	add	r1,r1,r2
+	addi	r2,r0,#0
+	sw	12(r1),r2
 L25_LF5:
 	lw	r2,-12(r30)
 	addi	r1,r2,#1
@@ -14691,57 +14711,943 @@ L114_LF5:
 	jr	r31
 	nop
 .endproc _LockHandleRelease
+.data
+.align 2
+LC24_LF5:
+.ascii "FATAL ERROR: could not initialize condition variable lock.\n\000"
+.text
 .align 2
 .proc _CondCreate
 .global _CondCreate
 _CondCreate:
-;  Function 'CondCreate'; 0 bytes of locals, 0 regs to save.
+;  Function 'CondCreate'; 8 bytes of locals, 4 regs to save.
 	sw	-4(r29),r30; push fp
 	add	r30,r0,r29; fp = sp
 	sw	-8(r29),r31; push ret addr
-	subui	r29,r29,#8; alloc local storage
+	subui	r29,r29,#32; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	sw	12(r29),r5
+	lw	r1,(r30)
+	sgti	r2,r1,#63
+	beqz	r2,L119_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC24_LF5)>>16)&0xffff
+	addui	r2,r2,(LC24_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
 	addi	r1,r0,#-1
 	j	L118_LF5
 	nop; delay slot nop
+L119_LF5:
+	add	r2,r0,r29
+	jal	_DisableIntrs
+	nop; delay slot nop
+	sw	-16(r30),r1
+	addi	r1,r0,#0
+	sw	-12(r30),r1
+L120_LF5:
+	lw	r1,-12(r30)
+	slei	r2,r1,#31
+	bnez	r2,L123_LF5
+	nop; delay slot nop
+	j	L121_LF5
+	nop; delay slot nop
+L123_LF5:
+	lw	r1,-12(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x2
+	add	r2,r2,r1
+	slli	r1,r2,#0x2
+	lhi	r5,((_conds_LF5)>>16)&0xffff
+	addui	r5,r5,(_conds_LF5)&0xffff
+	add	r2,r1,r5
+	lw	r1,12(r2)
+	snei	r2,r1,#0
+	bnez	r2,L122_LF5
+	nop; delay slot nop
+	lhi	r1,((_conds_LF5)>>16)&0xffff
+	addui	r1,r1,(_conds_LF5)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	add	r1,r1,r2
+	addi	r2,r0,#1
+	sw	12(r1),r2
+	j	L121_LF5
+	nop; delay slot nop
+L124_LF5:
+L122_LF5:
+	lw	r2,-12(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-12(r30),r2
+	j	L120_LF5
+	nop; delay slot nop
+L121_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-16(r30)
+	sw	(r1),r2
+	jal	_RestoreIntrs
+	nop; delay slot nop
+	addi	r29,r29,#8
+	lw	r1,-12(r30)
+	sgti	r2,r1,#31
+	beqz	r2,L125_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L118_LF5
+	nop; delay slot nop
+L125_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	lhi	r3,((_conds_LF5)>>16)&0xffff
+	addui	r3,r3,(_conds_LF5)&0xffff
+	add	r2,r3,r2
+	sw	(r1),r2
+	jal	_CondInit
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L126_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L118_LF5
+	nop; delay slot nop
+L126_LF5:
+	lhi	r1,((_conds_LF5)>>16)&0xffff
+	addui	r1,r1,(_conds_LF5)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	add	r1,r1,r2
+	lw	r2,(r30)
+	sw	16(r1),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	lhi	r3,((_conds_LF5)>>16)&0xffff
+	addui	r3,r3,(_conds_LF5)&0xffff
+	add	r2,r3,r2
+	sw	(r1),r2
+	jal	_AQueueInit
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L127_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC2_LF5)>>16)&0xffff
+	addui	r2,r2,(LC2_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r29
+	jal	_exitsim
+	nop; delay slot nop
+L127_LF5:
+	lw	r1,-12(r30)
+	j	L118_LF5
+	nop; delay slot nop
 L118_LF5:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r5,12(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
 	jr	r31
 	nop
 .endproc _CondCreate
+.data
+.align 2
+LC25_LF5:
+.ascii "FATAL ERROR: could not initialize condition variable waiting queue in "
+.ascii "CondInit!\n\000"
+.text
+.align 2
+.proc _CondInit
+.global _CondInit
+_CondInit:
+;  Function 'CondInit'; 0 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30; push fp
+	add	r30,r0,r29; fp = sp
+	sw	-8(r29),r31; push ret addr
+	subui	r29,r29,#16; alloc local storage
+	sw	0(r29),r2
+	lw	r1,(r30)
+	snei	r2,r1,#0
+	bnez	r2,L129_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L128_LF5
+	nop; delay slot nop
+L129_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_AQueueInit
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L130_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC25_LF5)>>16)&0xffff
+	addui	r2,r2,(LC25_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r29
+	jal	_exitsim
+	nop; delay slot nop
+L130_LF5:
+	addi	r1,r0,#1
+	j	L128_LF5
+	nop; delay slot nop
+L128_LF5:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _CondInit
+.data
+.align 2
+LC26_LF5:
+.ascii "CondWait: Old interrupt value was 0x%x.\n\000"
+.align 2
+LC27_LF5:
+.ascii "SemWait: Proc %d waiting on sem %d.\n\000"
+.align 2
+LC28_LF5:
+.ascii "FATAL ERROR: could not allocate link for conditional variable queue in"
+.ascii " CondWait!\n\000"
+.align 2
+LC29_LF5:
+.ascii "FATAL ERROR: could not insert new link into conditional variable waiti"
+.ascii "ng queue in CondWait!\n\000"
+.align 2
+LC30_LF5:
+.ascii "Queue was NULL\n\000"
+.align 2
+LC31_LF5:
+.ascii "Link was NULL\n\000"
+.align 2
+LC32_LF5:
+.ascii "FATAL ERROR: could not release lock in conditional variable in CondWai"
+.ascii "t!\n\000"
+.text
+.align 2
+.proc _CondWait
+.global _CondWait
+_CondWait:
+;  Function 'CondWait'; 8 bytes of locals, 3 regs to save.
+	sw	-4(r29),r30; push fp
+	add	r30,r0,r29; fp = sp
+	sw	-8(r29),r31; push ret addr
+	subui	r29,r29,#32; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	lw	r1,(r30)
+	snei	r2,r1,#0
+	bnez	r2,L132_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L131_LF5
+	nop; delay slot nop
+L132_LF5:
+	add	r2,r0,r29
+	jal	_DisableIntrs
+	nop; delay slot nop
+	sw	-16(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#73
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L133_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC26_LF5)>>16)&0xffff
+	addui	r2,r2,(LC26_LF5)&0xffff
+	sw	(r1),r2
+	lw	r2,-16(r30)
+	sw	4(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+L133_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#43
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L134_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC26_LF5)>>16)&0xffff
+	addui	r2,r2,(LC26_LF5)&0xffff
+	sw	(r1),r2
+	lw	r2,-16(r30)
+	sw	4(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+L134_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#115
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L135_LF5
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC27_LF5)>>16)&0xffff
+	addui	r3,r3,(LC27_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r3,(r30)
+	lhi	r4,((_conds_LF5)>>16)&0xffff
+	addui	r4,r4,(_conds_LF5)&0xffff
+	sub	r2,r3,r4
+	lhi	r3,#-13108
+	addui	r3,r3,#52429
+	movi2fp	f0,r2
+	movi2fp	f1,r3
+	mult	f0,f0,f1
+	movfp2i	r2,f0
+	srai	r3,r2,#0x2
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L135_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#43
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L136_LF5
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC27_LF5)>>16)&0xffff
+	addui	r3,r3,(LC27_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r3,(r30)
+	lhi	r4,((_conds_LF5)>>16)&0xffff
+	addui	r4,r4,(_conds_LF5)&0xffff
+	sub	r2,r3,r4
+	lhi	r3,#-13108
+	addui	r3,r3,#52429
+	movi2fp	f0,r2
+	movi2fp	f1,r3
+	mult	f0,f0,f1
+	movfp2i	r2,f0
+	srai	r3,r2,#0x2
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L136_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_currentPCB)>>16)&0xffff
+	addui	r2,r2,(_currentPCB)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_AQueueAllocLink
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+	lw	r1,-12(r30)
+	snei	r2,r1,#0
+	bnez	r2,L137_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC28_LF5)>>16)&0xffff
+	addui	r2,r2,(LC28_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r29
+	jal	_exitsim
+	nop; delay slot nop
+L137_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	lw	r2,-12(r30)
+	sw	4(r1),r2
+	jal	_AQueueInsertLast
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L138_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC29_LF5)>>16)&0xffff
+	addui	r2,r2,(LC29_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	lw	r1,(r30)
+	snei	r2,r1,#0
+	bnez	r2,L139_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC30_LF5)>>16)&0xffff
+	addui	r2,r2,(LC30_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+L139_LF5:
+	lw	r1,-12(r30)
+	snei	r2,r1,#0
+	bnez	r2,L140_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC31_LF5)>>16)&0xffff
+	addui	r2,r2,(LC31_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+L140_LF5:
+	add	r2,r0,r29
+	jal	_exitsim
+	nop; delay slot nop
+L138_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	lw	r3,16(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	seqi	r2,r1,#-1
+	beqz	r2,L141_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC32_LF5)>>16)&0xffff
+	addui	r2,r2,(LC32_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r29
+	jal	_exitsim
+	nop; delay slot nop
+L141_LF5:
+	add	r2,r0,r29
+	jal	_ProcessSleep
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-16(r30)
+	sw	(r1),r2
+	jal	_RestoreIntrs
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#1
+	j	L131_LF5
+	nop; delay slot nop
+L131_LF5:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _CondWait
 .align 2
 .proc _CondHandleWait
 .global _CondHandleWait
 _CondHandleWait:
-;  Function 'CondHandleWait'; 0 bytes of locals, 0 regs to save.
+;  Function 'CondHandleWait'; 0 bytes of locals, 4 regs to save.
 	sw	-4(r29),r30; push fp
 	add	r30,r0,r29; fp = sp
 	sw	-8(r29),r31; push ret addr
-	subui	r29,r29,#8; alloc local storage
-	addi	r1,r0,#1
-	j	L119_LF5
+	subui	r29,r29,#24; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	sw	12(r29),r5
+	lw	r1,(r30)
+	slti	r2,r1,#0
+	beqz	r2,L143_LF5
 	nop; delay slot nop
-L119_LF5:
+	addi	r1,r0,#-1
+	j	L142_LF5
+	nop; delay slot nop
+L143_LF5:
+	lw	r1,(r30)
+	sgti	r2,r1,#31
+	beqz	r2,L144_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L142_LF5
+	nop; delay slot nop
+L144_LF5:
+	lw	r1,(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x2
+	add	r2,r2,r1
+	slli	r1,r2,#0x2
+	lhi	r5,((_conds_LF5)>>16)&0xffff
+	addui	r5,r5,(_conds_LF5)&0xffff
+	add	r2,r1,r5
+	lw	r1,12(r2)
+	snei	r2,r1,#0
+	bnez	r2,L145_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L142_LF5
+	nop; delay slot nop
+L145_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	lhi	r3,((_conds_LF5)>>16)&0xffff
+	addui	r3,r3,(_conds_LF5)&0xffff
+	add	r2,r3,r2
+	sw	(r1),r2
+	jal	_CondWait
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	add	r1,r0,r2
+	j	L142_LF5
+	nop; delay slot nop
+L142_LF5:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r5,12(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
 	jr	r31
 	nop
 .endproc _CondHandleWait
+.data
+.align 2
+LC33_LF5:
+.ascii "CondSignal: Process %d Signalling on cond_var %d,.\n\000"
+.align 2
+LC34_LF5:
+.ascii "FATAL ERROR: could not remove link from Cond Var queue in CondSignal!\n"
+.ascii "\000"
+.align 2
+LC35_LF5:
+.ascii "CondSignal: Putting PID %d. in Lock %d \'s queue\n\000"
+.text
+.align 2
+.proc _CondSignal
+.global _CondSignal
+_CondSignal:
+;  Function 'CondSignal'; 16 bytes of locals, 4 regs to save.
+	sw	-4(r29),r30; push fp
+	add	r30,r0,r29; fp = sp
+	sw	-8(r29),r31; push ret addr
+	subui	r29,r29,#40; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	sw	12(r29),r5
+	lw	r1,(r30)
+	snei	r2,r1,#0
+	bnez	r2,L147_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L146_LF5
+	nop; delay slot nop
+L147_LF5:
+	add	r2,r0,r29
+	jal	_DisableIntrs
+	nop; delay slot nop
+	sw	-16(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#115
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L148_LF5
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC33_LF5)>>16)&0xffff
+	addui	r3,r3,(LC33_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r3,(r30)
+	lhi	r5,((_conds_LF5)>>16)&0xffff
+	addui	r5,r5,(_conds_LF5)&0xffff
+	sub	r2,r3,r5
+	lhi	r3,#-13108
+	addui	r3,r3,#52429
+	movi2fp	f0,r2
+	movi2fp	f1,r3
+	mult	f0,f0,f1
+	movfp2i	r2,f0
+	srai	r3,r2,#0x2
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L148_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#43
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L149_LF5
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC33_LF5)>>16)&0xffff
+	addui	r3,r3,(LC33_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r3,(r30)
+	lhi	r5,((_conds_LF5)>>16)&0xffff
+	addui	r5,r5,(_conds_LF5)&0xffff
+	sub	r2,r3,r5
+	lhi	r3,#-13108
+	addui	r3,r3,#52429
+	movi2fp	f0,r2
+	movi2fp	f1,r3
+	mult	f0,f0,f1
+	movfp2i	r2,f0
+	srai	r3,r2,#0x2
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L149_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_AQueueEmpty
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	bnez	r2,L150_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_AQueueFirst
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_AQueueObject
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sw	-20(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	addi	r2,r30,#-12
+	sw	(r1),r2
+	jal	_AQueueRemove
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L151_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC34_LF5)>>16)&0xffff
+	addui	r2,r2,(LC34_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r29
+	jal	_exitsim
+	nop; delay slot nop
+L151_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#115
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L152_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-20(r30)
+	sw	(r1),r2
+	jal	_GetPidFromAddress
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC35_LF5)>>16)&0xffff
+	addui	r3,r3,(LC35_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r2,(r30)
+	lw	r3,16(r2)
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L152_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#43
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L153_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-20(r30)
+	sw	(r1),r2
+	jal	_GetPidFromAddress
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC35_LF5)>>16)&0xffff
+	addui	r3,r3,(LC35_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r2,(r30)
+	lw	r3,16(r2)
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L153_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r3,(r30)
+	lw	r2,16(r3)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	lhi	r5,((_locks_LF5+4)>>16)&0xffff
+	addui	r5,r5,(_locks_LF5+4)&0xffff
+	add	r3,r2,r5
+	sw	(r1),r3
+	lw	r2,-12(r30)
+	sw	4(r1),r2
+	jal	_AQueueInsertFirst
+	nop; delay slot nop
+	addi	r29,r29,#8
+L150_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-16(r30)
+	sw	(r1),r2
+	jal	_RestoreIntrs
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#1
+	j	L146_LF5
+	nop; delay slot nop
+L146_LF5:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r5,12(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _CondSignal
 .align 2
 .proc _CondHandleSignal
 .global _CondHandleSignal
 _CondHandleSignal:
-;  Function 'CondHandleSignal'; 0 bytes of locals, 0 regs to save.
+;  Function 'CondHandleSignal'; 0 bytes of locals, 4 regs to save.
 	sw	-4(r29),r30; push fp
 	add	r30,r0,r29; fp = sp
 	sw	-8(r29),r31; push ret addr
-	subui	r29,r29,#8; alloc local storage
-	addi	r1,r0,#1
-	j	L120_LF5
+	subui	r29,r29,#24; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	sw	12(r29),r5
+	lw	r1,(r30)
+	slti	r2,r1,#0
+	beqz	r2,L155_LF5
 	nop; delay slot nop
-L120_LF5:
+	addi	r1,r0,#-1
+	j	L154_LF5
+	nop; delay slot nop
+L155_LF5:
+	lw	r1,(r30)
+	sgti	r2,r1,#31
+	beqz	r2,L156_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L154_LF5
+	nop; delay slot nop
+L156_LF5:
+	lw	r1,(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x2
+	add	r2,r2,r1
+	slli	r1,r2,#0x2
+	lhi	r5,((_conds_LF5)>>16)&0xffff
+	addui	r5,r5,(_conds_LF5)&0xffff
+	add	r2,r1,r5
+	lw	r1,12(r2)
+	snei	r2,r1,#0
+	bnez	r2,L157_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L154_LF5
+	nop; delay slot nop
+L157_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	lhi	r3,((_conds_LF5)>>16)&0xffff
+	addui	r3,r3,(_conds_LF5)&0xffff
+	add	r2,r3,r2
+	sw	(r1),r2
+	jal	_CondSignal
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	add	r1,r0,r2
+	j	L154_LF5
+	nop; delay slot nop
+L154_LF5:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r5,12(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -14752,15 +15658,302 @@ L120_LF5:
 .proc _CondHandleBroadcast
 .global _CondHandleBroadcast
 _CondHandleBroadcast:
-;  Function 'CondHandleBroadcast'; 0 bytes of locals, 0 regs to save.
+;  Function 'CondHandleBroadcast'; 16 bytes of locals, 4 regs to save.
 	sw	-4(r29),r30; push fp
 	add	r30,r0,r29; fp = sp
 	sw	-8(r29),r31; push ret addr
-	subui	r29,r29,#8; alloc local storage
-	addi	r1,r0,#1
-	j	L121_LF5
+	subui	r29,r29,#40; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	sw	12(r29),r5
+	lw	r1,(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x2
+	add	r2,r2,r1
+	slli	r1,r2,#0x2
+	lhi	r2,((_conds_LF5)>>16)&0xffff
+	addui	r2,r2,(_conds_LF5)&0xffff
+	add	r1,r2,r1
+	sw	-24(r30),r1
+	lw	r1,(r30)
+	slti	r2,r1,#0
+	beqz	r2,L159_LF5
 	nop; delay slot nop
-L121_LF5:
+	addi	r1,r0,#-1
+	j	L158_LF5
+	nop; delay slot nop
+L159_LF5:
+	lw	r1,(r30)
+	sgti	r2,r1,#31
+	beqz	r2,L160_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L158_LF5
+	nop; delay slot nop
+L160_LF5:
+	lw	r1,(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x2
+	add	r2,r2,r1
+	slli	r1,r2,#0x2
+	lhi	r5,((_conds_LF5)>>16)&0xffff
+	addui	r5,r5,(_conds_LF5)&0xffff
+	add	r2,r1,r5
+	lw	r1,12(r2)
+	snei	r2,r1,#0
+	bnez	r2,L161_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L158_LF5
+	nop; delay slot nop
+L161_LF5:
+	lw	r1,-24(r30)
+	snei	r2,r1,#0
+	bnez	r2,L162_LF5
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L158_LF5
+	nop; delay slot nop
+L162_LF5:
+	add	r2,r0,r29
+	jal	_DisableIntrs
+	nop; delay slot nop
+	sw	-16(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#115
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L163_LF5
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC33_LF5)>>16)&0xffff
+	addui	r3,r3,(LC33_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r3,-24(r30)
+	lhi	r5,((_conds_LF5)>>16)&0xffff
+	addui	r5,r5,(_conds_LF5)&0xffff
+	sub	r2,r3,r5
+	lhi	r3,#-13108
+	addui	r3,r3,#52429
+	movi2fp	f0,r2
+	movi2fp	f1,r3
+	mult	f0,f0,f1
+	movfp2i	r2,f0
+	srai	r3,r2,#0x2
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L163_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#43
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L164_LF5
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC33_LF5)>>16)&0xffff
+	addui	r3,r3,(LC33_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r3,-24(r30)
+	lhi	r5,((_conds_LF5)>>16)&0xffff
+	addui	r5,r5,(_conds_LF5)&0xffff
+	sub	r2,r3,r5
+	lhi	r3,#-13108
+	addui	r3,r3,#52429
+	movi2fp	f0,r2
+	movi2fp	f1,r3
+	mult	f0,f0,f1
+	movfp2i	r2,f0
+	srai	r3,r2,#0x2
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L164_LF5:
+	nop
+L165_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-24(r30)
+	sw	(r1),r2
+	jal	_AQueueEmpty
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L167_LF5
+	nop; delay slot nop
+	j	L166_LF5
+	nop; delay slot nop
+L167_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-24(r30)
+	sw	(r1),r2
+	jal	_AQueueLast
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_AQueueObject
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sw	-20(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	addi	r2,r30,#-12
+	sw	(r1),r2
+	jal	_AQueueRemove
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L168_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC34_LF5)>>16)&0xffff
+	addui	r2,r2,(LC34_LF5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r29
+	jal	_exitsim
+	nop; delay slot nop
+L168_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#115
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L169_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-20(r30)
+	sw	(r1),r2
+	jal	_GetPidFromAddress
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC35_LF5)>>16)&0xffff
+	addui	r3,r3,(LC35_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r2,-24(r30)
+	lw	r3,16(r2)
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L169_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_debugstr)>>16)&0xffff
+	addui	r2,r2,(_debugstr)&0xffff
+	sw	(r1),r2
+	addi	r2,r0,#43
+	sw	4(r1),r2
+	jal	_dindex
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L170_LF5
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-20(r30)
+	sw	(r1),r2
+	jal	_GetPidFromAddress
+	nop; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r3,((LC35_LF5)>>16)&0xffff
+	addui	r3,r3,(LC35_LF5)&0xffff
+	sw	(r1),r3
+	sw	4(r1),r2
+	lw	r2,-24(r30)
+	lw	r3,16(r2)
+	sw	8(r1),r3
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+L170_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r3,-24(r30)
+	lw	r2,16(r3)
+	add	r4,r0,r2
+	slli	r3,r4,#0x2
+	add	r3,r3,r2
+	slli	r2,r3,#0x2
+	lhi	r5,((_locks_LF5+4)>>16)&0xffff
+	addui	r5,r5,(_locks_LF5+4)&0xffff
+	add	r3,r2,r5
+	sw	(r1),r3
+	lw	r2,-12(r30)
+	sw	4(r1),r2
+	jal	_AQueueInsertFirst
+	nop; delay slot nop
+	addi	r29,r29,#8
+	j	L165_LF5
+	nop; delay slot nop
+L166_LF5:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-16(r30)
+	sw	(r1),r2
+	jal	_RestoreIntrs
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#1
+	j	L158_LF5
+	nop; delay slot nop
+L158_LF5:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r5,12(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -14774,6 +15967,9 @@ _sems_LF5:
 .align 2
 _locks_LF5:
 .space 1280
+.align 2
+_conds_LF5:
+.space 640
 ; Compiled by GCC
 .text
 .align 2
