@@ -209,22 +209,85 @@ int MboxClose(mbox_t handle) {
 //-------------------------------------------------------
 int MboxSend(mbox_t handle, int length, void* message) {
 	int key;
+	int msg;
 	mbox* box;
-
-	key = DisableIntrs();
-	box = mboxes[handle];
-
-	if()
+	mbox_message *mail;
+	Link *l;
 
 
-	while(length > MBOX_MAX_MESSAGE_LENGTH)
+	box = &mboxes[handle];
+
+	if(length > MBOX_MAX_MESSAGE_LENGTH)
 	{
-		cond_wait()
+		return MBOX_FAIL;
 	}
 
-	RestoreIntrs(key);
+	if(LockHandleAquire(box->lock) == SYNC_FAIL)
+	{
+		printf("Fatal error: Unable to acquire lock in MboxSend\n");
+		exitsim();
+	}
+
+	while(AQueueLength(&(box->ready_msgs)) >= MBOX_MAX_BUFFERS_PER_MBOX)
+	{
+		CondHandleWait((box->boxNotFull));
+	}
+
+	//Critical Section, putting in messages
+	msg = InitMessage(length);
+	if (msg == -1)
+	{
+		printf("Fatal error: Could not initialize message in mailbox %d\n", handle);
+		exitsim();
+	}
+	//Copy message to buffer
+	mail = &msgs[msg];
+	bcopy(message, &(mail->buffer[0]), length);
+	l = AQueueAllocLink ((void *)mail);
+	if (l == NULL)
+	{
+		printf("FATAL ERROR: could not allocate link for message in MboxSend!\n");
+      	exitsim();
+	}
+	if (AqueueInsertLast(&(box->ready_msgs),l) != QUEUE_SUCCESS )
+	{
+		printf("FATAL ERROR: could not insert new link into lock waiting queue in MboxSend!\n");
+      	exitsim();
+	}
+	CondHandleSignal((box->boxNotEmpty));
+	
+	if(LockHandleRelease(box->lock)== SYNC_FAIL)
+	{
+		printf("Fatal error: Unable to acquire lock in MboxSend\n");
+		exitsim();
+	}
+
 	return MBOX_SUCCESS;
 }
+
+int InitMessage(int length){
+	int key;
+	int message;
+	int i;
+
+	key = DisableIntrs();
+	message = -1;
+	for (i = 0; i < MBOX_NUM_BUFFERS; ++i)
+	{
+		if (msgs[i].inuse == 0)
+		{
+			msgs[i].inuse = 1;
+			msgs[i].len = length;
+			message = i ;
+			break;
+		}
+	}
+
+
+	RestoreIntrs(key);
+	return message;
+}
+
 
 //-------------------------------------------------------
 //
