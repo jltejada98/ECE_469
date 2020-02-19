@@ -31,16 +31,6 @@ void MboxModuleInit() {
 			printf("Could not initialize ready_msgs queue for mailbox %d", i);
 			exitsim();	
 		}
-		if(AQueueInit(&(mboxes[i].procs_tx)) == QUEUE_FAIL)
-		{
-			printf("Could not initialize procs_tx queue for mailbox %d", i);
-			exitsim();	
-		}
-		if(AQueueInit(&(mboxes[i].procs_rx)) == QUEUE_FAIL)
-		{
-			printf("Could not initialize procs_rx queue for mailbox %d", i);
-			exitsim();	
-		}
 
 		mboxes[i].inuse = 0;
 		mboxes[i].num_procs_open = 0;
@@ -166,24 +156,23 @@ int MboxClose(mbox_t handle) {
 	{
 		while(AQueueLength(&(box->ready_msgs)))
 		{
-			msg = AqueueFirst(&(box->ready_msgs));
+			msg = AQueueFirst(&(box->ready_msgs));
 			if(AQueueRemove(&(msg)) == QUEUE_FAIL){
 				printf("Fatal error: Could not remove messages from queue when attempting to dealocate mailbox %d\n", handle);
 				exitsim();
 			}
 		}
-		mboxes[i].inuse = 0;
-		mboxes[i].num_procs_open = 0;
-		mboxes[i].lock = INVALID_LOCK;
-		mboxes[i].boxNotEmpty = INVALID_COND;
-		mboxes[i].boxNotFull = INVALID_COND;
+		box->inuse = 0;
+		box->num_procs_open = 0;
+		box->lock = INVALID_LOCK;
+		box->boxNotEmpty = INVALID_COND;
+		box->boxNotFull = INVALID_COND;
 	}
 	else if (box->num_procs_open < 0)
 	{
 		printf("Fatal error: Attempting to close mailbox, mailbox now has negative number with it open %d\n", handle);
 		exitsim();
 	}
-
 
 
 	RestoreIntrs(key);
@@ -208,7 +197,6 @@ int MboxClose(mbox_t handle) {
 //
 //-------------------------------------------------------
 int MboxSend(mbox_t handle, int length, void* message) {
-	int key;
 	int msg;
 	mbox* box;
 	mbox_message *mail;
