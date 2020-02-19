@@ -22,8 +22,33 @@ static mbox_message msgs[MBOX_NUM_BUFFERS];
 //-------------------------------------------------------
 
 void MboxModuleInit() {
+	int i;
 
+	for(i = 0; i < MBOX_NUM_MBOXES; i++)
+	{
+		if(AQueueInit(&(msgs[i].ready_msgs)) == QUEUE_FAIL)
+		{
+			printf("Could not initialize ready_msgs queue for mailbox %d", i);
+			exitsim();	
+		}
+		if(AQueueInit(&(msgs[i].procs_tx)) == QUEUE_FAIL)
+		{
+			printf("Could not initialize procs_tx queue for mailbox %d", i);
+			exitsim();	
+		}
+		if(AQueueInit(&(msgs[i].procs_rx)) == QUEUE_FAIL)
+		{
+			printf("Could not initialize procs_rx queue for mailbox %d", i);
+			exitsim();	
+		}
+		msgs[i].inuse = 0;
 
+	}
+	for(i = 0; i < MBOX_NUM_BUFFERS; i++)
+	{
+		mboxes[i].len = 0;
+		mboxes[i].inuse = 0;
+	}
 }
 
 //-------------------------------------------------------
