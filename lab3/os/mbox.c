@@ -5,6 +5,9 @@
 #include "queue.h"
 #include "mbox.h"
 
+static mbox mboxes[MBOX_NUM_MBOXES];
+static mbox_message msgs[MBOX_NUM_BUFFERS];
+
 //-------------------------------------------------------
 //
 // void MboxModuleInit();
@@ -19,6 +22,8 @@
 //-------------------------------------------------------
 
 void MboxModuleInit() {
+
+
 }
 
 //-------------------------------------------------------
