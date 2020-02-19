@@ -509,13 +509,13 @@ int CondHandleBroadcast(cond_t c) {
   Link *l;
   int intrs;
   PCB * pcb;
+  Cond * cond_var = &conds[c];
   
   //Copied code from CondHandleSignal
   if (c < 0) return SYNC_FAIL;
   if (c >= MAX_CONDS) return SYNC_FAIL;
   if (!conds[c].inuse)    return SYNC_FAIL;
   //Copied code from CondSignal
-  
 
   if(!cond_var) return SYNC_FAIL;
 
@@ -524,7 +524,7 @@ int CondHandleBroadcast(cond_t c) {
 
   while (!AQueueEmpty(&(cond_var->waiting))) //Changed line so that it continues to obtain first item and add to lock queque
   {
-    l = AQueueFirst(&(cond_var->waiting));
+    l = AQueueLast(&(cond_var->waiting));
     pcb = (PCB *)AQueueObject(l);
     if(AQueueRemove(&l) != QUEUE_SUCCESS){
       printf("FATAL ERROR: could not remove link from Cond Var queue in CondSignal!\n");
@@ -534,5 +534,6 @@ int CondHandleBroadcast(cond_t c) {
     AQueueInsertFirst(&((locks[cond_var->lock]).waiting), l);
   }
   RestoreIntrs(intrs);
+
   return SYNC_SUCCESS;
 }
