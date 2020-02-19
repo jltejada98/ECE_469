@@ -99,7 +99,20 @@ mbox_t MboxCreate() {
 //-------------------------------------------------------
 int MboxOpen(mbox_t handle) {
 
-	return MBOX_FAIL;
+	uint32 key;
+	key = DisableIntrs();
+
+	(mboxes[handle].num_procs_open)++;
+
+	if(mboxes[handle].num_procs_open <= 0)
+	{
+		printf("Fatal error: attempting to open mailbox %d with negative number of processes open.\n", handle);
+		exitsim();
+	}
+
+	RestoreIntrs(key);
+	
+	return MBOX_SUCCESS;
 }
 
 //-------------------------------------------------------
@@ -116,7 +129,42 @@ int MboxOpen(mbox_t handle) {
 //
 //-------------------------------------------------------
 int MboxClose(mbox_t handle) {
-	return MBOX_FAIL;
+	mbox* box;
+	int key;
+
+	key = DisableIntrs();
+
+	box = &mboxes[handle];
+	(box->num_procs_open)--;
+	if(box->num_procs_open == 0)
+	{
+		if(AQueueLength(&(box->ready_msgs)))
+		{
+			(box->num_procs_open)++;
+			return MBOX_FAIL;
+		}
+		if(AQueueLength(&(box->procs_rx)))
+		{
+			//Fatal error?
+			(box->num_procs_open)++;
+			return MBOX_FAIL;
+		}
+		if(AQueueLength(&(box->procs_tx)))
+		{
+			//Fatal error?
+			(box->num_procs_open)++;
+			return MBOX_FAIL;
+		}
+	}
+	else if (box->num_procs_open < 0)
+	{
+		printf("Fatal error: Attempting to close mailbox, mailbox now has negative number with it open %d\n", handle);
+		exitsim();
+	}
+
+	RestoreIntrs(key);
+
+	return MBOX_SUCCESS;
 }
 
 //-------------------------------------------------------
@@ -136,7 +184,20 @@ int MboxClose(mbox_t handle) {
 //
 //-------------------------------------------------------
 int MboxSend(mbox_t handle, int length, void* message) {
-  return MBOX_FAIL;
+	int key;
+	mbox* box;
+
+	key = DisableIntrs();
+	box = mboxes[handle];
+
+	if()
+
+
+	if(length > MBOX_MAX_MESSAGE_LENGTH)
+		return MBOX_FAIL;
+
+	RestoreIntrs(key);
+	return MBOX_SUCCESS;
 }
 
 //-------------------------------------------------------
