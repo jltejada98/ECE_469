@@ -47,8 +47,8 @@ void MboxModuleInit() {
 	}
 	for(i = 0; i < MBOX_NUM_BUFFERS; i++)
 	{
-		mboxes[i].len = 0;
-		mboxes[i].inuse = 0;
+		msgs[i].len = 0;
+		msgs[i].inuse = 0;
 	}
 }
 
