@@ -15,10 +15,11 @@
 
 typedef struct mbox {
 	Queue ready_msgs;
-	Queue procs_rx;
-	Queue procs_tx;
 	int num_procs_open;
 	int inuse;
+	lock_t lock;
+	cond_t boxNotFull;
+	cond_t boxNotEmpty;
 } mbox;
 
 typedef struct mbox_message {
