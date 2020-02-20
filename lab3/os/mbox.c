@@ -8,6 +8,30 @@
 static mbox mboxes[MBOX_NUM_MBOXES];
 static mbox_message msgs[MBOX_NUM_BUFFERS];
 
+/*
+Things to Fix:
+mbox.c: In function `MboxCreate':
+mbox.c:80: warning: passing arg 1 of `CondCreate' makes integer from pointer without a cast
+mbox.c:87: warning: passing arg 1 of `CondCreate' makes integer from pointer without a cast
+mbox.c: In function `MboxClose':
+mbox.c:159: warning: assignment from incompatible pointer type
+mbox.c:160: warning: passing arg 1 of `AQueueRemove' from incompatible pointer type
+mbox.c: In function `MboxSend':
+mbox.c:213: warning: implicit declaration of function `LockHandleAquire'
+mbox.c:225: warning: implicit declaration of function `InitMessage'
+mbox.c:240: warning: implicit declaration of function `AqueueInsertLast'
+gcc-dlx -mtraps -Wall -I../include -I../include/os -c -o work/clock.o clock.c
+gcc-dlx -mtraps -Wall -I../include -I../include/os -c -o work/osend.aso osend.s
+gcc-dlx -mtraps -Wall -I../include -I../include/os -c -o work/trap_random.aso trap_random.s
+gcc-dlx -mtraps -Wall -I../include -I../include/os -c -o work/dlxos.aso dlxos.s
+gcc-dlx -mtraps -Wall -I../include -I../include/os -o work/os.dlx work/filesys.o work/memory.o work/misc.o work/process.o work/queue.o work/traps.o work/sysproc.o work/mbox.o work/clock.o work/osend.aso work/trap_random.aso work/dlxos.aso ../lib/share_memory.o ../lib/synch.o
+Undefined symbol _AqueueInsertLast referenced in file work/mbox.o.
+Undefined symbol _LockHandleAquire referenced in file work/mbox.o.
+Undefined symbol _AqueueInsertLast referenced in file work/mbox.o.
+Undefined symbol _LockHandleAquire referenced in file work/mbox.o.
+*/
+
+
 //-------------------------------------------------------
 //
 // void MboxModuleInit();
@@ -270,8 +294,6 @@ int InitMessage(int length){
 			break;
 		}
 	}
-
-
 	RestoreIntrs(key);
 	return message;
 }
