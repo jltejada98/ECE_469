@@ -8,17 +8,17 @@
 static mbox mboxes[MBOX_NUM_MBOXES];
 static mbox_message msgs[MBOX_NUM_BUFFERS];
 /*
-Things to Fix:
 mbox.c: In function `MboxCreate':
-mbox.c:80: warning: passing arg 1 of `CondCreate' makes integer from pointer without a cast
-mbox.c:87: warning: passing arg 1 of `CondCreate' makes integer from pointer without a cast
+mbox.c:103: warning: passing arg 1 of `CondCreate' makes integer from pointer without a cast
+mbox.c:110: warning: passing arg 1 of `CondCreate' makes integer from pointer without a cast
 mbox.c: In function `MboxClose':
-mbox.c:159: warning: assignment from incompatible pointer type
-mbox.c:160: warning: passing arg 1 of `AQueueRemove' from incompatible pointer type
+mbox.c:182: warning: assignment from incompatible pointer type
+mbox.c:183: warning: passing arg 1 of `AQueueRemove' from incompatible pointer type
 mbox.c: In function `MboxSend':
-mbox.c:213: warning: implicit declaration of function `LockHandleAquire'
-mbox.c:225: warning: implicit declaration of function `InitMessage'
-mbox.c:240: warning: implicit declaration of function `AqueueInsertLast'
+
+mbox.c:236: warning: implicit declaration of function `LockHandleAquire'
+mbox.c:248: warning: implicit declaration of function `InitMessage'
+mbox.c:263: warning: implicit declaration of function `AqueueInsertLast'
 gcc-dlx -mtraps -Wall -I../include -I../include/os -c -o work/clock.o clock.c
 gcc-dlx -mtraps -Wall -I../include -I../include/os -c -o work/osend.aso osend.s
 gcc-dlx -mtraps -Wall -I../include -I../include/os -c -o work/trap_random.aso trap_random.s
@@ -28,6 +28,7 @@ Undefined symbol _AqueueInsertLast referenced in file work/mbox.o.
 Undefined symbol _LockHandleAquire referenced in file work/mbox.o.
 Undefined symbol _AqueueInsertLast referenced in file work/mbox.o.
 Undefined symbol _LockHandleAquire referenced in file work/mbox.o.
+make: *** [work/os.dlx] Error 1
 */
 
 
@@ -100,15 +101,15 @@ mbox_t MboxCreate() {
 				exitsim();
 			}
 
-			mboxes[i].boxNotFull = CondCreate(&(mboxes[i].lock));
+			mboxes[i].boxNotFull = CondCreate(mboxes[i].lock);
 			if(mboxes[i].boxNotFull == INVALID_LOCK)
 			{
 				printf("Could not initialize cond var for mailbox %d", i);
 				exitsim();
 			}
 
-			mboxes[i].boxNotEmpty = CondCreate(&(mboxes[i].lock));
-			if(mboxes[i].boxNotFull == INVALID_LOCK)
+			mboxes[i].boxNotEmpty = CondCreate(mboxes[i].lock);
+			if(mboxes[i].boxNotEmpty == INVALID_LOCK)
 			{
 				printf("Could not initialize cond var for mailbox %d", i);
 				exitsim();
@@ -116,8 +117,8 @@ mbox_t MboxCreate() {
 			break;
 		}
 	}
-	
 	RestoreIntrs(key);
+
 	return box;	
 }
 
@@ -233,7 +234,7 @@ int MboxSend(mbox_t handle, int length, void* message) {
 		return MBOX_FAIL;
 	}
 
-	if(LockHandleAquire(box->lock) == SYNC_FAIL)
+	if(LockHandleAcquire(box->lock) == SYNC_FAIL)
 	{
 		printf("Fatal error: Unable to acquire lock in MboxSend\n");
 		exitsim();
@@ -241,7 +242,10 @@ int MboxSend(mbox_t handle, int length, void* message) {
 
 	while(AQueueLength(&(box->ready_msgs)) >= MBOX_MAX_BUFFERS_PER_MBOX)
 	{
-		CondHandleWait((box->boxNotFull));
+		if(CondHandleWait((box->boxNotFull)) == SYNC_FAIL){
+            printf("Fatal error: Unable to wait on condition variable in MboxSend\n");
+            exitsim();   
+        }
 	}
 
 	//Critical Section, putting in messages
@@ -265,7 +269,11 @@ int MboxSend(mbox_t handle, int length, void* message) {
 		printf("FATAL ERROR: could not insert new link into lock waiting queue in MboxSend!\n");
       	exitsim();
 	}
-	CondHandleSignal((box->boxNotEmpty));
+
+    if(CondHandleSignal((box->boxNotEmpty)) == SYNC_FAIL){
+            printf("Fatal error: Unable to signal on condition variable in MboxSend\n");
+            exitsim();   
+        }
 	
 	if(LockHandleRelease(box->lock)== SYNC_FAIL)
 	{
