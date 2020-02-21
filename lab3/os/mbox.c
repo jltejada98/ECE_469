@@ -7,7 +7,6 @@
 
 static mbox mboxes[MBOX_NUM_MBOXES];
 static mbox_message msgs[MBOX_NUM_BUFFERS];
-
 /*
 Things to Fix:
 mbox.c: In function `MboxCreate':
