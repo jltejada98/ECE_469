@@ -30,6 +30,13 @@ int main (int argc, char *argv[]){
 
     char sem_procs_completed_str[10]; // Used as command-line argument to pass page_mapped handle to new processes
 
+    char mbox_S2_str[10];
+    char mbox_S_str[10];
+    char mbox_CO_str[10];
+    char mbox_O2_str[10];
+    char mbox_C2_str[10];
+    char mbox_SO4_str[10];
+
     char numReact1_str[10];
     char numReact2_str[10];
     char numReact3_str[10];
@@ -85,6 +92,12 @@ int main (int argc, char *argv[]){
     //Convert command line arguments to strings
     ditoa(num_S2_init, num_S2_init_str);
     ditoa(num_CO_init, num_CO_init_str);
+    ditoa(mbox_S2, mbox_S2_str);
+    ditoa(mbox_S, mbox_S_str);
+    ditoa(mbox_CO, mbox_CO_str);
+    ditoa(mbox_O2, mbox_O2_str);
+    ditoa(mbox_C2, mbox_C2_str);
+    ditoa(mbox_SO4, mbox_SO4_str);
 
     ditoa(sem_procs_completed, sem_procs_completed_str);
 
@@ -93,8 +106,8 @@ int main (int argc, char *argv[]){
     ditoa(numReact3, numReact3_str);
 
     //All of process creation
-    process_create(PRODUCER_FILENAME_1,sem_procs_completed_str, num_S2_init_str, NULL);
-    process_create(PRODUCER_FILENAME_2,sem_procs_completed_str, num_CO_init_str, NULL);
+    process_create(PRODUCER_FILENAME_S,sem_procs_completed_str, num_S2_init_str, mbox_S_str,  NULL);
+    process_create(PRODUCER_FILENAME_CO,sem_procs_completed_str, num_CO_init_str, mbox_CO_str, NULL);
     
 
     process_create(REACT_FILENAME_1,sem_procs_completed_str, sem_S2_str, sem_h_str, sem_o_str, numReact1_str, NULL);
