@@ -24,6 +24,7 @@ static mbox_message msgs[MBOX_NUM_BUFFERS];
 
 void MboxModuleInit() {
 	int i;
+	int j;
 
 	for(i = 0; i < MBOX_NUM_MBOXES; i++)
 	{
@@ -31,6 +32,10 @@ void MboxModuleInit() {
 		{
 			printf("Could not initialize ready_msgs queue for mailbox %d", i);
 			exitsim();	
+		}
+		for(j = 0; j < PROCESS_MAX_PROCS; j++)
+		{
+			mboxes[i].procs_open[j] = 0;
 		}
 
 		mboxes[i].inuse = 0;
@@ -114,11 +119,14 @@ mbox_t MboxCreate() {
 //
 //-------------------------------------------------------
 int MboxOpen(mbox_t handle) {
-
+	int pid;
 	uint32 key;
+
+	pid = getCurrentPid();
 	key = DisableIntrs();
 
 	(mboxes[handle].num_procs_open)++;
+	mboxes[handle].procs_open[pid] = 1;
 
 	if(mboxes[handle].num_procs_open <= 0)
 	{
@@ -149,17 +157,21 @@ int MboxClose(mbox_t handle) {
 	mbox_message* msg;
 	Link* l;
 	int key;
+	int pid;
 
+	pid = getCurrentPid();
 	key = DisableIntrs();
 
 	box = &mboxes[handle];
 	(box->num_procs_open)--;
+	box->procs_open[pid] = 0;
 	if(box->num_procs_open == 0)
 	{
 		while(AQueueLength(&(box->ready_msgs)))
 		{
 			l = AQueueFirst(&(box->ready_msgs));
 			msg = l->object;
+			msg->inuse = 0;
 			if(AQueueRemove(&(l)) == QUEUE_FAIL){
 				printf("Fatal error: Could not remove messages from queue when attempting to dealocate mailbox %d\n", handle);
 				exitsim();
@@ -376,5 +388,46 @@ int MboxRecv(mbox_t handle, int maxlength, void* message) {
 //
 //--------------------------------------------------------------------------------
 int MboxCloseAllByPid(int pid) {
-  return MBOX_FAIL;
+	int i;
+	int j;
+
+	mbox* box;
+	mbox_message* msg;
+	Link* l;
+	int key;
+	int pid;
+
+	for(i = 0; i < MBOX_NUM_MBOXES; i++)
+	{
+		//Search for mailbox to close
+		if(mboxes[i].procs_open[pid])
+		{
+			key = DisableIntrs();
+			box = &mboxes[i];
+			(box->num_procs_open)--;
+			box->procs_open[i] = 0;
+
+			if(box->num_procs_open == 0)
+			{
+				while(AQueueLength(&(box->ready_msgs)))
+				{
+					l = AQueueFirst(&(box->ready_msgs));
+					msg = l->object;
+					msg->inuse = 0;
+					if(AQueueRemove(&(l)) == QUEUE_FAIL){
+						printf("Fatal error: Could not remove messages from queue when attempting to dealocate mailbox %d\n", handle);
+						exitsim();
+					}
+				}
+				box->inuse = 0;
+				box->num_procs_open = 0;
+				box->lock = INVALID_LOCK;
+				box->boxNotEmpty = INVALID_COND;
+				box->boxNotFull = INVALID_COND;
+			}
+
+			RestoreIntrs(key);
+		}
+	}
+	return MBOX_FAIL;
 }
