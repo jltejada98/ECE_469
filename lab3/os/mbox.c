@@ -339,7 +339,7 @@ int MboxRecv(mbox_t handle, int maxlength, void* message) {
       	exitsim();
 	}
 
-	bcopy(&(mail->buffer[0]), message, message->len);
+	bcopy(&(mail->buffer[0]), message, mail->len);
 
 	//Message not in use
 	mail->inuse = 0;
