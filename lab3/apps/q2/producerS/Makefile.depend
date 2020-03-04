@@ -1,3 +1,3 @@
-work/producerSulfate.o: producerSulfate.c ../../../include/lab2-api.h \
+work/producerS.o: producerS.c \
  ../../../include/usertraps.h ../../../include/misc.h \
  ../include/utility.h

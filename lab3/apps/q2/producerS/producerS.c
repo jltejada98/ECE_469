@@ -1,4 +1,3 @@
-#include "lab2-api.h"
 #include "usertraps.h"
 #include "misc.h"
 #include "utility.h"
@@ -11,7 +10,7 @@ int main(int argc, char const *argv[])
 
   int i;
 
-  if (argc != 4) { 
+  if (argc != 3) { 
     Printf("Usage: "); Printf(argv[0]); Printf(" <handle_to_shared_memory_page> <handle_to_page_mapped_semaphore>\n"); 
     Exit();
   } 

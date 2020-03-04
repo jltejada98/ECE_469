@@ -93,8 +93,10 @@ int main (int argc, char *argv[]){
     ditoa(numReact3, numReact3_str);
 
     //All of process creation
-    process_create(PRODUCER_FILENAME_1,sem_procs_completed_str, num_S2_init_str, sem_S2_str, NULL);
-    process_create(PRODUCER_FILENAME_2,sem_procs_completed_str, num_CO_init_str, sem_CO_str, NULL);
+    process_create(PRODUCER_FILENAME_1,sem_procs_completed_str, num_S2_init_str, NULL);
+    process_create(PRODUCER_FILENAME_2,sem_procs_completed_str, num_CO_init_str, NULL);
+    
+
     process_create(REACT_FILENAME_1,sem_procs_completed_str, sem_S2_str, sem_h_str, sem_o_str, numReact1_str, NULL);
     process_create(REACT_FILENAME_2,sem_procs_completed_str, sem_CO_str, sem_s02_str, sem_o_str, numReact2_str, NULL);
     process_create(REACT_FILENAME_3,sem_procs_completed_str, sem_h_str, sem_o_str, sem_s02_str, sem_h_CO_str, numReact3_str, NULL);
