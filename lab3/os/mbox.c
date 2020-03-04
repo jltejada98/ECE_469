@@ -300,7 +300,30 @@ int InitMessage(int length){
 //
 //-------------------------------------------------------
 int MboxRecv(mbox_t handle, int maxlength, void* message) {
-    
+    int msg;
+	mbox* box;
+	mbox_message *mail;
+	Link *l;
+
+	box = &mboxes[handle];
+
+	if(LockHandleAcquire(box->lock) == SYNC_FAIL)
+	{
+		printf("Fatal error: Unable to acquire lock in MboxRecv\n");
+		exitsim();
+	}
+
+	//Wait while no messages in mailbox
+	while(AQueueLength(&(box->ready_msgs)) == 0)
+	{
+		if(CondHandleWait((box->boxNotFull)) == SYNC_FAIL){
+            printf("Fatal error: Unable to wait on condition variable in MboxSend\n");
+            exitsim();   
+        }
+	}
+	
+
+
 
     
   return MBOX_FAIL;
