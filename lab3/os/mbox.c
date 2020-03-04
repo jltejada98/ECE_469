@@ -122,7 +122,7 @@ int MboxOpen(mbox_t handle) {
 	int pid;
 	uint32 key;
 
-	pid = getCurrentPid();
+	pid = getpid();
 	key = DisableIntrs();
 
 	(mboxes[handle].num_procs_open)++;
@@ -414,7 +414,7 @@ int MboxCloseAllByPid(int pid) {
 					msg = l->object;
 					msg->inuse = 0;
 					if(AQueueRemove(&(l)) == QUEUE_FAIL){
-						printf("Fatal error: Could not remove messages from queue when attempting to dealocate mailbox %d\n", handle);
+						printf("Fatal error: Could not remove messages from queue when attempting to dealocate mailbox %d\n", i);
 						exitsim();
 					}
 				}
