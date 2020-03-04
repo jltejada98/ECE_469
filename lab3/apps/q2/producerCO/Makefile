@@ -1,7 +1,7 @@
 
 
-SRCS=producerWater.c
-EXEC=producerWater.dlx.obj
+SRCS=producerCO.c
+EXEC=producerCO.dlx.obj
 
 include ../Makerules
 
