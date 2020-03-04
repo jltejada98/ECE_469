@@ -389,7 +389,6 @@ int MboxRecv(mbox_t handle, int maxlength, void* message) {
 //--------------------------------------------------------------------------------
 int MboxCloseAllByPid(int pid) {
 	int i;
-
 	mbox* box;
 	mbox_message* msg;
 	Link* l;
