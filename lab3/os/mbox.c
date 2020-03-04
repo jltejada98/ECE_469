@@ -147,7 +147,7 @@ int MboxOpen(mbox_t handle) {
 int MboxClose(mbox_t handle) {
 	mbox* box;
 	mbox_message* msg;
-	link* l;
+	Link* l;
 	int key;
 
 	key = DisableIntrs();
