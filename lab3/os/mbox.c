@@ -394,7 +394,6 @@ int MboxCloseAllByPid(int pid) {
 	mbox_message* msg;
 	Link* l;
 	int key;
-	int pid;
 
 	for(i = 0; i < MBOX_NUM_MBOXES; i++)
 	{
@@ -404,7 +403,7 @@ int MboxCloseAllByPid(int pid) {
 			key = DisableIntrs();
 			box = &mboxes[i];
 			(box->num_procs_open)--;
-			box->procs_open[i] = 0;
+			box->procs_open[pid] = 0;
 
 			if(box->num_procs_open == 0)
 			{
