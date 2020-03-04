@@ -159,7 +159,7 @@ int MboxClose(mbox_t handle) {
 	int key;
 	int pid;
 
-	pid = getCurrentPid();
+	pid = GetCurrentPid();
 	key = DisableIntrs();
 
 	box = &mboxes[handle];
