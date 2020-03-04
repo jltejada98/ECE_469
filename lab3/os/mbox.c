@@ -356,7 +356,7 @@ int MboxRecv(mbox_t handle, int maxlength, void* message) {
 		exitsim();
 	}
     
-  return message->len;
+    return message->len;
 }
 
 //--------------------------------------------------------------------------------
