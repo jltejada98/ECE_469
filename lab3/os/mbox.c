@@ -250,7 +250,7 @@ int MboxSend(mbox_t handle, int length, void* message) {
     if(CondHandleSignal((box->boxNotEmpty)) == SYNC_FAIL){
             printf("Fatal error: Unable to signal on condition variable in MboxSend\n");
             exitsim();   
-        }
+    }
 	
 	if(LockHandleRelease(box->lock)== SYNC_FAIL)
 	{
@@ -300,13 +300,13 @@ int InitMessage(int length){
 //
 //-------------------------------------------------------
 int MboxRecv(mbox_t handle, int maxlength, void* message) {
-    int msg;
 	mbox* box;
 	mbox_message *mail;
 	Link *l;
 
 	box = &mboxes[handle];
 
+	//Get lock
 	if(LockHandleAcquire(box->lock) == SYNC_FAIL)
 	{
 		printf("Fatal error: Unable to acquire lock in MboxRecv\n");
@@ -314,19 +314,49 @@ int MboxRecv(mbox_t handle, int maxlength, void* message) {
 	}
 
 	//Wait while no messages in mailbox
-	while(AQueueLength(&(box->ready_msgs)) == 0)
+	while(AQueueEmpty(&(box->ready_msgs)))
 	{
-		if(CondHandleWait((box->boxNotFull)) == SYNC_FAIL){
-            printf("Fatal error: Unable to wait on condition variable in MboxSend\n");
+		if(CondHandleWait((box->boxNotEmpty)) == SYNC_FAIL){
+            printf("Fatal error: Unable to wait on condition variable in MboxRecv\n");
             exitsim();   
         }
 	}
-	
+
+	//TODO: Obtain message.
+	l = AQueueFirst(&(box->ready_msgs));
+	if (l == NULL)
+	{
+		printf("FATAL ERROR: could not obtain link for message in MboxRecv!\n");
+      	exitsim();
+	}
+
+	mail = l->object;
+	if (AQueueRemove(&l) == SYNC_FAIL)
+	{
+		printf("FATAL ERROR: could remove link into messagebox  waiting queue in MboxRecv!\n");
+      	exitsim();
+	}
+
+	bcopy(&(mail->buffer[0]), message, message->len);
+
+	//Message not in use
+	mail->inuse = 0;
+
+	//Signal Cond var, box not full
+	if(CondHandleSignal((box->boxNotFull)) == SYNC_FAIL){
+        printf("Fatal error: Unable to signal on condition variable in MboxSend\n");
+        exitsim();   
+    }
 
 
-
+	//Release Lock
+	if(LockHandleRelease(box->lock)== SYNC_FAIL)
+	{
+		printf("Fatal error: Unable to acquire lock in MboxSend\n");
+		exitsim();
+	}
     
-  return MBOX_FAIL;
+  return message->len;
 }
 
 //--------------------------------------------------------------------------------
