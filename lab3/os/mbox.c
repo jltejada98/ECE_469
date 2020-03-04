@@ -157,7 +157,7 @@ int MboxClose(mbox_t handle) {
 	{
 		while(AQueueLength(&(box->ready_msgs)))
 		{
-			msg = AQueueFirst(&(box->ready_msgs));
+			msg = AQueueFirst(&(box->ready_msgs))->object;
 			if(AQueueRemove(&(msg)) == QUEUE_FAIL){
 				printf("Fatal error: Could not remove messages from queue when attempting to dealocate mailbox %d\n", handle);
 				exitsim();
