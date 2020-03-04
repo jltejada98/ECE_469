@@ -122,7 +122,7 @@ int MboxOpen(mbox_t handle) {
 	int pid;
 	uint32 key;
 
-	pid = getpid();
+	pid = GetCurrentPid();
 	key = DisableIntrs();
 
 	(mboxes[handle].num_procs_open)++;
