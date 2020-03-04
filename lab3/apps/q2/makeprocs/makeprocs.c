@@ -68,9 +68,17 @@ int main (int argc, char *argv[]){
     mbox_C2 = mbox_create();
     mbox_SO4 = mbox_create();
 
-    if (mbox_S2 == MBOX_FAIL || )
+    if (mbox_S2 == MBOX_FAIL ||
+        mbox_S == MBOX_FAIL ||
+        mbox_CO == MBOX_FAIL ||
+        mbox_O2 == MBOX_FAIL ||
+        mbox_C2 == MBOX_FAIL ||
+        mbox_SO4 == MBOX_FAIL)
     {
-        
+        Printf("Bad mbox_create in ");
+        Printf(argv[0]);
+        Printf("\n");
+        Exit();
     }
 
 
