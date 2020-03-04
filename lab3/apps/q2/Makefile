@@ -1,7 +1,7 @@
 default:
 	cd makeprocs; make
-	cd producerSulfate; make
-	cd producerWater; make
+	cd producerS; make
+	cd producerCO; make
 	cd react1; make
 	cd react2; make
 	cd react3; make
