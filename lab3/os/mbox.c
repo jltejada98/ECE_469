@@ -305,6 +305,7 @@ int MboxRecv(mbox_t handle, int maxlength, void* message) {
 	mbox* box;
 	mbox_message *mail;
 	Link *l;
+	int msg_len;
 
 	box = &mboxes[handle];
 
@@ -339,7 +340,8 @@ int MboxRecv(mbox_t handle, int maxlength, void* message) {
       	exitsim();
 	}
 
-	bcopy(&(mail->buffer[0]), message, mail->len);
+	msg_len = mail->len;
+	bcopy(&(mail->buffer[0]), message, msg_len);
 
 	//Message not in use
 	mail->inuse = 0;
@@ -358,7 +360,7 @@ int MboxRecv(mbox_t handle, int maxlength, void* message) {
 		exitsim();
 	}
     
-    return message->len;
+    return msg_len;
 }
 
 //--------------------------------------------------------------------------------
