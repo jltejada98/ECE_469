@@ -15,7 +15,7 @@
 
 typedef struct mbox {
 	Queue ready_msgs;
-	int[PROCESS_MAX_PROCS] procs_open;
+	int procs_open[PROCESS_MAX_PROCS];
 	int num_procs_open;
 	int inuse;
 	lock_t lock;
