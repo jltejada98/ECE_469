@@ -1,12 +1,9 @@
-#include "lab2-api.h"
 #include "usertraps.h"
 #include "misc.h"
 #include "utility.h"
 
-
 //Arguments
 //semaphore, shared_memory
-
 
 int main(int argc, char const *argv[])
 {

@@ -1,77 +1,93 @@
-#include "lab2-api.h"
 #include "usertraps.h"
 #include "misc.h"
 #include "utility.h"
 
 
-//Arguments
-//semaphore, shared_memory
+	//Arguments
+	//semaphore, shared_memory
 
 
 int main(int argc, char const *argv[])
-{
-  sem_t sem_procs_completed, sem_h, sem_o, sem_s02, sem_h_sulfate;
-  int numReact;
-  int i;
+	{
+	sem_t sem_procs_completed;
+	int numReact;
+	int i;
+	mbox_t mbox_S, mbox_O2, mbox_SO4;
+	int msg;
+	int txMsg;
 
-  if (argc != 7) { 
-    Printf("Incorrect Arguments for %s", argv[0]);
-    Exit();
-  } 
+	int numS, numO2;
 
-  sem_procs_completed = dstrtol(argv[1], NULL, 10);
-  sem_h = dstrtol(argv[2], NULL, 10);
-  sem_o = dstrtol(argv[3], NULL, 10);
-  sem_s02 = dstrtol(argv[4], NULL, 10);
-  sem_h_sulfate = dstrtol(argv[5], NULL, 10);
-  numReact = dstrtol(argv[6], NULL, 10);
+	if (argc != 6) { 
+	  Printf("Incorrect Arguments for %s", argv[0]);
+	  Exit();
+	} 
 
-  for(i = 0; i < numReact; i++)
-  {
-    //Wait for resources
-    if(sem_wait(sem_h) != SYNC_SUCCESS)
-    {
-      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-      Printf(argv[0]); 
-      Printf(", exiting...\n");
-      Exit();
-    }
-    if(sem_wait(sem_o) != SYNC_SUCCESS)
-    {
-      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-      Printf(argv[0]); 
-      Printf(", exiting...\n");
-      Exit();
-    }
-    if(sem_wait(sem_s02) != SYNC_SUCCESS)
-    {
-      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-      Printf(argv[0]); 
-      Printf(", exiting...\n");
-      Exit();
-    }
+	sem_procs_completed = dstrtol(argv[1], NULL, 10);
+	mbox_S = dstrtol(argv[2], NULL, 10);
+	mbox_O2 = dstrtol(argv[3], NULL, 10);
+	mbox_SO4 = dstrtol(argv[4], NULL, 10);
+	numReact = dstrtol(argv[6], NULL, 10);
 
-    //Create resources
-    if(sem_signal(sem_h_sulfate) != SYNC_SUCCESS)
-    {
-      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-      Printf(argv[0]); 
-      Printf(", exiting...\n");
-      Exit();
-    }
+	mbox_open(mbox_S);
+	mbox_open(mbox_O2);
+	mbox_open(mbox_SO4);
 
-    Printf("(%d) H2 + O2 + SO2 -> H2SO4 reacted, PID: %d\n", i, getpid());
-  }
+	i = 0;
+	numS = 0;
+	numO2 = 0;
+	txMsg = 1;
 
-  //Signal semaphore
-  if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
-    Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-    Printf(argv[0]); 
-    Printf(", exiting...\n");
-    Exit();
-  }
+	while(i < numReact)
+	{
+		msg = 0;
+		if(mbox_recv(mbox_S, sizeof int, &msg) == MBOX_FAIL)
+		{
+			Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
+			Exit();
+		}
+		if (msg != 1)
+		{
+			Printf("Error, incorrect message rx\nExiting...\n");
+			Exit();
+		}
+		numS++;
+
+		msg = 0;
+		if(mbox_recv(mbox_O2, sizeof int, &msg) == MBOX_FAIL)
+		{
+			Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
+			Exit();
+		}
+		if (msg != 1)
+		{
+			Printf("Error, incorrect message rx\nExiting...\n");
+			Exit();
+		}
+		numO2++;
+
+		if(numO2 >= 2 && numS >= 1)
+		{
+			if(mbox_send(mbox_SO4, sizeof int, &txMsg) == MBOX_FAIL)
+			{
+				Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
+				Exit();
+			}
+			Printf("(%d) S + 2 O2 -> SO4 Reacted, PID: %d", i, getpid());
+			i++;
+		}
+
+	}
+
+	//Signal semaphore
+	if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
+		Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
+		Printf(argv[0]); 
+		Printf(", exiting...\n");
+		Exit();
+	}
 
 
 
-  return 0;
+	return 0;
 }
