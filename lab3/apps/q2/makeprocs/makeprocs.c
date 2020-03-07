@@ -1,4 +1,3 @@
-#include "lab2-api.h"
 #include "usertraps.h"
 #include "misc.h"
 #include "utility.h"
