@@ -35,7 +35,7 @@ int main(int argc, char const *argv[])
     msg = 0;
     if(mbox_recv(mmbox_S2, sizeof(int), &msg) == MBOX_FAIL)
     {
-      Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
+      Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
       Exit();
     }
     if (msg != 1)
