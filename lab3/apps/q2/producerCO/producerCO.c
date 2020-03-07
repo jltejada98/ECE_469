@@ -24,7 +24,7 @@
 	msg = 1;
 	for(i = 0; i < num_to_create; i++)
 	{
-		mbox_send(mbox_CO, sizeof int, &msg);
+		mbox_send(mbox_CO, sizeof(int), &msg);
 	}
 
 	mbox_close(mbox_CO);

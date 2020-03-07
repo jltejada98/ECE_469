@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
     msg = 0;
     for(j = 0; j < 4; j++)
     {
-      if(mbox_recv(mbox_CO, sizeof int, &msg) == MBOX_FAIL)
+      if(mbox_recv(mbox_CO, sizeof(int), &msg) == MBOX_FAIL)
       {
         Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
         Exit();

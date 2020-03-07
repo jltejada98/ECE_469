@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
   while(i <  numReact)
   {
     msg = 0;
-    if(mbox_recv(mmbox_S2, sizeof int, &msg) == MBOX_FAIL)
+    if(mbox_recv(mmbox_S2, sizeof(int), &msg) == MBOX_FAIL)
     {
       Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
       Exit();
