@@ -10,9 +10,15 @@
 
 int main(int argc, char const *argv[])
 {
-  sem_t sem_procs_completed, sem_sulfate, sem_s02, sem_o;
+  sem_t sem_procs_completed;
+  mbot_t mbox_CO, mbox_O2, mbox_C2;
+  int msg;
+  int txMsg;
   int numReact;
   int i;
+  int j;
+  int numCO;
+
 
   if (argc != 6) { 
     Printf("Incorrect Arguments for %s", argv[0]);
@@ -20,39 +26,50 @@ int main(int argc, char const *argv[])
   } 
 
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
-  sem_sulfate = dstrtol(argv[2], NULL, 10);
-  sem_s02 = dstrtol(argv[3], NULL, 10);
-  sem_o = dstrtol(argv[4], NULL, 10);
+  mbox_CO = dstrtol(argv[2], NULL, 10);
+  mbox_O2 = dstrtol(argv[3], NULL, 10);
+  mbox_C2 dstrtol(argv[4], NULL, 10);
   numReact = dstrtol(argv[5], NULL, 10);
 
-  for(i = 0; i < numReact; i++)
+  txMsg = 1;
+  i = 0;
+
+  while(i < numReact)
   {
-    //Wait for resources
-    if(sem_wait(sem_sulfate) != SYNC_SUCCESS)
+    msg = 0;
+    for(j = 0; j < 4; j++)
     {
-      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-      Printf(argv[0]); 
-      Printf(", exiting...\n");
-      Exit();
+      if(mbox_recv(mbox_CO, sizeof int, &msg) == MBOX_FAIL)
+      {
+        Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
+        Exit();
+      }
+      if (msg != 1)
+      {
+        Printf("Error, incorrect message rx\nExiting...\n");
+        Exit();
+      }
     }
 
-    //Create resources
-    if(sem_signal(sem_s02) != SYNC_SUCCESS)
+    for(j = 0; j < 2; j++)
     {
-      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-      Printf(argv[0]); 
-      Printf(", exiting...\n");
-      Exit();
-    }
-    if(sem_signal(sem_o) != SYNC_SUCCESS)
-    {
-      Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-      Printf(argv[0]); 
-      Printf(", exiting...\n");
-      Exit();
+      if(mbox_send(mbox_O2, sizeof int, &txMsg) == MBOX_FAIL)
+      {
+        Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
+        Exit();
+      }
     }
 
-    Printf("SO4 -> SO2 + O2 reacted, PID: %d\n", getpid());
+    for(j = 0; j < 2; j++)
+    {
+      if(mbox_send(mbox_C2, sizeof int, &txMsg) == MBOX_FAIL)
+      {
+        Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
+        Exit();
+      }
+    }
+    Printf("(%d) 4 CO -> 2 O2 + 2 C2 Reacted, PID: %d", i, getpid());
+    i++;
   }
 
   //Signal semaphore

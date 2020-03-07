@@ -56,6 +56,7 @@ int main(int argc, char const *argv[])
     }
 
     Printf("S2 -> S + S reacted, PID: %d\n", getpid());
+    ++i;
   }
 
   //Signal semaphore
