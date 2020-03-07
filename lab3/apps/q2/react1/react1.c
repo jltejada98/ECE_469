@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
   int txMsg;
   int numS;
 
-  if (argc != 4) { 
+  if (argc != 5) { 
     Printf("Incorrect Arguments for %s\n", argv[0]);
     Exit();
   } 
