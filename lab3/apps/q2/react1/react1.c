@@ -44,11 +44,13 @@ int main(int argc, char const *argv[])
       Exit();
     }
 
-    
-    
+    if(mbox_send(mmbox_S2, sizeof int, &txMsg) == MBOX_FAIL)
+    {
+      Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
+      Exit();
+    }
 
-
-    Printf("2 H2O -> 2 H2 + O2 reacted, PID: %d\n", getpid());
+    Printf("S2 -> S + S reacted, PID: %d\n", getpid());
   }
 
   //Signal semaphore
