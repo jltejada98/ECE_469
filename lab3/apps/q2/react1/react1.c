@@ -8,72 +8,45 @@
 int main(int argc, char const *argv[])
 {
   sem_t sem_procs_completed;
-  sem_t sem_water;
-  sem_t sem_h;
-  sem_t sem_o;
   int numReact;
   int i;
-  int count;
+  mbot_t mmbox_S2, mmbox_S;
+  int msg;
+  int txMsg;
+  int numS;
 
-  count = 0;
-
-
-  if (argc != 6) { 
+  if (argc != 4) { 
     Printf("Incorrect Arguments for %s\n", argv[0]);
     Exit();
   } 
 
 
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
-  sem_water = dstrtol(argv[2], NULL, 10);
-  sem_h = dstrtol(argv[3], NULL, 10);
-  sem_o = dstrtol(argv[4], NULL, 10);
-  numReact = dstrtol(argv[5], NULL, 10);
+  mmbox_S2 = dstrtol(argv[2], NULL, 10);
+  mmbox_S = dstrtol(argv[3], NULL, 10);
+  numReact = dstrtol(argv[4], NULL, 10);
+  
 
+  i = 0;
+  txMsg = 1;
 
-  for(i = 0; i < numReact; i++)
+  while(i <  numReact)
   {
-
-  	//Wait for resources
-    if(sem_wait(sem_water) != SYNC_SUCCESS)
+    msg = 0;
+    if(mbox_recv(mmbox_S2, sizeof int, &msg) == MBOX_FAIL)
     {
-			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-			Printf(argv[0]); 
-			Printf(", exiting...\n");
-			Exit();
+      Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n" argv[0], getpid());
+      Exit();
     }
-    if(sem_wait(sem_water) != SYNC_SUCCESS)
+    if (msg != 1)
     {
-			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-			Printf(argv[0]); 
-			Printf(", exiting...\n");
-			Exit();
+      Printf("Error, incorrect message rx\nExiting...\n");
+      Exit();
     }
 
+    
+    
 
-
-    //Generate resources
-    if(sem_signal(sem_h) != SYNC_SUCCESS)
-    {
-			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-			Printf(argv[0]); 
-			Printf(", exiting...\n");
-			Exit();
-    }
-    if(sem_signal(sem_h) != SYNC_SUCCESS)
-    {
-			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-			Printf(argv[0]); 
-			Printf(", exiting...\n");
-			Exit();
-    }
-    if(sem_signal(sem_o) != SYNC_SUCCESS)
-    {
-			Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); 
-			Printf(argv[0]); 
-			Printf(", exiting...\n");
-			Exit();
-    }
 
     Printf("2 H2O -> 2 H2 + O2 reacted, PID: %d\n", getpid());
   }
