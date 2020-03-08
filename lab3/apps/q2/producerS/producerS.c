@@ -15,7 +15,7 @@
     Printf("Arguments included were...\n");
     for(i = 0; i < argc; i++)
     {
-      Printf("%d) %d\n", i, argv[i][0]);
+      Printf("%d) %s\n", i, argv[i]);
     }
     Exit();
   } 
