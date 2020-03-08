@@ -111,6 +111,8 @@ int main (int argc, char *argv[]){
 
     Printf("STARTING PROCS\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 
+    process_create(PRODUCER_FILENAME_S, PRODUCER_FILENAME_S, PRODUCER_FILENAME_S, PRODUCER_FILENAME_S, NULL);
+
     //All of process creation
     //process_create(PRODUCER_FILENAME_S, "2", "3", "4", NULL);
     //process_create(PRODUCER_FILENAME_S, sem_procs_completed_str, num_S2_init_str, mbox_S_str, NULL);
