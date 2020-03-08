@@ -13,9 +13,9 @@
   if (argc != 4) { 
     Printf("Incorrect args (%d) for: ", argc); Printf(argv[0]); Printf("\n");
     Printf("Arguments included were...\n");
-    for(i = 1; i < argc; i++)
+    for(i = 0; i < argc; i++)
     {
-      Printf("%s\n", argv[i]);
+      Printf("%d) %s\n", i, argv[i]);
     }
     Exit();
   } 
