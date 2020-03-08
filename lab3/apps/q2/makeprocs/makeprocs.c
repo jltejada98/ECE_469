@@ -104,6 +104,8 @@ int main (int argc, char *argv[]){
     ditoa(numReact2, numReact2_str);
     ditoa(numReact3, numReact3_str);
 
+    Printf("num_S2_init_str: %s\n", num_S2_init_str);
+
     //All of process creation
     process_create(PRODUCER_FILENAME_S,sem_procs_completed_str, num_S2_init_str, mbox_S_str,  NULL);
     process_create(PRODUCER_FILENAME_CO,sem_procs_completed_str, num_CO_init_str, mbox_CO_str, NULL);
