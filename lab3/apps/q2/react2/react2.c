@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
   mbox_CO = dstrtol(argv[2], NULL, 10);
   mbox_O2 = dstrtol(argv[3], NULL, 10);
-  mbox_C2 dstrtol(argv[4], NULL, 10);
+  mbox_C2 = dstrtol(argv[4], NULL, 10);
   numReact = dstrtol(argv[5], NULL, 10);
 
   txMsg = 1;
