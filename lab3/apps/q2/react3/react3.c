@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
 	int numS, numO2;
 
 	if (argc != 6) { 
-	  Printf("Incorrect Arguments for %s", argv[0]);
+	  Printf("Incorrect Arguments for %s\n", argv[0]);
 	  Exit();
 	} 
 
