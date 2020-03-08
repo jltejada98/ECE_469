@@ -108,7 +108,7 @@ int main (int argc, char *argv[]){
     Printf("sem_procs_completed_str: %s\n", sem_procs_completed_str);
     Printf("num_S2_init_str: %s\n", num_S2_init_str);
     Printf("mbox_S_str: %s\n", mbox_S_str);
-
+    Printf("STARTING PROCS\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 
     //All of process creation
     process_create(PRODUCER_FILENAME_S, sem_procs_completed_str, num_S2_init_str, mbox_S_str,  NULL);
