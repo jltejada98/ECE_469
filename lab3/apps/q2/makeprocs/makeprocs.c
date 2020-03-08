@@ -105,9 +105,10 @@ int main (int argc, char *argv[]){
     ditoa(numReact3, numReact3_str);
 
     Printf("PRODUCER_FILENAME_S: %s\n", PRODUCER_FILENAME_S);
-    Printf("sem_procs_completed_str: %s\n", sem_procs_completed_str);
+    Printf("sem_procs_completed_str: %d\n", sem_procs_completed_str[0]);
     Printf("num_S2_init_str: %s\n", num_S2_init_str);
     Printf("mbox_S_str: %s\n", mbox_S_str);
+
     Printf("STARTING PROCS\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 
     //All of process creation
