@@ -10,7 +10,7 @@
 int main(int argc, char const *argv[])
 {
   sem_t sem_procs_completed;
-  mbot_t mbox_CO, mbox_O2, mbox_C2;
+  mbox_t mbox_CO, mbox_O2, mbox_C2;
   int msg;
   int txMsg;
   int numReact;
