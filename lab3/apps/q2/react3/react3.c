@@ -54,7 +54,7 @@ int main(int argc, char const *argv[])
 		numS++;
 
 		msg = 0;
-		if(mbox_recv(mbox_O2, sizeof int, &msg) == MBOX_FAIL)
+		if(mbox_recv(mbox_O2, sizeof(int), &msg) == MBOX_FAIL)
 		{
 			Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
 			Exit();
@@ -68,7 +68,7 @@ int main(int argc, char const *argv[])
 
 		if(numO2 >= 2 && numS >= 1)
 		{
-			if(mbox_send(mbox_SO4, sizeof int, &txMsg) == MBOX_FAIL)
+			if(mbox_send(mbox_SO4, sizeof(int), &txMsg) == MBOX_FAIL)
 			{
 				Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
 				Exit();
