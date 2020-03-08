@@ -105,9 +105,9 @@ int main (int argc, char *argv[]){
     ditoa(numReact3, numReact3_str);
 
     Printf("PRODUCER_FILENAME_S: %s\n", PRODUCER_FILENAME_S);
-    Printf("sem_procs_completed_str: %s\n", sem_procs_completed_str);
     Printf("num_S2_init_str: %s\n", num_S2_init_str);
     Printf("mbox_S_str: %s\n", mbox_S_str);
+    Printf("sem_procs_completed_str: %s\n", sem_procs_completed_str);
 
     if(sem_procs_completed_str == NULL)
         Printf("sem_procs_completed_str is NULL");
@@ -123,7 +123,7 @@ int main (int argc, char *argv[]){
 
 
     //All of process creation
-    process_create(PRODUCER_FILENAME_S, sem_procs_completed_str, num_S2_init_str, mbox_S_str, NULL);
+    process_create(PRODUCER_FILENAME_S, num_S2_init_str, mbox_S_str, sem_procs_completed_str, NULL);
     //process_create(PRODUCER_FILENAME_CO,sem_procs_completed_str, num_CO_init_str, mbox_CO_str, NULL);
     //process_create(REACT_FILENAME_1,sem_procs_completed_str,mbox_S2_str, mbox_S_str, numReact1_str, NULL);
     //process_create(REACT_FILENAME_2,sem_procs_completed_str, mbox_CO_str, mbox_O2_str, mbox_C2_str, numReact2_str, NULL);
