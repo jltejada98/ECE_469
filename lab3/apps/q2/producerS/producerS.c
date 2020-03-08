@@ -11,7 +11,7 @@
   int i;
 
   if (argc != 4) { 
-    Printf("Incorrect args for: "); Printf(argv[0]); Printf("\n");
+    Printf("Incorrect args (%d) for: ", argc); Printf(argv[0]); Printf("\n");
     Exit();
   } 
 

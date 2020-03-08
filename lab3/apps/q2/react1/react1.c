@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
   int numS;
 
   if (argc != 5) { 
-    Printf("Incorrect Arguments for %s\n", argv[0]);
+    Printf("Incorrect number of arguments (%d) for %s\n", argc, argv[0]);
     Exit();
   } 
 
