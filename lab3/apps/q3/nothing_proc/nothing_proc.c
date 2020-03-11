@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
 
   k = 0;
 
-  Printf("entering loop\n");
+  Printf("entering loop (pid: %d) of size %d\n", getpid(), i);
   for(i = 0; i < num; i++)
   {
     for(j = 0; j < 100; j++)
