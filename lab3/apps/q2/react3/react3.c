@@ -85,7 +85,7 @@ int main(int argc, char const *argv[])
 				Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
 				Exit();
 			}
-			Printf("(%d) S + 2 O2 -> SO4 Reacted, PID: %d", i, getpid());
+			Printf("(%d) S + 2 O2 -> SO4 Reacted, PID: %d\n", i, getpid());
 			i++;
 		}
 
