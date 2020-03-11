@@ -86,6 +86,8 @@ int main (int argc, char *argv[]){
         Printf("\n");
         Exit();
 
+    }
+
     //Convert command line arguments to strings
     ditoa(num_S2_init, num_S2_init_str);
     ditoa(num_CO_init, num_CO_init_str);
