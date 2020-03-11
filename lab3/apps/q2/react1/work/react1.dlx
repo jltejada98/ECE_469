@@ -1,7 +1,7 @@
 ; Linked by DLX-LD.
 ; MemSize 24576
-; Data size: 125
-; Text size: 4892
+; Data size: 286
+; Text size: 5040
 ; Stack size: 8192
 .text 0x1000
 .data 0x3000
@@ -79,254 +79,262 @@ L11_LF0:
 .data
 .align 2
 LC0_LF0:
-.ascii "Incorrect Arguments for %s\n\000"
+.ascii "Incorrect number of arguments (%d) for %s\n\000"
 .align 2
 LC1_LF0:
-.ascii "Bad semaphore sem_procs_completed (%d) in \000"
+.ascii "Could not open mbox_S (%d) in\000"
 .align 2
 LC2_LF0:
-.ascii ", exiting...\n\000"
+.ascii "Could not open mbox_S2 (%d) in\000"
 .align 2
 LC3_LF0:
-.ascii "2 H2O -> 2 H2 + O2 reacted, PID: %d\n\000"
+.ascii "Bad mailbox recv in %s, PID: %d\nExiting...\n\000"
+.align 2
+LC4_LF0:
+.ascii "Error, incorrect message rx\nExiting...\n\000"
+.align 2
+LC5_LF0:
+.ascii "(%d) S2 -> S + S reacted, PID: %d\n\000"
+.align 2
+LC6_LF0:
+.ascii "Bad semaphore sem_procs_completed (%d) in \000"
+.align 2
+LC7_LF0:
+.ascii ", exiting...\n\000"
 .text
 .align 2
 .proc _main
 .global _main
 _main:
-;  Function 'main'; 0 bytes of locals, 0 regs to save.
+;  Function 'main'; 8 bytes of locals, 0 regs to save.
 	sw	-4(r29),r30; push fp
 	add	r30,r0,r29; fp = sp
 	sw	-8(r29),r31; push ret addr
-	subui	r29,r29,#8; alloc local storage
+	subui	r29,r29,#16; alloc local storage
 	lw	r2,(r30)
 	lw	r4,4(r30)
 	jal	___main
 	nop; not filled.
-	snei	r1,r2,#6
+	snei	r1,r2,#5
 	beqz	r1,L14_LF0
 	nop; not filled.
-	addi	r29,r29,#-8
-	lhi	r9,((LC0_LF0)>>16)&0xffff
-	addui	r9,r9,(LC0_LF0)&0xffff
-	sw	(r29),r9
-	lw	r1,(r4)
-	sw	4(r29),r1
+	addi	r29,r29,#-16
+	lhi	r10,((LC0_LF0)>>16)&0xffff
+	addui	r10,r10,(LC0_LF0)&0xffff
+	sw	(r29),r10
+	sw	4(r29),r2
+	lw	r10,(r4)
+	sw	8(r29),r10
 	jal	_Printf
 	nop; not filled.
 	jal	_Exit
 	nop; not filled.
-	addi	r29,r29,#8
+	addi	r29,r29,#16
 L14_LF0:
 	addi	r29,r29,#-16
-	lw	r9,4(r4)
-	sw	(r29),r9
-	addi	r9,r0,#0
-	sw	4(r29),r9
-	addi	r9,r0,#10
-	sw	8(r29),r9
+	lw	r10,4(r4)
+	sw	(r29),r10
+	addi	r10,r0,#0
+	sw	4(r29),r10
+	addi	r10,r0,#10
+	sw	8(r29),r10
 	jal	_dstrtol
 	nop; not filled.
-	add	r2,r0,r1
-	lw	r9,8(r4)
-	sw	(r29),r9
-	addi	r9,r0,#0
-	sw	4(r29),r9
-	addi	r9,r0,#10
-	sw	8(r29),r9
-	jal	_dstrtol
-	nop; not filled.
-	add	r6,r0,r1
-	lw	r9,12(r4)
-	sw	(r29),r9
-	addi	r9,r0,#0
-	sw	4(r29),r9
-	addi	r9,r0,#10
-	sw	8(r29),r9
-	jal	_dstrtol
-	nop; not filled.
-	add	r5,r0,r1
-	lw	r9,16(r4)
-	sw	(r29),r9
-	addi	r9,r0,#0
-	sw	4(r29),r9
-	addi	r9,r0,#10
-	sw	8(r29),r9
-	jal	_dstrtol
-	nop; not filled.
-	add	r8,r0,r1
-	lw	r9,20(r4)
-	sw	(r29),r9
-	addi	r9,r0,#0
-	sw	4(r29),r9
-	addi	r9,r0,#10
-	sw	8(r29),r9
+	add	r9,r0,r1
+	lw	r10,8(r4)
+	sw	(r29),r10
+	addi	r10,r0,#0
+	sw	4(r29),r10
+	addi	r10,r0,#10
+	sw	8(r29),r10
 	jal	_dstrtol
 	nop; not filled.
 	add	r7,r0,r1
-	addi	r3,r0,#0
+	lw	r10,12(r4)
+	sw	(r29),r10
+	addi	r10,r0,#0
+	sw	4(r29),r10
+	addi	r10,r0,#10
+	sw	8(r29),r10
+	jal	_dstrtol
+	nop; not filled.
+	add	r6,r0,r1
+	lw	r10,16(r4)
+	sw	(r29),r10
+	addi	r10,r0,#0
+	sw	4(r29),r10
+	addi	r10,r0,#10
+	sw	8(r29),r10
+	jal	_dstrtol
+	nop; not filled.
+	add	r8,r0,r1
+	sw	(r29),r6
+	jal	_mbox_open
+	nop; not filled.
 	addi	r29,r29,#16
-	slt	r1,r3,r7
+	seqi	r1,r1,#-1
+	beqz	r1,L15_LF0
+	nop; not filled.
+	addi	r29,r29,#-8
+	lhi	r10,((LC1_LF0)>>16)&0xffff
+	addui	r10,r10,(LC1_LF0)&0xffff
+	sw	(r29),r10
+	sw	4(r29),r6
+	jal	_Printf
+	nop; not filled.
+	lw	r10,(r4)
+	sw	(r29),r10
+	jal	_Printf
+	nop; not filled.
+	jal	_Exit
+	nop; not filled.
+	addi	r29,r29,#8
+L15_LF0:
+	addi	r29,r29,#-8
+	sw	(r29),r7
+	jal	_mbox_open
+	nop; not filled.
+	addi	r29,r29,#8
+	seqi	r1,r1,#-1
 	beqz	r1,L16_LF0
 	nop; not filled.
-L18_LF0:
 	addi	r29,r29,#-8
-	sw	(r29),r6
-	jal	_sem_wait
-	nop; not filled.
-	addi	r29,r29,#8
-	snei	r1,r1,#1
-	beqz	r1,L19_LF0
-	nop; not filled.
-	addi	r29,r29,#-8
-	lhi	r9,((LC1_LF0)>>16)&0xffff
-	addui	r9,r9,(LC1_LF0)&0xffff
-	sw	(r29),r9
-	sw	4(r29),r2
+	lhi	r10,((LC2_LF0)>>16)&0xffff
+	addui	r10,r10,(LC2_LF0)&0xffff
+	sw	(r29),r10
+	sw	4(r29),r7
 	jal	_Printf
 	nop; not filled.
-	lw	r9,(r4)
-	sw	(r29),r9
-	jal	_Printf
-	nop; not filled.
-	lhi	r9,((LC2_LF0)>>16)&0xffff
-	addui	r9,r9,(LC2_LF0)&0xffff
-	sw	(r29),r9
+	lw	r10,(r4)
+	sw	(r29),r10
 	jal	_Printf
 	nop; not filled.
 	jal	_Exit
 	nop; not filled.
 	addi	r29,r29,#8
-L19_LF0:
-	addi	r29,r29,#-8
-	sw	(r29),r6
-	jal	_sem_wait
+L16_LF0:
+	addi	r3,r0,#0
+	addi	r10,r0,#1
+	sw	-16(r30),r10
+	slt	r1,r3,r8
+	beqz	r1,L18_LF0
 	nop; not filled.
-	addi	r29,r29,#8
-	snei	r1,r1,#1
+	addi	r5,r30,#-16
+L19_LF0:
+	addi	r10,r0,#0
+	sw	-12(r30),r10
+	addi	r29,r29,#-16
+	sw	(r29),r7
+	addi	r10,r0,#4
+	sw	4(r29),r10
+	addi	r1,r30,#-12
+	sw	8(r29),r1
+	jal	_mbox_recv
+	nop; not filled.
+	addi	r29,r29,#16
+	seqi	r1,r1,#-1
 	beqz	r1,L20_LF0
 	nop; not filled.
-	addi	r29,r29,#-8
-	lhi	r9,((LC1_LF0)>>16)&0xffff
-	addui	r9,r9,(LC1_LF0)&0xffff
-	sw	(r29),r9
+	jal	_getpid
+	nop; not filled.
+	addi	r29,r29,#-16
+	lhi	r10,((LC3_LF0)>>16)&0xffff
+	addui	r10,r10,(LC3_LF0)&0xffff
+	sw	(r29),r10
+	lw	r2,(r4)
 	sw	4(r29),r2
-	jal	_Printf
-	nop; not filled.
-	lw	r9,(r4)
-	sw	(r29),r9
-	jal	_Printf
-	nop; not filled.
-	lhi	r9,((LC2_LF0)>>16)&0xffff
-	addui	r9,r9,(LC2_LF0)&0xffff
-	sw	(r29),r9
+	sw	8(r29),r1
 	jal	_Printf
 	nop; not filled.
 	jal	_Exit
 	nop; not filled.
-	addi	r29,r29,#8
+	addi	r29,r29,#16
 L20_LF0:
-	addi	r29,r29,#-8
-	sw	(r29),r5
-	jal	_sem_signal
-	nop; not filled.
-	addi	r29,r29,#8
+	lw	r1,-12(r30)
 	snei	r1,r1,#1
 	beqz	r1,L21_LF0
 	nop; not filled.
 	addi	r29,r29,#-8
-	lhi	r9,((LC1_LF0)>>16)&0xffff
-	addui	r9,r9,(LC1_LF0)&0xffff
-	sw	(r29),r9
-	sw	4(r29),r2
-	jal	_Printf
-	nop; not filled.
-	lw	r9,(r4)
-	sw	(r29),r9
-	jal	_Printf
-	nop; not filled.
-	lhi	r9,((LC2_LF0)>>16)&0xffff
-	addui	r9,r9,(LC2_LF0)&0xffff
-	sw	(r29),r9
+	lhi	r10,((LC4_LF0)>>16)&0xffff
+	addui	r10,r10,(LC4_LF0)&0xffff
+	sw	(r29),r10
 	jal	_Printf
 	nop; not filled.
 	jal	_Exit
 	nop; not filled.
 	addi	r29,r29,#8
 L21_LF0:
-	addi	r29,r29,#-8
-	sw	(r29),r5
-	jal	_sem_signal
+	addi	r29,r29,#-16
+	sw	(r29),r6
+	addi	r10,r0,#4
+	sw	4(r29),r10
+	sw	8(r29),r5
+	jal	_mbox_send
 	nop; not filled.
-	addi	r29,r29,#8
-	snei	r1,r1,#1
+	addi	r29,r29,#16
+	seqi	r1,r1,#-1
 	beqz	r1,L22_LF0
 	nop; not filled.
-	addi	r29,r29,#-8
-	lhi	r9,((LC1_LF0)>>16)&0xffff
-	addui	r9,r9,(LC1_LF0)&0xffff
-	sw	(r29),r9
+	jal	_getpid
+	nop; not filled.
+	addi	r29,r29,#-16
+	lhi	r10,((LC3_LF0)>>16)&0xffff
+	addui	r10,r10,(LC3_LF0)&0xffff
+	sw	(r29),r10
+	lw	r2,(r4)
 	sw	4(r29),r2
-	jal	_Printf
-	nop; not filled.
-	lw	r9,(r4)
-	sw	(r29),r9
-	jal	_Printf
-	nop; not filled.
-	lhi	r9,((LC2_LF0)>>16)&0xffff
-	addui	r9,r9,(LC2_LF0)&0xffff
-	sw	(r29),r9
+	sw	8(r29),r1
 	jal	_Printf
 	nop; not filled.
 	jal	_Exit
 	nop; not filled.
-	addi	r29,r29,#8
+	addi	r29,r29,#16
 L22_LF0:
-	addi	r29,r29,#-8
-	sw	(r29),r8
-	jal	_sem_signal
+	addi	r29,r29,#-16
+	sw	(r29),r6
+	addi	r10,r0,#4
+	sw	4(r29),r10
+	sw	8(r29),r5
+	jal	_mbox_send
 	nop; not filled.
-	addi	r29,r29,#8
-	snei	r1,r1,#1
+	addi	r29,r29,#16
+	seqi	r1,r1,#-1
 	beqz	r1,L23_LF0
 	nop; not filled.
-	addi	r29,r29,#-8
-	lhi	r9,((LC1_LF0)>>16)&0xffff
-	addui	r9,r9,(LC1_LF0)&0xffff
-	sw	(r29),r9
+	jal	_getpid
+	nop; not filled.
+	addi	r29,r29,#-16
+	lhi	r10,((LC3_LF0)>>16)&0xffff
+	addui	r10,r10,(LC3_LF0)&0xffff
+	sw	(r29),r10
+	lw	r2,(r4)
 	sw	4(r29),r2
-	jal	_Printf
-	nop; not filled.
-	lw	r9,(r4)
-	sw	(r29),r9
-	jal	_Printf
-	nop; not filled.
-	lhi	r9,((LC2_LF0)>>16)&0xffff
-	addui	r9,r9,(LC2_LF0)&0xffff
-	sw	(r29),r9
+	sw	8(r29),r1
 	jal	_Printf
 	nop; not filled.
 	jal	_Exit
 	nop; not filled.
-	addi	r29,r29,#8
+	addi	r29,r29,#16
 L23_LF0:
 	jal	_getpid
 	nop; not filled.
-	addi	r29,r29,#-8
-	lhi	r9,((LC3_LF0)>>16)&0xffff
-	addui	r9,r9,(LC3_LF0)&0xffff
-	sw	(r29),r9
-	sw	4(r29),r1
+	addi	r29,r29,#-16
+	lhi	r10,((LC5_LF0)>>16)&0xffff
+	addui	r10,r10,(LC5_LF0)&0xffff
+	sw	(r29),r10
+	addi	r2,r3,#1
+	sw	4(r29),r2
+	sw	8(r29),r1
 	jal	_Printf
 	nop; not filled.
-	addi	r29,r29,#8
-	addi	r3,r3,#1
-	slt	r1,r3,r7
-	bnez	r1,L18_LF0
+	add	r3,r0,r2
+	addi	r29,r29,#16
+	slt	r1,r3,r8
+	bnez	r1,L19_LF0
 	nop; not filled.
-L16_LF0:
+L18_LF0:
 	addi	r29,r29,#-8
-	sw	(r29),r2
+	sw	(r29),r9
 	jal	_sem_signal
 	nop; not filled.
 	addi	r29,r29,#8
@@ -334,19 +342,19 @@ L16_LF0:
 	beqz	r1,L25_LF0
 	nop; not filled.
 	addi	r29,r29,#-8
-	lhi	r9,((LC1_LF0)>>16)&0xffff
-	addui	r9,r9,(LC1_LF0)&0xffff
-	sw	(r29),r9
-	sw	4(r29),r2
+	lhi	r10,((LC6_LF0)>>16)&0xffff
+	addui	r10,r10,(LC6_LF0)&0xffff
+	sw	(r29),r10
+	sw	4(r29),r9
 	jal	_Printf
 	nop; not filled.
 	lw	r4,(r4)
 	sw	(r29),r4
 	jal	_Printf
 	nop; not filled.
-	lhi	r9,((LC2_LF0)>>16)&0xffff
-	addui	r9,r9,(LC2_LF0)&0xffff
-	sw	(r29),r9
+	lhi	r10,((LC7_LF0)>>16)&0xffff
+	addui	r10,r10,(LC7_LF0)&0xffff
+	sw	(r29),r10
 	jal	_Printf
 	nop; not filled.
 	jal	_Exit
@@ -544,6 +552,63 @@ _cond_broadcast:
 	jr	r31
 	nop
 .endproc _cond_broadcast
+
+.proc _mbox_create
+.global _mbox_create
+_mbox_create:
+	trap	#0x460
+	jr	r31
+	nop
+.endproc _mbox_create
+
+.proc _mbox_open
+.global _mbox_open
+_mbox_open:
+	trap	#0x461
+	jr	r31
+	nop
+.endproc _mbox_open
+
+.proc _mbox_close
+.global _mbox_close
+_mbox_close:
+	trap	#0x462
+	jr	r31
+	nop
+.endproc _mbox_close
+
+.proc _mbox_send
+.global _mbox_send
+_mbox_send:
+	trap	#0x463
+	jr	r31
+	nop
+.endproc _mbox_send
+
+.proc _mbox_recv
+.global _mbox_recv
+_mbox_recv:
+	trap	#0x464
+	jr	r31
+	nop
+.endproc _mbox_recv
+
+.proc _sleep
+.global _sleep
+_sleep:
+	trap	#0x465
+	jr	r31
+	nop
+.endproc _sleep
+
+.proc _yield
+.global _yield
+_yield:
+	trap	#0x466
+	jr	r31
+	nop
+.endproc _yield
+
 
 .proc _Exit
 .global _Exit
@@ -1600,6 +1665,35 @@ L108_LF2:
 	jr	r31
 	nop
 .endproc _min
+.align 2
+.proc _max
+.global _max
+_max:
+;  Function 'max'; 0 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30; push fp
+	add	r30,r0,r29; fp = sp
+	sw	-8(r29),r31; push ret addr
+	subui	r29,r29,#16; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	lw	r1,(r30)
+	lw	r2,4(r30)
+	sge	r3,r1,r2
+	bnez	r3,L111_LF2
+	nop; delay slot nop
+	lw	r1,4(r30)
+L111_LF2:
+	j	L110_LF2
+	nop; delay slot nop
+L110_LF2:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _max
 ;;; Ethan L. Miller, 1999.  Released to the public domain
 ;;;
 ;;; Most of the traps are called in files from libtraps.

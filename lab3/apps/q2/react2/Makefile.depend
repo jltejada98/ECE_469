@@ -1,3 +1,2 @@
-work/react2.o: react2.c ../../../include/lab2-api.h \
- ../../../include/usertraps.h ../../../include/misc.h \
- ../include/utility.h
+work/react2.o: react2.c ../../../include/usertraps.h \
+ ../../../include/misc.h ../include/utility.h

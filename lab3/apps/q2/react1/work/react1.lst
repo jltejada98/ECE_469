@@ -1,8 +1,8 @@
  line   address	contents
     1                      ; Linked by DLX-LD.
     2                      ; MemSize 24576
-    3                      ; Data size: 125
-    4                      ; Text size: 4892
+    3                      ; Data size: 286
+    4                      ; Text size: 5040
     5                      ; Stack size: 8192
     6  00000000          	.text 0x1000
     7  00001000          	.data 0x3000
@@ -80,1551 +80,1673 @@
    79  000010d4          	.data
    80  00003000          	.align 2
    81  00003000          	LC0_LF0:
-   82  00003000  496e636f	.ascii "Incorrect Arguments for %s\n\000"
+   82  00003000  496e636f	.ascii "Incorrect number of arguments (%d) for %s\n\000"
    82  00003004  72726563	
-   82  00003008  74204172	
-   82  0000300c  67756d65	
-   82  00003010  6e747320	
-   82  00003014  666f7220	
-   82  00003018  25730a00	
-   83  0000301c          	.align 2
-   84  0000301c          	LC1_LF0:
-   85  0000301c  42616420	.ascii "Bad semaphore sem_procs_completed (%d) in \000"
-   85  00003020  73656d61	
-   85  00003024  70686f72	
-   85  00003028  65207365	
-   85  0000302c  6d5f7072	
-   85  00003030  6f63735f	
-   85  00003034  636f6d70	
-   85  00003038  6c657465	
-   85  0000303c  64202825	
-   85  00003040  64292069	
-   85  00003044  6e2000  	
-   86  00003047          	.align 2
-   87  00003048          	LC2_LF0:
-   88  00003048  2c206578	.ascii ", exiting...\n\000"
-   88  0000304c  6974696e	
-   88  00003050  672e2e2e	
-   88  00003054  0a00    	
-   89  00003056          	.align 2
-   90  00003058          	LC3_LF0:
-   91  00003058  32204832	.ascii "2 H2O -> 2 H2 + O2 reacted, PID: %d\n\000"
-   91  0000305c  4f202d3e	
-   91  00003060  20322048	
-   91  00003064  32202b20	
-   91  00003068  4f322072	
-   91  0000306c  65616374	
-   91  00003070  65642c20	
-   91  00003074  5049443a	
-   91  00003078  2025640a	
-   91  0000307c  00      	
-   92  0000307d          	.text
-   93  000010d4          	.align 2
-   94  000010d4          	.proc _main
-   95  000010d4          	.global _main
-   96  000010d4          	_main:
-   97                      ;  Function 'main'; 0 bytes of locals, 0 regs to save.
-   98  000010d4  afbefffc	sw	-4(r29),r30; push fp
-   99  000010d8  001df020	add	r30,r0,r29; fp = sp
-  100  000010dc  afbffff8	sw	-8(r29),r31; push ret addr
-  101  000010e0  2fbd0008	subui	r29,r29,#8; alloc local storage
-  102  000010e4  8fc20000	lw	r2,(r30)
-  103  000010e8  8fc40004	lw	r4,4(r30)
-  104  000010ec  0c001224	jal	___main
-  105  000010f0  54000000	nop; not filled.
-  106  000010f4  64410006	snei	r1,r2,#6
-  107  000010f8  10200030	beqz	r1,L14_LF0
-  108  000010fc  54000000	nop; not filled.
-  109  00001100  23bdfff8	addi	r29,r29,#-8
-  110  00001104  3c090000	lhi	r9,((LC0_LF0)>>16)&0xffff
-  111  00001108  25293000	addui	r9,r9,(LC0_LF0)&0xffff
-  112  0000110c  afa90000	sw	(r29),r9
-  113  00001110  8c810000	lw	r1,(r4)
-  114  00001114  afa10004	sw	4(r29),r1
-  115  00001118  0c0003f0	jal	_Printf
-  116  0000111c  54000000	nop; not filled.
-  117  00001120  0c00049c	jal	_Exit
-  118  00001124  54000000	nop; not filled.
-  119  00001128  23bd0008	addi	r29,r29,#8
-  120  0000112c          	L14_LF0:
-  121  0000112c  23bdfff0	addi	r29,r29,#-16
-  122  00001130  8c890004	lw	r9,4(r4)
-  123  00001134  afa90000	sw	(r29),r9
-  124  00001138  20090000	addi	r9,r0,#0
-  125  0000113c  afa90004	sw	4(r29),r9
-  126  00001140  2009000a	addi	r9,r0,#10
-  127  00001144  afa90008	sw	8(r29),r9
-  128  00001148  0c000d20	jal	_dstrtol
-  129  0000114c  54000000	nop; not filled.
-  130  00001150  00011020	add	r2,r0,r1
-  131  00001154  8c890008	lw	r9,8(r4)
-  132  00001158  afa90000	sw	(r29),r9
-  133  0000115c  20090000	addi	r9,r0,#0
-  134  00001160  afa90004	sw	4(r29),r9
-  135  00001164  2009000a	addi	r9,r0,#10
-  136  00001168  afa90008	sw	8(r29),r9
-  137  0000116c  0c000cfc	jal	_dstrtol
-  138  00001170  54000000	nop; not filled.
-  139  00001174  00013020	add	r6,r0,r1
-  140  00001178  8c89000c	lw	r9,12(r4)
-  141  0000117c  afa90000	sw	(r29),r9
-  142  00001180  20090000	addi	r9,r0,#0
-  143  00001184  afa90004	sw	4(r29),r9
-  144  00001188  2009000a	addi	r9,r0,#10
-  145  0000118c  afa90008	sw	8(r29),r9
-  146  00001190  0c000cd8	jal	_dstrtol
-  147  00001194  54000000	nop; not filled.
-  148  00001198  00012820	add	r5,r0,r1
-  149  0000119c  8c890010	lw	r9,16(r4)
-  150  000011a0  afa90000	sw	(r29),r9
-  151  000011a4  20090000	addi	r9,r0,#0
-  152  000011a8  afa90004	sw	4(r29),r9
-  153  000011ac  2009000a	addi	r9,r0,#10
-  154  000011b0  afa90008	sw	8(r29),r9
-  155  000011b4  0c000cb4	jal	_dstrtol
-  156  000011b8  54000000	nop; not filled.
-  157  000011bc  00014020	add	r8,r0,r1
-  158  000011c0  8c890014	lw	r9,20(r4)
-  159  000011c4  afa90000	sw	(r29),r9
-  160  000011c8  20090000	addi	r9,r0,#0
-  161  000011cc  afa90004	sw	4(r29),r9
-  162  000011d0  2009000a	addi	r9,r0,#10
-  163  000011d4  afa90008	sw	8(r29),r9
-  164  000011d8  0c000c90	jal	_dstrtol
-  165  000011dc  54000000	nop; not filled.
-  166  000011e0  00013820	add	r7,r0,r1
-  167  000011e4  20030000	addi	r3,r0,#0
-  168  000011e8  23bd0010	addi	r29,r29,#16
-  169  000011ec  0067082a	slt	r1,r3,r7
-  170  000011f0  10200258	beqz	r1,L16_LF0
-  171  000011f4  54000000	nop; not filled.
-  172  000011f8          	L18_LF0:
-  173  000011f8  23bdfff8	addi	r29,r29,#-8
-  174  000011fc  afa60000	sw	(r29),r6
-  175  00001200  0c000350	jal	_sem_wait
-  176  00001204  54000000	nop; not filled.
-  177  00001208  23bd0008	addi	r29,r29,#8
-  178  0000120c  64210001	snei	r1,r1,#1
-  179  00001210  10200050	beqz	r1,L19_LF0
-  180  00001214  54000000	nop; not filled.
-  181  00001218  23bdfff8	addi	r29,r29,#-8
-  182  0000121c  3c090000	lhi	r9,((LC1_LF0)>>16)&0xffff
-  183  00001220  2529301c	addui	r9,r9,(LC1_LF0)&0xffff
-  184  00001224  afa90000	sw	(r29),r9
-  185  00001228  afa20004	sw	4(r29),r2
-  186  0000122c  0c0002dc	jal	_Printf
-  187  00001230  54000000	nop; not filled.
-  188  00001234  8c890000	lw	r9,(r4)
-  189  00001238  afa90000	sw	(r29),r9
-  190  0000123c  0c0002cc	jal	_Printf
-  191  00001240  54000000	nop; not filled.
-  192  00001244  3c090000	lhi	r9,((LC2_LF0)>>16)&0xffff
-  193  00001248  25293048	addui	r9,r9,(LC2_LF0)&0xffff
-  194  0000124c  afa90000	sw	(r29),r9
-  195  00001250  0c0002b8	jal	_Printf
-  196  00001254  54000000	nop; not filled.
-  197  00001258  0c000364	jal	_Exit
-  198  0000125c  54000000	nop; not filled.
-  199  00001260  23bd0008	addi	r29,r29,#8
-  200  00001264          	L19_LF0:
-  201  00001264  23bdfff8	addi	r29,r29,#-8
-  202  00001268  afa60000	sw	(r29),r6
-  203  0000126c  0c0002e4	jal	_sem_wait
-  204  00001270  54000000	nop; not filled.
-  205  00001274  23bd0008	addi	r29,r29,#8
-  206  00001278  64210001	snei	r1,r1,#1
-  207  0000127c  10200050	beqz	r1,L20_LF0
-  208  00001280  54000000	nop; not filled.
-  209  00001284  23bdfff8	addi	r29,r29,#-8
-  210  00001288  3c090000	lhi	r9,((LC1_LF0)>>16)&0xffff
-  211  0000128c  2529301c	addui	r9,r9,(LC1_LF0)&0xffff
-  212  00001290  afa90000	sw	(r29),r9
-  213  00001294  afa20004	sw	4(r29),r2
-  214  00001298  0c000270	jal	_Printf
-  215  0000129c  54000000	nop; not filled.
-  216  000012a0  8c890000	lw	r9,(r4)
-  217  000012a4  afa90000	sw	(r29),r9
-  218  000012a8  0c000260	jal	_Printf
-  219  000012ac  54000000	nop; not filled.
-  220  000012b0  3c090000	lhi	r9,((LC2_LF0)>>16)&0xffff
-  221  000012b4  25293048	addui	r9,r9,(LC2_LF0)&0xffff
-  222  000012b8  afa90000	sw	(r29),r9
-  223  000012bc  0c00024c	jal	_Printf
-  224  000012c0  54000000	nop; not filled.
-  225  000012c4  0c0002f8	jal	_Exit
-  226  000012c8  54000000	nop; not filled.
-  227  000012cc  23bd0008	addi	r29,r29,#8
-  228  000012d0          	L20_LF0:
-  229  000012d0  23bdfff8	addi	r29,r29,#-8
-  230  000012d4  afa50000	sw	(r29),r5
-  231  000012d8  0c000284	jal	_sem_signal
-  232  000012dc  54000000	nop; not filled.
-  233  000012e0  23bd0008	addi	r29,r29,#8
-  234  000012e4  64210001	snei	r1,r1,#1
-  235  000012e8  10200050	beqz	r1,L21_LF0
-  236  000012ec  54000000	nop; not filled.
-  237  000012f0  23bdfff8	addi	r29,r29,#-8
-  238  000012f4  3c090000	lhi	r9,((LC1_LF0)>>16)&0xffff
-  239  000012f8  2529301c	addui	r9,r9,(LC1_LF0)&0xffff
-  240  000012fc  afa90000	sw	(r29),r9
-  241  00001300  afa20004	sw	4(r29),r2
-  242  00001304  0c000204	jal	_Printf
-  243  00001308  54000000	nop; not filled.
-  244  0000130c  8c890000	lw	r9,(r4)
-  245  00001310  afa90000	sw	(r29),r9
-  246  00001314  0c0001f4	jal	_Printf
-  247  00001318  54000000	nop; not filled.
-  248  0000131c  3c090000	lhi	r9,((LC2_LF0)>>16)&0xffff
-  249  00001320  25293048	addui	r9,r9,(LC2_LF0)&0xffff
-  250  00001324  afa90000	sw	(r29),r9
-  251  00001328  0c0001e0	jal	_Printf
-  252  0000132c  54000000	nop; not filled.
-  253  00001330  0c00028c	jal	_Exit
-  254  00001334  54000000	nop; not filled.
-  255  00001338  23bd0008	addi	r29,r29,#8
-  256  0000133c          	L21_LF0:
-  257  0000133c  23bdfff8	addi	r29,r29,#-8
-  258  00001340  afa50000	sw	(r29),r5
-  259  00001344  0c000218	jal	_sem_signal
-  260  00001348  54000000	nop; not filled.
-  261  0000134c  23bd0008	addi	r29,r29,#8
-  262  00001350  64210001	snei	r1,r1,#1
-  263  00001354  10200050	beqz	r1,L22_LF0
-  264  00001358  54000000	nop; not filled.
-  265  0000135c  23bdfff8	addi	r29,r29,#-8
-  266  00001360  3c090000	lhi	r9,((LC1_LF0)>>16)&0xffff
-  267  00001364  2529301c	addui	r9,r9,(LC1_LF0)&0xffff
-  268  00001368  afa90000	sw	(r29),r9
-  269  0000136c  afa20004	sw	4(r29),r2
-  270  00001370  0c000198	jal	_Printf
-  271  00001374  54000000	nop; not filled.
-  272  00001378  8c890000	lw	r9,(r4)
-  273  0000137c  afa90000	sw	(r29),r9
-  274  00001380  0c000188	jal	_Printf
-  275  00001384  54000000	nop; not filled.
-  276  00001388  3c090000	lhi	r9,((LC2_LF0)>>16)&0xffff
-  277  0000138c  25293048	addui	r9,r9,(LC2_LF0)&0xffff
-  278  00001390  afa90000	sw	(r29),r9
-  279  00001394  0c000174	jal	_Printf
-  280  00001398  54000000	nop; not filled.
-  281  0000139c  0c000220	jal	_Exit
-  282  000013a0  54000000	nop; not filled.
-  283  000013a4  23bd0008	addi	r29,r29,#8
-  284  000013a8          	L22_LF0:
-  285  000013a8  23bdfff8	addi	r29,r29,#-8
-  286  000013ac  afa80000	sw	(r29),r8
-  287  000013b0  0c0001ac	jal	_sem_signal
-  288  000013b4  54000000	nop; not filled.
-  289  000013b8  23bd0008	addi	r29,r29,#8
-  290  000013bc  64210001	snei	r1,r1,#1
-  291  000013c0  10200050	beqz	r1,L23_LF0
-  292  000013c4  54000000	nop; not filled.
-  293  000013c8  23bdfff8	addi	r29,r29,#-8
-  294  000013cc  3c090000	lhi	r9,((LC1_LF0)>>16)&0xffff
-  295  000013d0  2529301c	addui	r9,r9,(LC1_LF0)&0xffff
-  296  000013d4  afa90000	sw	(r29),r9
-  297  000013d8  afa20004	sw	4(r29),r2
-  298  000013dc  0c00012c	jal	_Printf
-  299  000013e0  54000000	nop; not filled.
-  300  000013e4  8c890000	lw	r9,(r4)
-  301  000013e8  afa90000	sw	(r29),r9
-  302  000013ec  0c00011c	jal	_Printf
-  303  000013f0  54000000	nop; not filled.
-  304  000013f4  3c090000	lhi	r9,((LC2_LF0)>>16)&0xffff
-  305  000013f8  25293048	addui	r9,r9,(LC2_LF0)&0xffff
-  306  000013fc  afa90000	sw	(r29),r9
-  307  00001400  0c000108	jal	_Printf
-  308  00001404  54000000	nop; not filled.
-  309  00001408  0c0001b4	jal	_Exit
-  310  0000140c  54000000	nop; not filled.
-  311  00001410  23bd0008	addi	r29,r29,#8
-  312  00001414          	L23_LF0:
-  313  00001414  0c000100	jal	_getpid
-  314  00001418  54000000	nop; not filled.
-  315  0000141c  23bdfff8	addi	r29,r29,#-8
-  316  00001420  3c090000	lhi	r9,((LC3_LF0)>>16)&0xffff
-  317  00001424  25293058	addui	r9,r9,(LC3_LF0)&0xffff
-  318  00001428  afa90000	sw	(r29),r9
-  319  0000142c  afa10004	sw	4(r29),r1
-  320  00001430  0c0000d8	jal	_Printf
-  321  00001434  54000000	nop; not filled.
-  322  00001438  23bd0008	addi	r29,r29,#8
-  323  0000143c  20630001	addi	r3,r3,#1
-  324  00001440  0067082a	slt	r1,r3,r7
-  325  00001444  1420fdb0	bnez	r1,L18_LF0
-  326  00001448  54000000	nop; not filled.
-  327  0000144c          	L16_LF0:
-  328  0000144c  23bdfff8	addi	r29,r29,#-8
-  329  00001450  afa20000	sw	(r29),r2
-  330  00001454  0c000108	jal	_sem_signal
-  331  00001458  54000000	nop; not filled.
-  332  0000145c  23bd0008	addi	r29,r29,#8
-  333  00001460  64210001	snei	r1,r1,#1
-  334  00001464  10200050	beqz	r1,L25_LF0
-  335  00001468  54000000	nop; not filled.
-  336  0000146c  23bdfff8	addi	r29,r29,#-8
-  337  00001470  3c090000	lhi	r9,((LC1_LF0)>>16)&0xffff
-  338  00001474  2529301c	addui	r9,r9,(LC1_LF0)&0xffff
-  339  00001478  afa90000	sw	(r29),r9
-  340  0000147c  afa20004	sw	4(r29),r2
-  341  00001480  0c000088	jal	_Printf
-  342  00001484  54000000	nop; not filled.
-  343  00001488  8c840000	lw	r4,(r4)
-  344  0000148c  afa40000	sw	(r29),r4
-  345  00001490  0c000078	jal	_Printf
-  346  00001494  54000000	nop; not filled.
-  347  00001498  3c090000	lhi	r9,((LC2_LF0)>>16)&0xffff
-  348  0000149c  25293048	addui	r9,r9,(LC2_LF0)&0xffff
-  349  000014a0  afa90000	sw	(r29),r9
-  350  000014a4  0c000064	jal	_Printf
-  351  000014a8  54000000	nop; not filled.
-  352  000014ac  0c000110	jal	_Exit
-  353  000014b0  54000000	nop; not filled.
-  354  000014b4  23bd0008	addi	r29,r29,#8
-  355  000014b8          	L25_LF0:
-  356  000014b8  20010000	addi	r1,r0,#0
-  357  000014bc  0c000e48	jal	_exit
-  358  000014c0  54000000	nop
-  359  000014c4          	.endproc _main
-  360                      ;;;
-  361                      ;;; Stub functions for DLX traps.
-  362                      ;;;
-  363                      ;;; Ethan L. Miller, 1999.  Released to the public domain.
-  364                      ;;;
-  365                      ;;; The traps such as Open and Close
-  366                      ;;; (note the capital letters) are for use by user programs.  The traps
-  367                      ;;; with names such as open and close (lower case) are for use by the OS.
+   82  00003008  74206e75	
+   82  0000300c  6d626572	
+   82  00003010  206f6620	
+   82  00003014  61726775	
+   82  00003018  6d656e74	
+   82  0000301c  73202825	
+   82  00003020  64292066	
+   82  00003024  6f722025	
+   82  00003028  730a00  	
+   83  0000302b          	.align 2
+   84  0000302c          	LC1_LF0:
+   85  0000302c  436f756c	.ascii "Could not open mbox_S (%d) in\000"
+   85  00003030  64206e6f	
+   85  00003034  74206f70	
+   85  00003038  656e206d	
+   85  0000303c  626f785f	
+   85  00003040  53202825	
+   85  00003044  64292069	
+   85  00003048  6e00    	
+   86  0000304a          	.align 2
+   87  0000304c          	LC2_LF0:
+   88  0000304c  436f756c	.ascii "Could not open mbox_S2 (%d) in\000"
+   88  00003050  64206e6f	
+   88  00003054  74206f70	
+   88  00003058  656e206d	
+   88  0000305c  626f785f	
+   88  00003060  53322028	
+   88  00003064  25642920	
+   88  00003068  696e00  	
+   89  0000306b          	.align 2
+   90  0000306c          	LC3_LF0:
+   91  0000306c  42616420	.ascii "Bad mailbox recv in %s, PID: %d\nExiting...\n\000"
+   91  00003070  6d61696c	
+   91  00003074  626f7820	
+   91  00003078  72656376	
+   91  0000307c  20696e20	
+   91  00003080  25732c20	
+   91  00003084  5049443a	
+   91  00003088  2025640a	
+   91  0000308c  45786974	
+   91  00003090  696e672e	
+   91  00003094  2e2e0a00	
+   92  00003098          	.align 2
+   93  00003098          	LC4_LF0:
+   94  00003098  4572726f	.ascii "Error, incorrect message rx\nExiting...\n\000"
+   94  0000309c  722c2069	
+   94  000030a0  6e636f72	
+   94  000030a4  72656374	
+   94  000030a8  206d6573	
+   94  000030ac  73616765	
+   94  000030b0  2072780a	
+   94  000030b4  45786974	
+   94  000030b8  696e672e	
+   94  000030bc  2e2e0a00	
+   95  000030c0          	.align 2
+   96  000030c0          	LC5_LF0:
+   97  000030c0  28256429	.ascii "(%d) S2 -> S + S reacted, PID: %d\n\000"
+   97  000030c4  20533220	
+   97  000030c8  2d3e2053	
+   97  000030cc  202b2053	
+   97  000030d0  20726561	
+   97  000030d4  63746564	
+   97  000030d8  2c205049	
+   97  000030dc  443a2025	
+   97  000030e0  640a00  	
+   98  000030e3          	.align 2
+   99  000030e4          	LC6_LF0:
+  100  000030e4  42616420	.ascii "Bad semaphore sem_procs_completed (%d) in \000"
+  100  000030e8  73656d61	
+  100  000030ec  70686f72	
+  100  000030f0  65207365	
+  100  000030f4  6d5f7072	
+  100  000030f8  6f63735f	
+  100  000030fc  636f6d70	
+  100  00003100  6c657465	
+  100  00003104  64202825	
+  100  00003108  64292069	
+  100  0000310c  6e2000  	
+  101  0000310f          	.align 2
+  102  00003110          	LC7_LF0:
+  103  00003110  2c206578	.ascii ", exiting...\n\000"
+  103  00003114  6974696e	
+  103  00003118  672e2e2e	
+  103  0000311c  0a00    	
+  104  0000311e          	.text
+  105  000010d4          	.align 2
+  106  000010d4          	.proc _main
+  107  000010d4          	.global _main
+  108  000010d4          	_main:
+  109                      ;  Function 'main'; 8 bytes of locals, 0 regs to save.
+  110  000010d4  afbefffc	sw	-4(r29),r30; push fp
+  111  000010d8  001df020	add	r30,r0,r29; fp = sp
+  112  000010dc  afbffff8	sw	-8(r29),r31; push ret addr
+  113  000010e0  2fbd0010	subui	r29,r29,#16; alloc local storage
+  114  000010e4  8fc20000	lw	r2,(r30)
+  115  000010e8  8fc40004	lw	r4,4(r30)
+  116  000010ec  0c0012b8	jal	___main
+  117  000010f0  54000000	nop; not filled.
+  118  000010f4  64410005	snei	r1,r2,#5
+  119  000010f8  10200034	beqz	r1,L14_LF0
+  120  000010fc  54000000	nop; not filled.
+  121  00001100  23bdfff0	addi	r29,r29,#-16
+  122  00001104  3c0a0000	lhi	r10,((LC0_LF0)>>16)&0xffff
+  123  00001108  254a3000	addui	r10,r10,(LC0_LF0)&0xffff
+  124  0000110c  afaa0000	sw	(r29),r10
+  125  00001110  afa20004	sw	4(r29),r2
+  126  00001114  8c8a0000	lw	r10,(r4)
+  127  00001118  afaa0008	sw	8(r29),r10
+  128  0000111c  0c0003d8	jal	_Printf
+  129  00001120  54000000	nop; not filled.
+  130  00001124  0c0004d8	jal	_Exit
+  131  00001128  54000000	nop; not filled.
+  132  0000112c  23bd0010	addi	r29,r29,#16
+  133  00001130          	L14_LF0:
+  134  00001130  23bdfff0	addi	r29,r29,#-16
+  135  00001134  8c8a0004	lw	r10,4(r4)
+  136  00001138  afaa0000	sw	(r29),r10
+  137  0000113c  200a0000	addi	r10,r0,#0
+  138  00001140  afaa0004	sw	4(r29),r10
+  139  00001144  200a000a	addi	r10,r0,#10
+  140  00001148  afaa0008	sw	8(r29),r10
+  141  0000114c  0c000d5c	jal	_dstrtol
+  142  00001150  54000000	nop; not filled.
+  143  00001154  00014820	add	r9,r0,r1
+  144  00001158  8c8a0008	lw	r10,8(r4)
+  145  0000115c  afaa0000	sw	(r29),r10
+  146  00001160  200a0000	addi	r10,r0,#0
+  147  00001164  afaa0004	sw	4(r29),r10
+  148  00001168  200a000a	addi	r10,r0,#10
+  149  0000116c  afaa0008	sw	8(r29),r10
+  150  00001170  0c000d38	jal	_dstrtol
+  151  00001174  54000000	nop; not filled.
+  152  00001178  00013820	add	r7,r0,r1
+  153  0000117c  8c8a000c	lw	r10,12(r4)
+  154  00001180  afaa0000	sw	(r29),r10
+  155  00001184  200a0000	addi	r10,r0,#0
+  156  00001188  afaa0004	sw	4(r29),r10
+  157  0000118c  200a000a	addi	r10,r0,#10
+  158  00001190  afaa0008	sw	8(r29),r10
+  159  00001194  0c000d14	jal	_dstrtol
+  160  00001198  54000000	nop; not filled.
+  161  0000119c  00013020	add	r6,r0,r1
+  162  000011a0  8c8a0010	lw	r10,16(r4)
+  163  000011a4  afaa0000	sw	(r29),r10
+  164  000011a8  200a0000	addi	r10,r0,#0
+  165  000011ac  afaa0004	sw	4(r29),r10
+  166  000011b0  200a000a	addi	r10,r0,#10
+  167  000011b4  afaa0008	sw	8(r29),r10
+  168  000011b8  0c000cf0	jal	_dstrtol
+  169  000011bc  54000000	nop; not filled.
+  170  000011c0  00014020	add	r8,r0,r1
+  171  000011c4  afa60000	sw	(r29),r6
+  172  000011c8  0c0003ec	jal	_mbox_open
+  173  000011cc  54000000	nop; not filled.
+  174  000011d0  23bd0010	addi	r29,r29,#16
+  175  000011d4  6021ffff	seqi	r1,r1,#-1
+  176  000011d8  1020003c	beqz	r1,L15_LF0
+  177  000011dc  54000000	nop; not filled.
+  178  000011e0  23bdfff8	addi	r29,r29,#-8
+  179  000011e4  3c0a0000	lhi	r10,((LC1_LF0)>>16)&0xffff
+  180  000011e8  254a302c	addui	r10,r10,(LC1_LF0)&0xffff
+  181  000011ec  afaa0000	sw	(r29),r10
+  182  000011f0  afa60004	sw	4(r29),r6
+  183  000011f4  0c000300	jal	_Printf
+  184  000011f8  54000000	nop; not filled.
+  185  000011fc  8c8a0000	lw	r10,(r4)
+  186  00001200  afaa0000	sw	(r29),r10
+  187  00001204  0c0002f0	jal	_Printf
+  188  00001208  54000000	nop; not filled.
+  189  0000120c  0c0003f0	jal	_Exit
+  190  00001210  54000000	nop; not filled.
+  191  00001214  23bd0008	addi	r29,r29,#8
+  192  00001218          	L15_LF0:
+  193  00001218  23bdfff8	addi	r29,r29,#-8
+  194  0000121c  afa70000	sw	(r29),r7
+  195  00001220  0c000394	jal	_mbox_open
+  196  00001224  54000000	nop; not filled.
+  197  00001228  23bd0008	addi	r29,r29,#8
+  198  0000122c  6021ffff	seqi	r1,r1,#-1
+  199  00001230  1020003c	beqz	r1,L16_LF0
+  200  00001234  54000000	nop; not filled.
+  201  00001238  23bdfff8	addi	r29,r29,#-8
+  202  0000123c  3c0a0000	lhi	r10,((LC2_LF0)>>16)&0xffff
+  203  00001240  254a304c	addui	r10,r10,(LC2_LF0)&0xffff
+  204  00001244  afaa0000	sw	(r29),r10
+  205  00001248  afa70004	sw	4(r29),r7
+  206  0000124c  0c0002a8	jal	_Printf
+  207  00001250  54000000	nop; not filled.
+  208  00001254  8c8a0000	lw	r10,(r4)
+  209  00001258  afaa0000	sw	(r29),r10
+  210  0000125c  0c000298	jal	_Printf
+  211  00001260  54000000	nop; not filled.
+  212  00001264  0c000398	jal	_Exit
+  213  00001268  54000000	nop; not filled.
+  214  0000126c  23bd0008	addi	r29,r29,#8
+  215  00001270          	L16_LF0:
+  216  00001270  20030000	addi	r3,r0,#0
+  217  00001274  200a0001	addi	r10,r0,#1
+  218  00001278  afcafff0	sw	-16(r30),r10
+  219  0000127c  0068082a	slt	r1,r3,r8
+  220  00001280  102001b4	beqz	r1,L18_LF0
+  221  00001284  54000000	nop; not filled.
+  222  00001288  23c5fff0	addi	r5,r30,#-16
+  223  0000128c          	L19_LF0:
+  224  0000128c  200a0000	addi	r10,r0,#0
+  225  00001290  afcafff4	sw	-12(r30),r10
+  226  00001294  23bdfff0	addi	r29,r29,#-16
+  227  00001298  afa70000	sw	(r29),r7
+  228  0000129c  200a0004	addi	r10,r0,#4
+  229  000012a0  afaa0004	sw	4(r29),r10
+  230  000012a4  23c1fff4	addi	r1,r30,#-12
+  231  000012a8  afa10008	sw	8(r29),r1
+  232  000012ac  0c00032c	jal	_mbox_recv
+  233  000012b0  54000000	nop; not filled.
+  234  000012b4  23bd0010	addi	r29,r29,#16
+  235  000012b8  6021ffff	seqi	r1,r1,#-1
+  236  000012bc  1020003c	beqz	r1,L20_LF0
+  237  000012c0  54000000	nop; not filled.
+  238  000012c4  0c00023c	jal	_getpid
+  239  000012c8  54000000	nop; not filled.
+  240  000012cc  23bdfff0	addi	r29,r29,#-16
+  241  000012d0  3c0a0000	lhi	r10,((LC3_LF0)>>16)&0xffff
+  242  000012d4  254a306c	addui	r10,r10,(LC3_LF0)&0xffff
+  243  000012d8  afaa0000	sw	(r29),r10
+  244  000012dc  8c820000	lw	r2,(r4)
+  245  000012e0  afa20004	sw	4(r29),r2
+  246  000012e4  afa10008	sw	8(r29),r1
+  247  000012e8  0c00020c	jal	_Printf
+  248  000012ec  54000000	nop; not filled.
+  249  000012f0  0c00030c	jal	_Exit
+  250  000012f4  54000000	nop; not filled.
+  251  000012f8  23bd0010	addi	r29,r29,#16
+  252  000012fc          	L20_LF0:
+  253  000012fc  8fc1fff4	lw	r1,-12(r30)
+  254  00001300  64210001	snei	r1,r1,#1
+  255  00001304  10200028	beqz	r1,L21_LF0
+  256  00001308  54000000	nop; not filled.
+  257  0000130c  23bdfff8	addi	r29,r29,#-8
+  258  00001310  3c0a0000	lhi	r10,((LC4_LF0)>>16)&0xffff
+  259  00001314  254a3098	addui	r10,r10,(LC4_LF0)&0xffff
+  260  00001318  afaa0000	sw	(r29),r10
+  261  0000131c  0c0001d8	jal	_Printf
+  262  00001320  54000000	nop; not filled.
+  263  00001324  0c0002d8	jal	_Exit
+  264  00001328  54000000	nop; not filled.
+  265  0000132c  23bd0008	addi	r29,r29,#8
+  266  00001330          	L21_LF0:
+  267  00001330  23bdfff0	addi	r29,r29,#-16
+  268  00001334  afa60000	sw	(r29),r6
+  269  00001338  200a0004	addi	r10,r0,#4
+  270  0000133c  afaa0004	sw	4(r29),r10
+  271  00001340  afa50008	sw	8(r29),r5
+  272  00001344  0c000288	jal	_mbox_send
+  273  00001348  54000000	nop; not filled.
+  274  0000134c  23bd0010	addi	r29,r29,#16
+  275  00001350  6021ffff	seqi	r1,r1,#-1
+  276  00001354  1020003c	beqz	r1,L22_LF0
+  277  00001358  54000000	nop; not filled.
+  278  0000135c  0c0001a4	jal	_getpid
+  279  00001360  54000000	nop; not filled.
+  280  00001364  23bdfff0	addi	r29,r29,#-16
+  281  00001368  3c0a0000	lhi	r10,((LC3_LF0)>>16)&0xffff
+  282  0000136c  254a306c	addui	r10,r10,(LC3_LF0)&0xffff
+  283  00001370  afaa0000	sw	(r29),r10
+  284  00001374  8c820000	lw	r2,(r4)
+  285  00001378  afa20004	sw	4(r29),r2
+  286  0000137c  afa10008	sw	8(r29),r1
+  287  00001380  0c000174	jal	_Printf
+  288  00001384  54000000	nop; not filled.
+  289  00001388  0c000274	jal	_Exit
+  290  0000138c  54000000	nop; not filled.
+  291  00001390  23bd0010	addi	r29,r29,#16
+  292  00001394          	L22_LF0:
+  293  00001394  23bdfff0	addi	r29,r29,#-16
+  294  00001398  afa60000	sw	(r29),r6
+  295  0000139c  200a0004	addi	r10,r0,#4
+  296  000013a0  afaa0004	sw	4(r29),r10
+  297  000013a4  afa50008	sw	8(r29),r5
+  298  000013a8  0c000224	jal	_mbox_send
+  299  000013ac  54000000	nop; not filled.
+  300  000013b0  23bd0010	addi	r29,r29,#16
+  301  000013b4  6021ffff	seqi	r1,r1,#-1
+  302  000013b8  1020003c	beqz	r1,L23_LF0
+  303  000013bc  54000000	nop; not filled.
+  304  000013c0  0c000140	jal	_getpid
+  305  000013c4  54000000	nop; not filled.
+  306  000013c8  23bdfff0	addi	r29,r29,#-16
+  307  000013cc  3c0a0000	lhi	r10,((LC3_LF0)>>16)&0xffff
+  308  000013d0  254a306c	addui	r10,r10,(LC3_LF0)&0xffff
+  309  000013d4  afaa0000	sw	(r29),r10
+  310  000013d8  8c820000	lw	r2,(r4)
+  311  000013dc  afa20004	sw	4(r29),r2
+  312  000013e0  afa10008	sw	8(r29),r1
+  313  000013e4  0c000110	jal	_Printf
+  314  000013e8  54000000	nop; not filled.
+  315  000013ec  0c000210	jal	_Exit
+  316  000013f0  54000000	nop; not filled.
+  317  000013f4  23bd0010	addi	r29,r29,#16
+  318  000013f8          	L23_LF0:
+  319  000013f8  0c000108	jal	_getpid
+  320  000013fc  54000000	nop; not filled.
+  321  00001400  23bdfff0	addi	r29,r29,#-16
+  322  00001404  3c0a0000	lhi	r10,((LC5_LF0)>>16)&0xffff
+  323  00001408  254a30c0	addui	r10,r10,(LC5_LF0)&0xffff
+  324  0000140c  afaa0000	sw	(r29),r10
+  325  00001410  20620001	addi	r2,r3,#1
+  326  00001414  afa20004	sw	4(r29),r2
+  327  00001418  afa10008	sw	8(r29),r1
+  328  0000141c  0c0000d8	jal	_Printf
+  329  00001420  54000000	nop; not filled.
+  330  00001424  00021820	add	r3,r0,r2
+  331  00001428  23bd0010	addi	r29,r29,#16
+  332  0000142c  0068082a	slt	r1,r3,r8
+  333  00001430  1420fe58	bnez	r1,L19_LF0
+  334  00001434  54000000	nop; not filled.
+  335  00001438          	L18_LF0:
+  336  00001438  23bdfff8	addi	r29,r29,#-8
+  337  0000143c  afa90000	sw	(r29),r9
+  338  00001440  0c000108	jal	_sem_signal
+  339  00001444  54000000	nop; not filled.
+  340  00001448  23bd0008	addi	r29,r29,#8
+  341  0000144c  64210001	snei	r1,r1,#1
+  342  00001450  10200050	beqz	r1,L25_LF0
+  343  00001454  54000000	nop; not filled.
+  344  00001458  23bdfff8	addi	r29,r29,#-8
+  345  0000145c  3c0a0000	lhi	r10,((LC6_LF0)>>16)&0xffff
+  346  00001460  254a30e4	addui	r10,r10,(LC6_LF0)&0xffff
+  347  00001464  afaa0000	sw	(r29),r10
+  348  00001468  afa90004	sw	4(r29),r9
+  349  0000146c  0c000088	jal	_Printf
+  350  00001470  54000000	nop; not filled.
+  351  00001474  8c840000	lw	r4,(r4)
+  352  00001478  afa40000	sw	(r29),r4
+  353  0000147c  0c000078	jal	_Printf
+  354  00001480  54000000	nop; not filled.
+  355  00001484  3c0a0000	lhi	r10,((LC7_LF0)>>16)&0xffff
+  356  00001488  254a3110	addui	r10,r10,(LC7_LF0)&0xffff
+  357  0000148c  afaa0000	sw	(r29),r10
+  358  00001490  0c000064	jal	_Printf
+  359  00001494  54000000	nop; not filled.
+  360  00001498  0c000164	jal	_Exit
+  361  0000149c  54000000	nop; not filled.
+  362  000014a0  23bd0008	addi	r29,r29,#8
+  363  000014a4          	L25_LF0:
+  364  000014a4  20010000	addi	r1,r0,#0
+  365  000014a8  0c000ef0	jal	_exit
+  366  000014ac  54000000	nop
+  367  000014b0          	.endproc _main
   368                      ;;;
-  371  000014c4          	.align 2
-  373                      ;;; The following are the traps to be used by user-level programs
-  374                      ;;;
-  376  000014c4          	.align 2
-  377  000014c4          	.proc _Open
-  378  000014c4          	.global _Open
-  379  000014c4          	_Open:
-  380                      ;;; Note that trap #0x213 actually causes a trap vector in the OS of
-  381                      ;;; 0x1213.  The same is true for other user traps.  Thus, a user trap
-  382                      ;;; with trap #0x240 will result in a trap vector of 0x1240 in the OS.
-  383  000014c4  44000213	trap	#0x213
-  384  000014c8  4be00000	jr	r31
-  385  000014cc  54000000	nop
-  386  000014d0          	.endproc _Open
-  388  000014d0          	.proc _Close
-  389  000014d0          	.global _Close
-  390  000014d0          	_Close:
-  391  000014d0  44000214	trap	#0x214
-  392  000014d4  4be00000	jr	r31
-  393  000014d8  54000000	nop
-  394  000014dc          	.endproc _Close
-  396  000014dc          	.proc _Read
-  397  000014dc          	.global _Read
-  398  000014dc          	_Read:
-  399  000014dc  44000210	trap	#0x210
-  400  000014e0  4be00000	jr	r31
-  401  000014e4  54000000	nop
-  402  000014e8          	.endproc _Read
-  404  000014e8          	.proc _Write
-  405  000014e8          	.global _Write
-  406  000014e8          	_Write:
-  407  000014e8  44000211	trap	#0x211
-  408  000014ec  4be00000	jr	r31
-  409  000014f0  54000000	nop
-  410  000014f4          	.endproc _Write
-  412  000014f4          	.proc _Lseek
-  413  000014f4          	.global _Lseek
-  414  000014f4          	_Lseek:
-  415  000014f4  44000212	trap	#0x212
-  416  000014f8  4be00000	jr	r31
-  417  000014fc  54000000	nop
-  418  00001500          	.endproc _Lseek
-  420  00001500          	.proc _Putchar
-  421  00001500          	.global _Putchar
-  422  00001500          	_Putchar:
-  423  00001500  44000280	trap	#0x280
-  424  00001504  4be00000	jr	r31
-  425  00001508  54000000	nop
-  426  0000150c          	.endproc _Putchar
-  428  0000150c          	.proc _Printf
-  429  0000150c          	.global _Printf
-  430  0000150c          	_Printf:
-  431  0000150c  44000201	trap	#0x201
-  432  00001510  4be00000	jr	r31
-  433  00001514  54000000	nop
-  434  00001518          	.endproc _Printf
-  436  00001518          	.proc _getpid
-  437  00001518          	.global _getpid
-  438  00001518          	_getpid:
-  439  00001518  44000431	trap	#0x431
-  440  0000151c  4be00000	jr	r31
-  441  00001520  54000000	nop
-  442  00001524          	.endproc _getpid
-  444  00001524          	.proc _process_create
-  445  00001524          	.global _process_create
-  446  00001524          	_process_create:
-  447  00001524  44000432	trap	#0x432
-  448  00001528  4be00000	jr	r31
-  449  0000152c  54000000	nop
-  450  00001530          	.endproc _process_create
-  452  00001530          	.proc _shmget
-  453  00001530          	.global _shmget
-  454  00001530          	_shmget:
-  455  00001530  44000440	trap	#0x440
-  456  00001534  4be00000	jr	r31
-  457  00001538  54000000	nop
-  458  0000153c          	.endproc _shmget
-  460  0000153c          	.proc _shmat
-  461  0000153c          	.global _shmat
-  462  0000153c          	_shmat:
-  463  0000153c  44000441	trap	#0x441
-  464  00001540  4be00000	jr	r31
-  465  00001544  54000000	nop
-  466  00001548          	.endproc _shmat
-  468  00001548          	.proc _sem_create
-  469  00001548          	.global _sem_create
-  470  00001548          	_sem_create:
-  471  00001548  44000450	trap	#0x450
-  472  0000154c  4be00000	jr	r31
-  473  00001550  54000000	nop
-  474  00001554          	.endproc _sem_create
-  476  00001554          	.proc _sem_wait
-  477  00001554          	.global _sem_wait
-  478  00001554          	_sem_wait:
-  479  00001554  44000451	trap	#0x451
-  480  00001558  4be00000	jr	r31
-  481  0000155c  54000000	nop
-  482  00001560          	.endproc _sem_wait
-  484  00001560          	.proc _sem_signal
-  485  00001560          	.global _sem_signal
-  486  00001560          	_sem_signal:
-  487  00001560  44000452	trap	#0x452
-  488  00001564  4be00000	jr	r31
-  489  00001568  54000000	nop
-  490  0000156c          	.endproc _sem_signal
-  492  0000156c          	.proc _lock_create
-  493  0000156c          	.global _lock_create
-  494  0000156c          	_lock_create:
-  495  0000156c  44000453	trap	#0x453
-  496  00001570  4be00000	jr	r31
-  497  00001574  54000000	nop
-  498  00001578          	.endproc _lock_create
-  500  00001578          	.proc _lock_acquire
-  501  00001578          	.global _lock_acquire
-  502  00001578          	_lock_acquire:
-  503  00001578  44000454	trap	#0x454
-  504  0000157c  4be00000	jr	r31
-  505  00001580  54000000	nop
-  506  00001584          	.endproc _lock_acquire
-  508  00001584          	.proc _lock_release
-  509  00001584          	.global _lock_release
-  510  00001584          	_lock_release:
-  511  00001584  44000455	trap	#0x455
-  512  00001588  4be00000	jr	r31
-  513  0000158c  54000000	nop
-  514  00001590          	.endproc _lock_release
-  516  00001590          	.proc _cond_create
-  517  00001590          	.global _cond_create
-  518  00001590          	_cond_create:
-  519  00001590  44000456	trap	#0x456
-  520  00001594  4be00000	jr	r31
-  521  00001598  54000000	nop
-  522  0000159c          	.endproc _cond_create
-  524  0000159c          	.proc _cond_wait
-  525  0000159c          	.global _cond_wait
-  526  0000159c          	_cond_wait:
-  527  0000159c  44000457	trap	#0x457
-  528  000015a0  4be00000	jr	r31
-  529  000015a4  54000000	nop
-  530  000015a8          	.endproc _cond_wait
-  532  000015a8          	.proc _cond_signal
-  533  000015a8          	.global _cond_signal
-  534  000015a8          	_cond_signal:
-  535  000015a8  44000458	trap	#0x458
-  536  000015ac  4be00000	jr	r31
-  537  000015b0  54000000	nop
-  538  000015b4          	.endproc _cond_signal
-  540  000015b4          	.proc _cond_broadcast
-  541  000015b4          	.global _cond_broadcast
-  542  000015b4          	_cond_broadcast:
-  543  000015b4  44000459	trap	#0x459
-  544  000015b8  4be00000	jr	r31
-  545  000015bc  54000000	nop
-  546  000015c0          	.endproc _cond_broadcast
-  548  000015c0          	.proc _Exit
-  549  000015c0          	.global _Exit
-  550  000015c0          	_Exit:
-  551  000015c0  44000500	trap	#0x500
-  552  000015c4  4be00000	jr	r31
-  553  000015c8  54000000	nop
-  554  000015cc          	.endproc _Exit
-  555                      ; Compiled by GCC
-  557  000015cc          	.align 2
-  558  000015cc          	.proc _isspace
-  559  000015cc          	.global _isspace
-  560  000015cc          	_isspace:
-  561                      ;  Function 'isspace'; 0 bytes of locals, 3 regs to save.
-  562  000015cc  afbefffc	sw	-4(r29),r30; push fp
-  563  000015d0  001df020	add	r30,r0,r29; fp = sp
-  564  000015d4  afbffff8	sw	-8(r29),r31; push ret addr
-  565  000015d8  2fbd0018	subui	r29,r29,#24; alloc local storage
-  566  000015dc  afa20000	sw	0(r29),r2
-  567  000015e0  afa30004	sw	4(r29),r3
-  568  000015e4  afa40008	sw	8(r29),r4
-  569  000015e8  83c20003	lb	r2,3(r30)
-  570  000015ec  20010000	addi	r1,r0,#0
-  571  000015f0  304300ff	andi	r3,r2,#0x00ff
-  572  000015f4  60640020	seqi	r4,r3,#32
-  573  000015f8  1480002c	bnez	r4,L3_LF2
-  574  000015fc  54000000	nop; delay slot nop
-  575  00001600  304300ff	andi	r3,r2,#0x00ff
-  576  00001604  60640009	seqi	r4,r3,#9
-  577  00001608  1480001c	bnez	r4,L3_LF2
-  578  0000160c  54000000	nop; delay slot nop
-  579  00001610  304300ff	andi	r3,r2,#0x00ff
-  580  00001614  6064000a	seqi	r4,r3,#10
-  581  00001618  1480000c	bnez	r4,L3_LF2
-  582  0000161c  54000000	nop; delay slot nop
-  583  00001620  08000008	j	L2_LF2
-  584  00001624  54000000	nop; delay slot nop
-  585  00001628          	L3_LF2:
-  586  00001628  20010001	addi	r1,r0,#1
-  587  0000162c          	L2_LF2:
-  588  0000162c  08000004	j	L1_LF2
-  589  00001630  54000000	nop; delay slot nop
-  590  00001634          	L1_LF2:
-  591  00001634  8fa20000	lw	r2,0(r29)
-  592  00001638  8fa30004	lw	r3,4(r29)
-  593  0000163c  8fa40008	lw	r4,8(r29)
-  594  00001640  8fdffff8	lw	r31,-8(r30)
-  595  00001644  001ee820	add	r29,r0,r30
-  596  00001648  8fdefffc	lw	r30,-4(r30)
-  597  0000164c  4be00000	jr	r31
-  598  00001650  54000000	nop
-  599  00001654          	.endproc _isspace
-  600  00001654          	.align 2
-  601  00001654          	.proc _isxdigit
-  602  00001654          	.global _isxdigit
-  603  00001654          	_isxdigit:
-  604                      ;  Function 'isxdigit'; 0 bytes of locals, 3 regs to save.
-  605  00001654  afbefffc	sw	-4(r29),r30; push fp
-  606  00001658  001df020	add	r30,r0,r29; fp = sp
-  607  0000165c  afbffff8	sw	-8(r29),r31; push ret addr
-  608  00001660  2fbd0018	subui	r29,r29,#24; alloc local storage
-  609  00001664  afa20000	sw	0(r29),r2
-  610  00001668  afa30004	sw	4(r29),r3
-  611  0000166c  afa40008	sw	8(r29),r4
-  612  00001670  83c20003	lb	r2,3(r30)
-  613  00001674  20010000	addi	r1,r0,#0
-  614  00001678  304300ff	andi	r3,r2,#0x00ff
-  615  0000167c  6c64002f	sgtui	r4,r3,#47
-  616  00001680  1080001c	beqz	r4,L7_LF2
-  617  00001684  54000000	nop; delay slot nop
-  618  00001688  304300ff	andi	r3,r2,#0x00ff
-  619  0000168c  70640039	sleui	r4,r3,#57
-  620  00001690  1480005c	bnez	r4,L6_LF2
-  621  00001694  54000000	nop; delay slot nop
-  622  00001698  08000004	j	L7_LF2
-  623  0000169c  54000000	nop; delay slot nop
-  624  000016a0          	L7_LF2:
-  625  000016a0  304300ff	andi	r3,r2,#0x00ff
-  626  000016a4  6c640060	sgtui	r4,r3,#96
-  627  000016a8  1080001c	beqz	r4,L8_LF2
-  628  000016ac  54000000	nop; delay slot nop
-  629  000016b0  304300ff	andi	r3,r2,#0x00ff
-  630  000016b4  70640066	sleui	r4,r3,#102
-  631  000016b8  14800034	bnez	r4,L6_LF2
-  632  000016bc  54000000	nop; delay slot nop
-  633  000016c0  08000004	j	L8_LF2
-  634  000016c4  54000000	nop; delay slot nop
-  635  000016c8          	L8_LF2:
-  636  000016c8  304300ff	andi	r3,r2,#0x00ff
-  637  000016cc  6c640040	sgtui	r4,r3,#64
-  638  000016d0  10800020	beqz	r4,L5_LF2
-  639  000016d4  54000000	nop; delay slot nop
-  640  000016d8  304300ff	andi	r3,r2,#0x00ff
-  641  000016dc  70640041	sleui	r4,r3,#65
-  642  000016e0  1480000c	bnez	r4,L6_LF2
-  643  000016e4  54000000	nop; delay slot nop
-  644  000016e8  08000008	j	L5_LF2
-  645  000016ec  54000000	nop; delay slot nop
-  646  000016f0          	L6_LF2:
-  647  000016f0  20010001	addi	r1,r0,#1
-  648  000016f4          	L5_LF2:
-  649  000016f4  08000004	j	L4_LF2
-  650  000016f8  54000000	nop; delay slot nop
-  651  000016fc          	L4_LF2:
-  652  000016fc  8fa20000	lw	r2,0(r29)
-  653  00001700  8fa30004	lw	r3,4(r29)
-  654  00001704  8fa40008	lw	r4,8(r29)
-  655  00001708  8fdffff8	lw	r31,-8(r30)
-  656  0000170c  001ee820	add	r29,r0,r30
-  657  00001710  8fdefffc	lw	r30,-4(r30)
-  658  00001714  4be00000	jr	r31
-  659  00001718  54000000	nop
-  660  0000171c          	.endproc _isxdigit
-  661  0000171c          	.align 2
-  662  0000171c          	.proc _dstrcpy
-  663  0000171c          	.global _dstrcpy
-  664  0000171c          	_dstrcpy:
-  665                      ;  Function 'dstrcpy'; 8 bytes of locals, 2 regs to save.
-  666  0000171c  afbefffc	sw	-4(r29),r30; push fp
-  667  00001720  001df020	add	r30,r0,r29; fp = sp
-  668  00001724  afbffff8	sw	-8(r29),r31; push ret addr
-  669  00001728  2fbd0018	subui	r29,r29,#24; alloc local storage
-  670  0000172c  afa20000	sw	0(r29),r2
-  671  00001730  afa30004	sw	4(r29),r3
-  672  00001734  8fc10000	lw	r1,(r30)
-  673  00001738  afc1fff4	sw	-12(r30),r1
-  674  0000173c          	L10_LF2:
-  675  0000173c  8fc10000	lw	r1,(r30)
-  676  00001740  20220001	addi	r2,r1,#1
-  677  00001744  afc20000	sw	(r30),r2
-  678  00001748  8fc20004	lw	r2,4(r30)
-  679  0000174c  20430001	addi	r3,r2,#1
-  680  00001750  afc30004	sw	4(r30),r3
-  681  00001754  80420000	lb	r2,(r2)
-  682  00001758  a0220000	sb	(r1),r2
-  683  0000175c  a3c2fff3	sb	-13(r30),r2
-  684  00001760          	L12_LF2:
-  685  00001760  93c1fff3	lbu	r1,-13(r30)
-  686  00001764  64220000	snei	r2,r1,#0
-  687  00001768  1440000c	bnez	r2,L13_LF2
-  688  0000176c  54000000	nop; delay slot nop
-  689  00001770  0800000c	j	L11_LF2
-  690  00001774  54000000	nop; delay slot nop
-  691  00001778          	L13_LF2:
-  692  00001778  0bffffc0	j	L10_LF2
-  693  0000177c  54000000	nop; delay slot nop
-  694  00001780          	L11_LF2:
-  695  00001780  8fc1fff4	lw	r1,-12(r30)
-  696  00001784  08000004	j	L9_LF2
-  697  00001788  54000000	nop; delay slot nop
-  698  0000178c          	L9_LF2:
-  699  0000178c  8fa20000	lw	r2,0(r29)
-  700  00001790  8fa30004	lw	r3,4(r29)
-  701  00001794  8fdffff8	lw	r31,-8(r30)
-  702  00001798  001ee820	add	r29,r0,r30
-  703  0000179c  8fdefffc	lw	r30,-4(r30)
-  704  000017a0  4be00000	jr	r31
-  705  000017a4  54000000	nop
-  706  000017a8          	.endproc _dstrcpy
-  707  000017a8          	.align 2
-  708  000017a8          	.proc _dstrncpy
-  709  000017a8          	.global _dstrncpy
-  710  000017a8          	_dstrncpy:
-  711                      ;  Function 'dstrncpy'; 8 bytes of locals, 2 regs to save.
-  712  000017a8  afbefffc	sw	-4(r29),r30; push fp
-  713  000017ac  001df020	add	r30,r0,r29; fp = sp
-  714  000017b0  afbffff8	sw	-8(r29),r31; push ret addr
-  715  000017b4  2fbd0018	subui	r29,r29,#24; alloc local storage
-  716  000017b8  afa20000	sw	0(r29),r2
-  717  000017bc  afa30004	sw	4(r29),r3
-  718  000017c0  8fc10000	lw	r1,(r30)
-  719  000017c4  afc1fff4	sw	-12(r30),r1
-  720  000017c8          	L15_LF2:
-  721  000017c8  8fc10008	lw	r1,8(r30)
-  722  000017cc  2022ffff	addi	r2,r1,#-1
-  723  000017d0  afc20008	sw	8(r30),r2
-  724  000017d4  70210000	slei	r1,r1,#0
-  725  000017d8  1020000c	beqz	r1,L18_LF2
-  726  000017dc  54000000	nop; delay slot nop
-  727  000017e0  08000048	j	L16_LF2
-  728  000017e4  54000000	nop; delay slot nop
-  729  000017e8          	L18_LF2:
-  730  000017e8  8fc10000	lw	r1,(r30)
-  731  000017ec  20220001	addi	r2,r1,#1
-  732  000017f0  afc20000	sw	(r30),r2
-  733  000017f4  8fc20004	lw	r2,4(r30)
-  734  000017f8  20430001	addi	r3,r2,#1
-  735  000017fc  afc30004	sw	4(r30),r3
-  736  00001800  80420000	lb	r2,(r2)
-  737  00001804  a0220000	sb	(r1),r2
-  738  00001808  a3c2fff3	sb	-13(r30),r2
-  739  0000180c          	L17_LF2:
-  740  0000180c  93c1fff3	lbu	r1,-13(r30)
-  741  00001810  64220000	snei	r2,r1,#0
-  742  00001814  1440000c	bnez	r2,L19_LF2
-  743  00001818  54000000	nop; delay slot nop
-  744  0000181c  0800000c	j	L16_LF2
-  745  00001820  54000000	nop; delay slot nop
-  746  00001824          	L19_LF2:
-  747  00001824  0bffffa0	j	L15_LF2
-  748  00001828  54000000	nop; delay slot nop
-  749  0000182c          	L16_LF2:
-  750  0000182c  8fc1fff4	lw	r1,-12(r30)
-  751  00001830  08000004	j	L14_LF2
-  752  00001834  54000000	nop; delay slot nop
-  753  00001838          	L14_LF2:
-  754  00001838  8fa20000	lw	r2,0(r29)
-  755  0000183c  8fa30004	lw	r3,4(r29)
-  756  00001840  8fdffff8	lw	r31,-8(r30)
-  757  00001844  001ee820	add	r29,r0,r30
-  758  00001848  8fdefffc	lw	r30,-4(r30)
-  759  0000184c  4be00000	jr	r31
-  760  00001850  54000000	nop
-  761  00001854          	.endproc _dstrncpy
-  762  00001854          	.align 2
-  763  00001854          	.proc _dstrcat
-  764  00001854          	.global _dstrcat
-  765  00001854          	_dstrcat:
-  766                      ;  Function 'dstrcat'; 8 bytes of locals, 1 regs to save.
-  767  00001854  afbefffc	sw	-4(r29),r30; push fp
-  768  00001858  001df020	add	r30,r0,r29; fp = sp
-  769  0000185c  afbffff8	sw	-8(r29),r31; push ret addr
-  770  00001860  2fbd0018	subui	r29,r29,#24; alloc local storage
-  771  00001864  afa20000	sw	0(r29),r2
-  772  00001868  8fc10000	lw	r1,(r30)
-  773  0000186c  afc1fff4	sw	-12(r30),r1
-  774  00001870          	L21_LF2:
-  775  00001870  8fc10000	lw	r1,(r30)
-  776  00001874  90220000	lbu	r2,(r1)
-  777  00001878  64410000	snei	r1,r2,#0
-  778  0000187c  1420000c	bnez	r1,L23_LF2
-  779  00001880  54000000	nop; delay slot nop
-  780  00001884  0800001c	j	L22_LF2
-  781  00001888  54000000	nop; delay slot nop
-  782  0000188c          	L23_LF2:
-  783  0000188c  8fc20000	lw	r2,(r30)
-  784  00001890  20410001	addi	r1,r2,#1
-  785  00001894  00011020	add	r2,r0,r1
-  786  00001898  afc20000	sw	(r30),r2
-  787  0000189c  0bffffd0	j	L21_LF2
-  788  000018a0  54000000	nop; delay slot nop
-  789  000018a4          	L22_LF2:
-  790  000018a4  23bdfff8	addi	r29,r29,#-8
-  791  000018a8  001d0820	add	r1,r0,r29
-  792  000018ac  8fc20000	lw	r2,(r30)
-  793  000018b0  ac220000	sw	(r1),r2
-  794  000018b4  8fc20004	lw	r2,4(r30)
-  795  000018b8  ac220004	sw	4(r1),r2
-  796  000018bc  0ffffe5c	jal	_dstrcpy
-  797  000018c0  54000000	nop; delay slot nop
-  798  000018c4  23bd0008	addi	r29,r29,#8
-  799  000018c8  8fc1fff4	lw	r1,-12(r30)
-  800  000018cc  08000004	j	L20_LF2
-  801  000018d0  54000000	nop; delay slot nop
-  802  000018d4          	L20_LF2:
-  803  000018d4  8fa20000	lw	r2,0(r29)
-  804  000018d8  8fdffff8	lw	r31,-8(r30)
-  805  000018dc  001ee820	add	r29,r0,r30
-  806  000018e0  8fdefffc	lw	r30,-4(r30)
-  807  000018e4  4be00000	jr	r31
-  808  000018e8  54000000	nop
-  809  000018ec          	.endproc _dstrcat
-  810  000018ec          	.align 2
-  811  000018ec          	.proc _dstrncmp
-  812  000018ec          	.global _dstrncmp
-  813  000018ec          	_dstrncmp:
-  814                      ;  Function 'dstrncmp'; 8 bytes of locals, 2 regs to save.
-  815  000018ec  afbefffc	sw	-4(r29),r30; push fp
-  816  000018f0  001df020	add	r30,r0,r29; fp = sp
-  817  000018f4  afbffff8	sw	-8(r29),r31; push ret addr
-  818  000018f8  2fbd0018	subui	r29,r29,#24; alloc local storage
-  819  000018fc  afa20000	sw	0(r29),r2
-  820  00001900  afa30004	sw	4(r29),r3
-  821  00001904  54000000	nop
-  822  00001908  20010000	addi	r1,r0,#0
-  823  0000190c  afc1fff4	sw	-12(r30),r1
-  824  00001910          	L25_LF2:
-  825  00001910  8fc1fff4	lw	r1,-12(r30)
-  826  00001914  8fc20008	lw	r2,8(r30)
-  827  00001918  0022082a	slt	r1,r1,r2
-  828  0000191c  1420000c	bnez	r1,L28_LF2
-  829  00001920  54000000	nop; delay slot nop
-  830  00001924  08000088	j	L26_LF2
-  831  00001928  54000000	nop; delay slot nop
-  832  0000192c          	L28_LF2:
-  833  0000192c  8fc10004	lw	r1,4(r30)
-  834  00001930  90220000	lbu	r2,(r1)
-  835  00001934  64410000	snei	r1,r2,#0
-  836  00001938  14200018	bnez	r1,L29_LF2
-  837  0000193c  54000000	nop; delay slot nop
-  838  00001940  20010000	addi	r1,r0,#0
-  839  00001944  080000d8	j	L24_LF2
-  840  00001948  54000000	nop; delay slot nop
-  841  0000194c  08000028	j	L30_LF2
-  842  00001950  54000000	nop; delay slot nop
-  843  00001954          	L29_LF2:
-  844  00001954  8fc10000	lw	r1,(r30)
-  845  00001958  8fc20004	lw	r2,4(r30)
-  846  0000195c  90210000	lbu	r1,(r1)
-  847  00001960  90420000	lbu	r2,(r2)
-  848  00001964  00220829	sne	r1,r1,r2
-  849  00001968  1020000c	beqz	r1,L30_LF2
-  850  0000196c  54000000	nop; delay slot nop
-  851  00001970  0800003c	j	L26_LF2
-  852  00001974  54000000	nop; delay slot nop
-  853  00001978          	L31_LF2:
-  854  00001978          	L30_LF2:
-  855  00001978  8fc20000	lw	r2,(r30)
-  856  0000197c  20410001	addi	r1,r2,#1
-  857  00001980  00011020	add	r2,r0,r1
-  858  00001984  afc20000	sw	(r30),r2
-  859  00001988  8fc20004	lw	r2,4(r30)
-  860  0000198c  20410001	addi	r1,r2,#1
-  861  00001990  00011020	add	r2,r0,r1
-  862  00001994  afc20004	sw	4(r30),r2
-  863  00001998          	L27_LF2:
-  864  00001998  8fc2fff4	lw	r2,-12(r30)
-  865  0000199c  20410001	addi	r1,r2,#1
-  866  000019a0  00011020	add	r2,r0,r1
-  867  000019a4  afc2fff4	sw	-12(r30),r2
-  868  000019a8  0bffff64	j	L25_LF2
-  869  000019ac  54000000	nop; delay slot nop
-  870  000019b0          	L26_LF2:
-  871  000019b0  8fc1fff4	lw	r1,-12(r30)
-  872  000019b4  8fc20008	lw	r2,8(r30)
-  873  000019b8  00220828	seq	r1,r1,r2
-  874  000019bc  10200018	beqz	r1,L32_LF2
-  875  000019c0  54000000	nop; delay slot nop
-  876  000019c4  20010000	addi	r1,r0,#0
-  877  000019c8  08000054	j	L24_LF2
-  878  000019cc  54000000	nop; delay slot nop
-  879  000019d0  0800004c	j	L33_LF2
-  880  000019d4  54000000	nop; delay slot nop
-  881  000019d8          	L32_LF2:
-  882  000019d8  8fc20000	lw	r2,(r30)
-  883  000019dc  90410000	lbu	r1,(r2)
-  884  000019e0  8fc20004	lw	r2,4(r30)
-  885  000019e4  90430000	lbu	r3,(r2)
-  886  000019e8  00230822	sub	r1,r1,r3
-  887  000019ec  74220000	sgei	r2,r1,#0
-  888  000019f0  10400020	beqz	r2,L34_LF2
-  889  000019f4  54000000	nop; delay slot nop
-  890  000019f8  8fc10000	lw	r1,(r30)
-  891  000019fc  8fc20004	lw	r2,4(r30)
-  892  00001a00  90210000	lbu	r1,(r1)
-  893  00001a04  90420000	lbu	r2,(r2)
-  894  00001a08  00220829	sne	r1,r1,r2
-  895  00001a0c  08000008	j	L35_LF2
-  896  00001a10  54000000	nop; delay slot nop
-  897  00001a14          	L34_LF2:
-  898  00001a14  2001ffff	addi	r1,r0,#-1
-  899  00001a18          	L35_LF2:
-  900  00001a18  08000004	j	L24_LF2
-  901  00001a1c  54000000	nop; delay slot nop
-  902  00001a20          	L33_LF2:
-  903  00001a20          	L24_LF2:
-  904  00001a20  8fa20000	lw	r2,0(r29)
-  905  00001a24  8fa30004	lw	r3,4(r29)
-  906  00001a28  8fdffff8	lw	r31,-8(r30)
-  907  00001a2c  001ee820	add	r29,r0,r30
-  908  00001a30  8fdefffc	lw	r30,-4(r30)
-  909  00001a34  4be00000	jr	r31
-  910  00001a38  54000000	nop
-  911  00001a3c          	.endproc _dstrncmp
-  912  00001a3c          	.align 2
-  913  00001a3c          	.proc _dstrlen
-  914  00001a3c          	.global _dstrlen
-  915  00001a3c          	_dstrlen:
-  916                      ;  Function 'dstrlen'; 8 bytes of locals, 1 regs to save.
-  917  00001a3c  afbefffc	sw	-4(r29),r30; push fp
-  918  00001a40  001df020	add	r30,r0,r29; fp = sp
-  919  00001a44  afbffff8	sw	-8(r29),r31; push ret addr
-  920  00001a48  2fbd0018	subui	r29,r29,#24; alloc local storage
-  921  00001a4c  afa20000	sw	0(r29),r2
-  922  00001a50  20010000	addi	r1,r0,#0
-  923  00001a54  afc1fff4	sw	-12(r30),r1
-  924  00001a58          	L37_LF2:
-  925  00001a58  8fc10000	lw	r1,(r30)
-  926  00001a5c  20220001	addi	r2,r1,#1
-  927  00001a60  afc20000	sw	(r30),r2
-  928  00001a64  90210000	lbu	r1,(r1)
-  929  00001a68  64220000	snei	r2,r1,#0
-  930  00001a6c  1440000c	bnez	r2,L39_LF2
-  931  00001a70  54000000	nop; delay slot nop
-  932  00001a74  0800001c	j	L38_LF2
-  933  00001a78  54000000	nop; delay slot nop
-  934  00001a7c          	L39_LF2:
-  935  00001a7c  8fc2fff4	lw	r2,-12(r30)
-  936  00001a80  20410001	addi	r1,r2,#1
-  937  00001a84  00011020	add	r2,r0,r1
-  938  00001a88  afc2fff4	sw	-12(r30),r2
-  939  00001a8c  0bffffc8	j	L37_LF2
-  940  00001a90  54000000	nop; delay slot nop
-  941  00001a94          	L38_LF2:
-  942  00001a94  8fc1fff4	lw	r1,-12(r30)
-  943  00001a98  08000004	j	L36_LF2
-  944  00001a9c  54000000	nop; delay slot nop
-  945  00001aa0          	L36_LF2:
-  946  00001aa0  8fa20000	lw	r2,0(r29)
-  947  00001aa4  8fdffff8	lw	r31,-8(r30)
-  948  00001aa8  001ee820	add	r29,r0,r30
-  949  00001aac  8fdefffc	lw	r30,-4(r30)
-  950  00001ab0  4be00000	jr	r31
-  951  00001ab4  54000000	nop
-  952  00001ab8          	.endproc _dstrlen
-  953  00001ab8          	.align 2
-  954  00001ab8          	.proc _dstrstr
-  955  00001ab8          	.global _dstrstr
-  956  00001ab8          	_dstrstr:
-  957                      ;  Function 'dstrstr'; 8 bytes of locals, 1 regs to save.
-  958  00001ab8  afbefffc	sw	-4(r29),r30; push fp
-  959  00001abc  001df020	add	r30,r0,r29; fp = sp
-  960  00001ac0  afbffff8	sw	-8(r29),r31; push ret addr
-  961  00001ac4  2fbd0018	subui	r29,r29,#24; alloc local storage
-  962  00001ac8  afa20000	sw	0(r29),r2
-  963  00001acc  23bdfff8	addi	r29,r29,#-8
-  964  00001ad0  001d0820	add	r1,r0,r29
-  965  00001ad4  8fc20004	lw	r2,4(r30)
-  966  00001ad8  ac220000	sw	(r1),r2
-  967  00001adc  0fffff5c	jal	_dstrlen
-  968  00001ae0  54000000	nop; delay slot nop
-  969  00001ae4  23bd0008	addi	r29,r29,#8
-  970  00001ae8  afc1fff4	sw	-12(r30),r1
-  971  00001aec          	L41_LF2:
-  972  00001aec  8fc10000	lw	r1,(r30)
-  973  00001af0  90220000	lbu	r2,(r1)
-  974  00001af4  64410000	snei	r1,r2,#0
-  975  00001af8  1420000c	bnez	r1,L43_LF2
-  976  00001afc  54000000	nop; delay slot nop
-  977  00001b00  08000060	j	L42_LF2
-  978  00001b04  54000000	nop; delay slot nop
-  979  00001b08          	L43_LF2:
-  980  00001b08  23bdfff0	addi	r29,r29,#-16
-  981  00001b0c  001d0820	add	r1,r0,r29
-  982  00001b10  8fc20000	lw	r2,(r30)
-  983  00001b14  ac220000	sw	(r1),r2
-  984  00001b18  8fc20004	lw	r2,4(r30)
-  985  00001b1c  ac220004	sw	4(r1),r2
-  986  00001b20  8fc2fff4	lw	r2,-12(r30)
-  987  00001b24  ac220008	sw	8(r1),r2
-  988  00001b28  0ffffdc0	jal	_dstrncmp
-  989  00001b2c  54000000	nop; delay slot nop
-  990  00001b30  23bd0010	addi	r29,r29,#16
-  991  00001b34  64220000	snei	r2,r1,#0
-  992  00001b38  14400010	bnez	r2,L44_LF2
-  993  00001b3c  54000000	nop; delay slot nop
-  994  00001b40  8fc10000	lw	r1,(r30)
-  995  00001b44  08000028	j	L40_LF2
-  996  00001b48  54000000	nop; delay slot nop
-  997  00001b4c          	L44_LF2:
-  998  00001b4c  8fc20000	lw	r2,(r30)
-  999  00001b50  20410001	addi	r1,r2,#1
- 1000  00001b54  00011020	add	r2,r0,r1
- 1001  00001b58  afc20000	sw	(r30),r2
- 1002  00001b5c  0bffff8c	j	L41_LF2
- 1003  00001b60  54000000	nop; delay slot nop
- 1004  00001b64          	L42_LF2:
- 1005  00001b64  20010000	addi	r1,r0,#0
- 1006  00001b68  08000004	j	L40_LF2
- 1007  00001b6c  54000000	nop; delay slot nop
- 1008  00001b70          	L40_LF2:
- 1009  00001b70  8fa20000	lw	r2,0(r29)
- 1010  00001b74  8fdffff8	lw	r31,-8(r30)
- 1011  00001b78  001ee820	add	r29,r0,r30
- 1012  00001b7c  8fdefffc	lw	r30,-4(r30)
- 1013  00001b80  4be00000	jr	r31
- 1014  00001b84  54000000	nop
- 1015  00001b88          	.endproc _dstrstr
- 1016  00001b88          	.align 2
- 1017  00001b88          	.proc _dmindex
- 1018  00001b88          	.global _dmindex
- 1019  00001b88          	_dmindex:
- 1020                      ;  Function 'dmindex'; 8 bytes of locals, 1 regs to save.
- 1021  00001b88  afbefffc	sw	-4(r29),r30; push fp
- 1022  00001b8c  001df020	add	r30,r0,r29; fp = sp
- 1023  00001b90  afbffff8	sw	-8(r29),r31; push ret addr
- 1024  00001b94  2fbd0018	subui	r29,r29,#24; alloc local storage
- 1025  00001b98  afa20000	sw	0(r29),r2
- 1026  00001b9c  54000000	nop
- 1027  00001ba0          	L46_LF2:
- 1028  00001ba0  8fc10000	lw	r1,(r30)
- 1029  00001ba4  90220000	lbu	r2,(r1)
- 1030  00001ba8  64410000	snei	r1,r2,#0
- 1031  00001bac  1420000c	bnez	r1,L48_LF2
- 1032  00001bb0  54000000	nop; delay slot nop
- 1033  00001bb4  08000070	j	L47_LF2
- 1034  00001bb8  54000000	nop; delay slot nop
- 1035  00001bbc          	L48_LF2:
- 1036  00001bbc  8fc10004	lw	r1,4(r30)
- 1037  00001bc0  afc1fff4	sw	-12(r30),r1
- 1038  00001bc4          	L49_LF2:
- 1039  00001bc4  8fc1fff4	lw	r1,-12(r30)
- 1040  00001bc8  90220000	lbu	r2,(r1)
- 1041  00001bcc  64410000	snei	r1,r2,#0
- 1042  00001bd0  1420000c	bnez	r1,L52_LF2
- 1043  00001bd4  54000000	nop; delay slot nop
- 1044  00001bd8  08000044	j	L50_LF2
- 1045  00001bdc  54000000	nop; delay slot nop
- 1046  00001be0          	L52_LF2:
- 1047  00001be0  8fc10000	lw	r1,(r30)
- 1048  00001be4  8fc2fff4	lw	r2,-12(r30)
- 1049  00001be8  90210000	lbu	r1,(r1)
- 1050  00001bec  90420000	lbu	r2,(r2)
- 1051  00001bf0  00220828	seq	r1,r1,r2
- 1052  00001bf4  10200010	beqz	r1,L51_LF2
- 1053  00001bf8  54000000	nop; delay slot nop
- 1054  00001bfc  8fc10000	lw	r1,(r30)
- 1055  00001c00  08000030	j	L45_LF2
- 1056  00001c04  54000000	nop; delay slot nop
- 1057  00001c08          	L53_LF2:
- 1058  00001c08          	L51_LF2:
- 1059  00001c08  8fc2fff4	lw	r2,-12(r30)
- 1060  00001c0c  20410001	addi	r1,r2,#1
- 1061  00001c10  00011020	add	r2,r0,r1
- 1062  00001c14  afc2fff4	sw	-12(r30),r2
- 1063  00001c18  0bffffa8	j	L49_LF2
- 1064  00001c1c  54000000	nop; delay slot nop
- 1065  00001c20          	L50_LF2:
- 1066  00001c20  0bffff7c	j	L46_LF2
- 1067  00001c24  54000000	nop; delay slot nop
- 1068  00001c28          	L47_LF2:
- 1069  00001c28  20010000	addi	r1,r0,#0
- 1070  00001c2c  08000004	j	L45_LF2
- 1071  00001c30  54000000	nop; delay slot nop
- 1072  00001c34          	L45_LF2:
- 1073  00001c34  8fa20000	lw	r2,0(r29)
- 1074  00001c38  8fdffff8	lw	r31,-8(r30)
- 1075  00001c3c  001ee820	add	r29,r0,r30
- 1076  00001c40  8fdefffc	lw	r30,-4(r30)
- 1077  00001c44  4be00000	jr	r31
- 1078  00001c48  54000000	nop
- 1079  00001c4c          	.endproc _dmindex
- 1080  00001c4c          	.align 2
- 1081  00001c4c          	.proc _dindex
- 1082  00001c4c          	.global _dindex
- 1083  00001c4c          	_dindex:
- 1084                      ;  Function 'dindex'; 0 bytes of locals, 1 regs to save.
- 1085  00001c4c  afbefffc	sw	-4(r29),r30; push fp
- 1086  00001c50  001df020	add	r30,r0,r29; fp = sp
- 1087  00001c54  afbffff8	sw	-8(r29),r31; push ret addr
- 1088  00001c58  2fbd0010	subui	r29,r29,#16; alloc local storage
- 1089  00001c5c  afa20000	sw	0(r29),r2
- 1090  00001c60  54000000	nop
- 1091  00001c64          	L55_LF2:
- 1092  00001c64  8fc10000	lw	r1,(r30)
- 1093  00001c68  90220000	lbu	r2,(r1)
- 1094  00001c6c  64410000	snei	r1,r2,#0
- 1095  00001c70  1420000c	bnez	r1,L57_LF2
- 1096  00001c74  54000000	nop; delay slot nop
- 1097  00001c78  08000040	j	L56_LF2
- 1098  00001c7c  54000000	nop; delay slot nop
- 1099  00001c80          	L57_LF2:
- 1100  00001c80  8fc10000	lw	r1,(r30)
- 1101  00001c84  90220000	lbu	r2,(r1)
- 1102  00001c88  8fc10004	lw	r1,4(r30)
- 1103  00001c8c  00411028	seq	r2,r2,r1
- 1104  00001c90  10400010	beqz	r2,L58_LF2
- 1105  00001c94  54000000	nop; delay slot nop
- 1106  00001c98  8fc10000	lw	r1,(r30)
- 1107  00001c9c  08000028	j	L54_LF2
- 1108  00001ca0  54000000	nop; delay slot nop
- 1109  00001ca4          	L58_LF2:
- 1110  00001ca4  8fc20000	lw	r2,(r30)
- 1111  00001ca8  20410001	addi	r1,r2,#1
- 1112  00001cac  00011020	add	r2,r0,r1
- 1113  00001cb0  afc20000	sw	(r30),r2
- 1114  00001cb4  0bffffac	j	L55_LF2
- 1115  00001cb8  54000000	nop; delay slot nop
- 1116  00001cbc          	L56_LF2:
- 1117  00001cbc  20010000	addi	r1,r0,#0
- 1118  00001cc0  08000004	j	L54_LF2
- 1119  00001cc4  54000000	nop; delay slot nop
- 1120  00001cc8          	L54_LF2:
- 1121  00001cc8  8fa20000	lw	r2,0(r29)
- 1122  00001ccc  8fdffff8	lw	r31,-8(r30)
- 1123  00001cd0  001ee820	add	r29,r0,r30
- 1124  00001cd4  8fdefffc	lw	r30,-4(r30)
- 1125  00001cd8  4be00000	jr	r31
- 1126  00001cdc  54000000	nop
- 1127  00001ce0          	.endproc _dindex
- 1128  00001ce0          	.align 2
- 1129  00001ce0          	.proc _ditoa
- 1130  00001ce0          	.global _ditoa
- 1131  00001ce0          	_ditoa:
- 1132                      ;  Function 'ditoa'; 8 bytes of locals, 2 regs to save.
- 1133  00001ce0  afbefffc	sw	-4(r29),r30; push fp
- 1134  00001ce4  001df020	add	r30,r0,r29; fp = sp
- 1135  00001ce8  afbffff8	sw	-8(r29),r31; push ret addr
- 1136  00001cec  2fbd0018	subui	r29,r29,#24; alloc local storage
- 1137  00001cf0  afa20000	sw	0(r29),r2
- 1138  00001cf4  afa30004	sw	4(r29),r3
- 1139  00001cf8  8fc10000	lw	r1,(r30)
- 1140  00001cfc  68220000	slti	r2,r1,#0
- 1141  00001d00  1040002c	beqz	r2,L60_LF2
- 1142  00001d04  54000000	nop; delay slot nop
- 1143  00001d08  8fc10004	lw	r1,4(r30)
- 1144  00001d0c  20220001	addi	r2,r1,#1
- 1145  00001d10  afc20004	sw	4(r30),r2
- 1146  00001d14  2002002d	addi	r2,r0,(#0x2d)&0xff
- 1147  00001d18  a0220000	sb	(r1),r2
- 1148  00001d1c  8fc10000	lw	r1,(r30)
- 1149  00001d20  00011022	sub	r2,r0,r1
- 1150  00001d24  afc20000	sw	(r30),r2
- 1151  00001d28  08000118	j	L61_LF2
- 1152  00001d2c  54000000	nop; delay slot nop
- 1153  00001d30          	L60_LF2:
- 1154  00001d30  8fc10000	lw	r1,(r30)
- 1155  00001d34  64220000	snei	r2,r1,#0
- 1156  00001d38  14400020	bnez	r2,L62_LF2
- 1157  00001d3c  54000000	nop; delay slot nop
- 1158  00001d40  8fc10004	lw	r1,4(r30)
- 1159  00001d44  20220001	addi	r2,r1,#1
- 1160  00001d48  afc20004	sw	4(r30),r2
- 1161  00001d4c  20020030	addi	r2,r0,(#0x30)&0xff
- 1162  00001d50  a0220000	sb	(r1),r2
- 1163  00001d54  080000ec	j	L61_LF2
- 1164  00001d58  54000000	nop; delay slot nop
- 1165  00001d5c          	L62_LF2:
- 1166  00001d5c  20010001	addi	r1,r0,#1
- 1167  00001d60  afc1fff4	sw	-12(r30),r1
- 1168  00001d64          	L64_LF2:
- 1169  00001d64  8fc1fff4	lw	r1,-12(r30)
- 1170  00001d68  8fc20000	lw	r2,(r30)
- 1171  00001d6c  0022082c	sle	r1,r1,r2
- 1172  00001d70  1420000c	bnez	r1,L66_LF2
- 1173  00001d74  54000000	nop; delay slot nop
- 1174  00001d78  08000024	j	L65_LF2
- 1175  00001d7c  54000000	nop; delay slot nop
- 1176  00001d80          	L67_LF2:
- 1177  00001d80          	L66_LF2:
- 1178  00001d80  8fc1fff4	lw	r1,-12(r30)
- 1179  00001d84  00011820	add	r3,r0,r1
- 1180  00001d88  50620002	slli	r2,r3,#0x2
- 1181  00001d8c  00411020	add	r2,r2,r1
- 1182  00001d90  50410001	slli	r1,r2,#0x1
- 1183  00001d94  afc1fff4	sw	-12(r30),r1
- 1184  00001d98  0bffffc8	j	L64_LF2
- 1185  00001d9c  54000000	nop; delay slot nop
- 1186  00001da0          	L65_LF2:
- 1187  00001da0  54000000	nop
- 1188  00001da4          	L68_LF2:
- 1189  00001da4  8fc1fff4	lw	r1,-12(r30)
- 1190  00001da8  2002000a	addi	r2,r0,#10
- 1191  00001dac  00200035	movi2fp	f0,r1
- 1192  00001db0  00400835	movi2fp	f1,r2
- 1193  00001db4  0401000f	div	f0,f0,f1
- 1194  00001db8  00000834	movfp2i	r1,f0
- 1195  00001dbc  afc1fff4	sw	-12(r30),r1
- 1196  00001dc0  8fc10004	lw	r1,4(r30)
- 1197  00001dc4  20220001	addi	r2,r1,#1
- 1198  00001dc8  afc20004	sw	4(r30),r2
- 1199  00001dcc  8fc20000	lw	r2,(r30)
- 1200  00001dd0  8fc3fff4	lw	r3,-12(r30)
- 1201  00001dd4  00400035	movi2fp	f0,r2
- 1202  00001dd8  00600835	movi2fp	f1,r3
- 1203  00001ddc  0401000f	div	f0,f0,f1
- 1204  00001de0  00001034	movfp2i	r2,f0
- 1205  00001de4  00021820	add	r3,r0,r2
- 1206  00001de8  20620030	addi	r2,r3,#48
- 1207  00001dec  a0220000	sb	(r1),r2
- 1208  00001df0  8fc10000	lw	r1,(r30)
- 1209  00001df4  8fc3fff4	lw	r3,-12(r30)
- 1210  00001df8  00200035	movi2fp	f0,r1
- 1211  00001dfc  00600835	movi2fp	f1,r3
- 1212  00001e00  0401000f	div	f0,f0,f1
- 1213  00001e04  00001034	movfp2i	r2,f0
- 1214  00001e08  8fc3fff4	lw	r3,-12(r30)
- 1215  00001e0c  00400035	movi2fp	f0,r2
- 1216  00001e10  00600835	movi2fp	f1,r3
- 1217  00001e14  0401000e	mult	f0,f0,f1
- 1218  00001e18  00001034	movfp2i	r2,f0
- 1219  00001e1c  00220822	sub	r1,r1,r2
- 1220  00001e20  afc10000	sw	(r30),r1
- 1221  00001e24          	L70_LF2:
- 1222  00001e24  8fc1fff4	lw	r1,-12(r30)
- 1223  00001e28  6c220001	sgti	r2,r1,#1
- 1224  00001e2c  1440000c	bnez	r2,L71_LF2
- 1225  00001e30  54000000	nop; delay slot nop
- 1226  00001e34  0800000c	j	L61_LF2
- 1227  00001e38  54000000	nop; delay slot nop
- 1228  00001e3c          	L71_LF2:
- 1229  00001e3c  0bffff64	j	L68_LF2
- 1230  00001e40  54000000	nop; delay slot nop
- 1231  00001e44          	L69_LF2:
- 1232  00001e44          	L63_LF2:
- 1233  00001e44          	L61_LF2:
- 1234  00001e44  8fc10004	lw	r1,4(r30)
- 1235  00001e48  20020000	addi	r2,r0,(#0x0)&0xff
- 1236  00001e4c  a0220000	sb	(r1),r2
- 1237  00001e50          	L59_LF2:
- 1238  00001e50  8fa20000	lw	r2,0(r29)
- 1239  00001e54  8fa30004	lw	r3,4(r29)
- 1240  00001e58  8fdffff8	lw	r31,-8(r30)
- 1241  00001e5c  001ee820	add	r29,r0,r30
- 1242  00001e60  8fdefffc	lw	r30,-4(r30)
- 1243  00001e64  4be00000	jr	r31
- 1244  00001e68  54000000	nop
- 1245  00001e6c          	.endproc _ditoa
- 1246  00001e6c          	.align 2
- 1247  00001e6c          	.proc _dstrtol
- 1248  00001e6c          	.global _dstrtol
- 1249  00001e6c          	_dstrtol:
- 1250                      ;  Function 'dstrtol'; 16 bytes of locals, 1 regs to save.
- 1251  00001e6c  afbefffc	sw	-4(r29),r30; push fp
- 1252  00001e70  001df020	add	r30,r0,r29; fp = sp
- 1253  00001e74  afbffff8	sw	-8(r29),r31; push ret addr
- 1254  00001e78  2fbd0020	subui	r29,r29,#32; alloc local storage
- 1255  00001e7c  afa20000	sw	0(r29),r2
- 1256  00001e80  20010000	addi	r1,r0,#0
- 1257  00001e84  afc1fff4	sw	-12(r30),r1
- 1258  00001e88          	L73_LF2:
- 1259  00001e88  8fc10000	lw	r1,(r30)
- 1260  00001e8c  90220000	lbu	r2,(r1)
- 1261  00001e90  60410020	seqi	r1,r2,#32
- 1262  00001e94  14200034	bnez	r1,L75_LF2
- 1263  00001e98  54000000	nop; delay slot nop
- 1264  00001e9c  8fc10000	lw	r1,(r30)
- 1265  00001ea0  90220000	lbu	r2,(r1)
- 1266  00001ea4  60410009	seqi	r1,r2,#9
- 1267  00001ea8  14200020	bnez	r1,L75_LF2
- 1268  00001eac  54000000	nop; delay slot nop
- 1269  00001eb0  8fc10000	lw	r1,(r30)
- 1270  00001eb4  90220000	lbu	r2,(r1)
- 1271  00001eb8  6041000a	seqi	r1,r2,#10
- 1272  00001ebc  1420000c	bnez	r1,L75_LF2
- 1273  00001ec0  54000000	nop; delay slot nop
- 1274  00001ec4  0800001c	j	L74_LF2
- 1275  00001ec8  54000000	nop; delay slot nop
- 1276  00001ecc          	L75_LF2:
- 1277  00001ecc  8fc20000	lw	r2,(r30)
- 1278  00001ed0  20410001	addi	r1,r2,#1
- 1279  00001ed4  00011020	add	r2,r0,r1
- 1280  00001ed8  afc20000	sw	(r30),r2
- 1281  00001edc  0bffffa8	j	L73_LF2
- 1282  00001ee0  54000000	nop; delay slot nop
- 1283  00001ee4          	L74_LF2:
- 1284  00001ee4  8fc10004	lw	r1,4(r30)
- 1285  00001ee8  64220000	snei	r2,r1,#0
- 1286  00001eec  10400010	beqz	r2,L76_LF2
- 1287  00001ef0  54000000	nop; delay slot nop
- 1288  00001ef4  8fc10004	lw	r1,4(r30)
- 1289  00001ef8  8fc20000	lw	r2,(r30)
- 1290  00001efc  ac220000	sw	(r1),r2
- 1291  00001f00          	L76_LF2:
- 1292  00001f00  8fc10000	lw	r1,(r30)
- 1293  00001f04  90220000	lbu	r2,(r1)
- 1294  00001f08  64410000	snei	r1,r2,#0
- 1295  00001f0c  14200010	bnez	r1,L77_LF2
- 1296  00001f10  54000000	nop; delay slot nop
- 1297  00001f14  8fc1fff4	lw	r1,-12(r30)
- 1298  00001f18  08000294	j	L72_LF2
- 1299  00001f1c  54000000	nop; delay slot nop
- 1300  00001f20          	L77_LF2:
- 1301  00001f20  8fc10000	lw	r1,(r30)
- 1302  00001f24  90220000	lbu	r2,(r1)
- 1303  00001f28  6041002d	seqi	r1,r2,#45
- 1304  00001f2c  10200024	beqz	r1,L78_LF2
- 1305  00001f30  54000000	nop; delay slot nop
- 1306  00001f34  2001ffff	addi	r1,r0,#-1
- 1307  00001f38  afc1ffec	sw	-20(r30),r1
- 1308  00001f3c  8fc20000	lw	r2,(r30)
- 1309  00001f40  20410001	addi	r1,r2,#1
- 1310  00001f44  00011020	add	r2,r0,r1
- 1311  00001f48  afc20000	sw	(r30),r2
- 1312  00001f4c  0800000c	j	L79_LF2
- 1313  00001f50  54000000	nop; delay slot nop
- 1314  00001f54          	L78_LF2:
- 1315  00001f54  20010001	addi	r1,r0,#1
- 1316  00001f58  afc1ffec	sw	-20(r30),r1
- 1317  00001f5c          	L79_LF2:
- 1318  00001f5c  8fc10008	lw	r1,8(r30)
- 1319  00001f60  64220000	snei	r2,r1,#0
- 1320  00001f64  14400090	bnez	r2,L80_LF2
- 1321  00001f68  54000000	nop; delay slot nop
- 1322  00001f6c  8fc10000	lw	r1,(r30)
- 1323  00001f70  90220000	lbu	r2,(r1)
- 1324  00001f74  60410030	seqi	r1,r2,#48
- 1325  00001f78  10200074	beqz	r1,L81_LF2
- 1326  00001f7c  54000000	nop; delay slot nop
- 1327  00001f80  8fc20000	lw	r2,(r30)
- 1328  00001f84  20410001	addi	r1,r2,#1
- 1329  00001f88  00011020	add	r2,r0,r1
- 1330  00001f8c  afc20000	sw	(r30),r2
- 1331  00001f90  8fc10000	lw	r1,(r30)
- 1332  00001f94  90220000	lbu	r2,(r1)
- 1333  00001f98  60410078	seqi	r1,r2,#120
- 1334  00001f9c  14200020	bnez	r1,L83_LF2
- 1335  00001fa0  54000000	nop; delay slot nop
- 1336  00001fa4  8fc10000	lw	r1,(r30)
- 1337  00001fa8  90220000	lbu	r2,(r1)
- 1338  00001fac  60410058	seqi	r1,r2,#88
- 1339  00001fb0  1420000c	bnez	r1,L83_LF2
- 1340  00001fb4  54000000	nop; delay slot nop
- 1341  00001fb8  08000024	j	L82_LF2
- 1342  00001fbc  54000000	nop; delay slot nop
- 1343  00001fc0          	L83_LF2:
- 1344  00001fc0  20010010	addi	r1,r0,#16
- 1345  00001fc4  afc10008	sw	8(r30),r1
- 1346  00001fc8  8fc20000	lw	r2,(r30)
- 1347  00001fcc  20410001	addi	r1,r2,#1
- 1348  00001fd0  00011020	add	r2,r0,r1
- 1349  00001fd4  afc20000	sw	(r30),r2
- 1350  00001fd8  0800000c	j	L84_LF2
- 1351  00001fdc  54000000	nop; delay slot nop
- 1352  00001fe0          	L82_LF2:
- 1353  00001fe0  20010008	addi	r1,r0,#8
- 1354  00001fe4  afc10008	sw	8(r30),r1
- 1355  00001fe8          	L84_LF2:
- 1356  00001fe8  0800000c	j	L80_LF2
- 1357  00001fec  54000000	nop; delay slot nop
- 1358  00001ff0          	L81_LF2:
- 1359  00001ff0  2001000a	addi	r1,r0,#10
- 1360  00001ff4  afc10008	sw	8(r30),r1
- 1361  00001ff8          	L85_LF2:
- 1362  00001ff8          	L80_LF2:
- 1363  00001ff8  8fc10008	lw	r1,8(r30)
- 1364  00001ffc  70220000	slei	r2,r1,#0
- 1365  00002000  1440001c	bnez	r2,L87_LF2
- 1366  00002004  54000000	nop; delay slot nop
- 1367  00002008  8fc10008	lw	r1,8(r30)
- 1368  0000200c  6c220010	sgti	r2,r1,#16
- 1369  00002010  1440000c	bnez	r2,L87_LF2
- 1370  00002014  54000000	nop; delay slot nop
- 1371  00002018  08000010	j	L86_LF2
- 1372  0000201c  54000000	nop; delay slot nop
- 1373  00002020          	L87_LF2:
- 1374  00002020  8fc1fff4	lw	r1,-12(r30)
- 1375  00002024  08000188	j	L72_LF2
- 1376  00002028  54000000	nop; delay slot nop
- 1377  0000202c          	L86_LF2:
- 1378  0000202c  54000000	nop
- 1379  00002030          	L88_LF2:
- 1380  00002030  8fc10000	lw	r1,(r30)
- 1381  00002034  90220000	lbu	r2,(r1)
- 1382  00002038  6c41002f	sgtui	r1,r2,#47
- 1383  0000203c  10200030	beqz	r1,L91_LF2
- 1384  00002040  54000000	nop; delay slot nop
- 1385  00002044  8fc10000	lw	r1,(r30)
- 1386  00002048  90220000	lbu	r2,(r1)
- 1387  0000204c  70410039	sleui	r1,r2,#57
- 1388  00002050  1020001c	beqz	r1,L91_LF2
- 1389  00002054  54000000	nop; delay slot nop
- 1390  00002058  8fc10000	lw	r1,(r30)
- 1391  0000205c  90220000	lbu	r2,(r1)
- 1392  00002060  2041ffd0	addi	r1,r2,#-48
- 1393  00002064  afc1fff0	sw	-16(r30),r1
- 1394  00002068  0800008c	j	L92_LF2
- 1395  0000206c  54000000	nop; delay slot nop
- 1396  00002070          	L91_LF2:
- 1397  00002070  8fc10000	lw	r1,(r30)
- 1398  00002074  90220000	lbu	r2,(r1)
- 1399  00002078  6c410060	sgtui	r1,r2,#96
- 1400  0000207c  10200030	beqz	r1,L93_LF2
- 1401  00002080  54000000	nop; delay slot nop
- 1402  00002084  8fc10000	lw	r1,(r30)
- 1403  00002088  90220000	lbu	r2,(r1)
- 1404  0000208c  7041007a	sleui	r1,r2,#122
- 1405  00002090  1020001c	beqz	r1,L93_LF2
- 1406  00002094  54000000	nop; delay slot nop
- 1407  00002098  8fc10000	lw	r1,(r30)
- 1408  0000209c  90220000	lbu	r2,(r1)
- 1409  000020a0  2041ffa9	addi	r1,r2,#-87
- 1410  000020a4  afc1fff0	sw	-16(r30),r1
- 1411  000020a8  0800004c	j	L92_LF2
- 1412  000020ac  54000000	nop; delay slot nop
- 1413  000020b0          	L93_LF2:
- 1414  000020b0  8fc10000	lw	r1,(r30)
- 1415  000020b4  90220000	lbu	r2,(r1)
- 1416  000020b8  6c410040	sgtui	r1,r2,#64
- 1417  000020bc  10200030	beqz	r1,L95_LF2
- 1418  000020c0  54000000	nop; delay slot nop
- 1419  000020c4  8fc10000	lw	r1,(r30)
- 1420  000020c8  90220000	lbu	r2,(r1)
- 1421  000020cc  7041005a	sleui	r1,r2,#90
- 1422  000020d0  1020001c	beqz	r1,L95_LF2
- 1423  000020d4  54000000	nop; delay slot nop
- 1424  000020d8  8fc10000	lw	r1,(r30)
- 1425  000020dc  90220000	lbu	r2,(r1)
- 1426  000020e0  2041ffc9	addi	r1,r2,#-55
- 1427  000020e4  afc1fff0	sw	-16(r30),r1
- 1428  000020e8  0800000c	j	L92_LF2
- 1429  000020ec  54000000	nop; delay slot nop
- 1430  000020f0          	L95_LF2:
- 1431  000020f0  200103e8	addi	r1,r0,#1000
- 1432  000020f4  afc1fff0	sw	-16(r30),r1
- 1433  000020f8          	L96_LF2:
- 1434  000020f8          	L94_LF2:
- 1435  000020f8          	L92_LF2:
- 1436  000020f8  8fc1fff0	lw	r1,-16(r30)
- 1437  000020fc  8fc20008	lw	r2,8(r30)
- 1438  00002100  0022082a	slt	r1,r1,r2
- 1439  00002104  10200040	beqz	r1,L90_LF2
- 1440  00002108  54000000	nop; delay slot nop
- 1441  0000210c  8fc1fff4	lw	r1,-12(r30)
- 1442  00002110  8fc20008	lw	r2,8(r30)
- 1443  00002114  00200035	movi2fp	f0,r1
- 1444  00002118  00400835	movi2fp	f1,r2
- 1445  0000211c  0401000e	mult	f0,f0,f1
- 1446  00002120  00000834	movfp2i	r1,f0
- 1447  00002124  afc1fff4	sw	-12(r30),r1
- 1448  00002128  8fc1fff4	lw	r1,-12(r30)
- 1449  0000212c  8fc2fff0	lw	r2,-16(r30)
- 1450  00002130  00220820	add	r1,r1,r2
- 1451  00002134  afc1fff4	sw	-12(r30),r1
- 1452  00002138  8fc20000	lw	r2,(r30)
- 1453  0000213c  20410001	addi	r1,r2,#1
- 1454  00002140  00011020	add	r2,r0,r1
- 1455  00002144  afc20000	sw	(r30),r2
- 1456  00002148          	L97_LF2:
- 1457  00002148          	L90_LF2:
- 1458  00002148  8fc1fff0	lw	r1,-16(r30)
- 1459  0000214c  8fc20008	lw	r2,8(r30)
- 1460  00002150  0022082a	slt	r1,r1,r2
- 1461  00002154  1420000c	bnez	r1,L98_LF2
- 1462  00002158  54000000	nop; delay slot nop
- 1463  0000215c  0800000c	j	L89_LF2
- 1464  00002160  54000000	nop; delay slot nop
- 1465  00002164          	L98_LF2:
- 1466  00002164  0bfffec8	j	L88_LF2
- 1467  00002168  54000000	nop; delay slot nop
- 1468  0000216c          	L89_LF2:
- 1469  0000216c  8fc10004	lw	r1,4(r30)
- 1470  00002170  64220000	snei	r2,r1,#0
- 1471  00002174  10400010	beqz	r2,L99_LF2
- 1472  00002178  54000000	nop; delay slot nop
- 1473  0000217c  8fc10004	lw	r1,4(r30)
- 1474  00002180  8fc20000	lw	r2,(r30)
- 1475  00002184  ac220000	sw	(r1),r2
- 1476  00002188          	L99_LF2:
- 1477  00002188  8fc1fff4	lw	r1,-12(r30)
- 1478  0000218c  8fc2ffec	lw	r2,-20(r30)
- 1479  00002190  00200035	movi2fp	f0,r1
- 1480  00002194  00400835	movi2fp	f1,r2
- 1481  00002198  0401000e	mult	f0,f0,f1
- 1482  0000219c  00000834	movfp2i	r1,f0
- 1483  000021a0  afc1fff4	sw	-12(r30),r1
- 1484  000021a4  8fc1fff4	lw	r1,-12(r30)
- 1485  000021a8  08000004	j	L72_LF2
- 1486  000021ac  54000000	nop; delay slot nop
- 1487  000021b0          	L72_LF2:
- 1488  000021b0  8fa20000	lw	r2,0(r29)
- 1489  000021b4  8fdffff8	lw	r31,-8(r30)
- 1490  000021b8  001ee820	add	r29,r0,r30
- 1491  000021bc  8fdefffc	lw	r30,-4(r30)
- 1492  000021c0  4be00000	jr	r31
- 1493  000021c4  54000000	nop
- 1494  000021c8          	.endproc _dstrtol
- 1495  000021c8          	.align 2
- 1496  000021c8          	.proc _bcopy
- 1497  000021c8          	.global _bcopy
- 1498  000021c8          	_bcopy:
- 1499                      ;  Function 'bcopy'; 0 bytes of locals, 2 regs to save.
- 1500  000021c8  afbefffc	sw	-4(r29),r30; push fp
- 1501  000021cc  001df020	add	r30,r0,r29; fp = sp
- 1502  000021d0  afbffff8	sw	-8(r29),r31; push ret addr
- 1503  000021d4  2fbd0010	subui	r29,r29,#16; alloc local storage
- 1504  000021d8  afa20000	sw	0(r29),r2
- 1505  000021dc  afa30004	sw	4(r29),r3
- 1506  000021e0  54000000	nop
- 1507  000021e4          	L101_LF2:
- 1508  000021e4  8fc10008	lw	r1,8(r30)
- 1509  000021e8  2022ffff	addi	r2,r1,#-1
- 1510  000021ec  afc20008	sw	8(r30),r2
- 1511  000021f0  6c210000	sgti	r1,r1,#0
- 1512  000021f4  1420000c	bnez	r1,L103_LF2
- 1513  000021f8  54000000	nop; delay slot nop
- 1514  000021fc  0800002c	j	L102_LF2
- 1515  00002200  54000000	nop; delay slot nop
- 1516  00002204          	L103_LF2:
- 1517  00002204  8fc10004	lw	r1,4(r30)
- 1518  00002208  20220001	addi	r2,r1,#1
- 1519  0000220c  afc20004	sw	4(r30),r2
- 1520  00002210  8fc20000	lw	r2,(r30)
- 1521  00002214  20430001	addi	r3,r2,#1
- 1522  00002218  afc30000	sw	(r30),r3
- 1523  0000221c  80420000	lb	r2,(r2)
- 1524  00002220  a0220000	sb	(r1),r2
- 1525  00002224  0bffffbc	j	L101_LF2
- 1526  00002228  54000000	nop; delay slot nop
- 1527  0000222c          	L102_LF2:
- 1528  0000222c          	L100_LF2:
- 1529  0000222c  8fa20000	lw	r2,0(r29)
- 1530  00002230  8fa30004	lw	r3,4(r29)
- 1531  00002234  8fdffff8	lw	r31,-8(r30)
- 1532  00002238  001ee820	add	r29,r0,r30
- 1533  0000223c  8fdefffc	lw	r30,-4(r30)
- 1534  00002240  4be00000	jr	r31
- 1535  00002244  54000000	nop
- 1536  00002248          	.endproc _bcopy
- 1537  00002248          	.align 2
- 1538  00002248          	.proc _bzero
- 1539  00002248          	.global _bzero
- 1540  00002248          	_bzero:
- 1541                      ;  Function 'bzero'; 0 bytes of locals, 1 regs to save.
- 1542  00002248  afbefffc	sw	-4(r29),r30; push fp
- 1543  0000224c  001df020	add	r30,r0,r29; fp = sp
- 1544  00002250  afbffff8	sw	-8(r29),r31; push ret addr
- 1545  00002254  2fbd0010	subui	r29,r29,#16; alloc local storage
- 1546  00002258  afa20000	sw	0(r29),r2
- 1547  0000225c  54000000	nop
- 1548  00002260          	L105_LF2:
- 1549  00002260  8fc10004	lw	r1,4(r30)
- 1550  00002264  2022ffff	addi	r2,r1,#-1
- 1551  00002268  afc20004	sw	4(r30),r2
- 1552  0000226c  6c210000	sgti	r1,r1,#0
- 1553  00002270  1420000c	bnez	r1,L107_LF2
- 1554  00002274  54000000	nop; delay slot nop
- 1555  00002278  08000020	j	L106_LF2
- 1556  0000227c  54000000	nop; delay slot nop
- 1557  00002280          	L107_LF2:
- 1558  00002280  8fc10000	lw	r1,(r30)
- 1559  00002284  20220001	addi	r2,r1,#1
- 1560  00002288  afc20000	sw	(r30),r2
- 1561  0000228c  20020000	addi	r2,r0,(#0x0)&0xff
- 1562  00002290  a0220000	sb	(r1),r2
- 1563  00002294  0bffffc8	j	L105_LF2
- 1564  00002298  54000000	nop; delay slot nop
- 1565  0000229c          	L106_LF2:
- 1566  0000229c          	L104_LF2:
- 1567  0000229c  8fa20000	lw	r2,0(r29)
- 1568  000022a0  8fdffff8	lw	r31,-8(r30)
- 1569  000022a4  001ee820	add	r29,r0,r30
- 1570  000022a8  8fdefffc	lw	r30,-4(r30)
- 1571  000022ac  4be00000	jr	r31
- 1572  000022b0  54000000	nop
- 1573  000022b4          	.endproc _bzero
- 1574  000022b4          	.align 2
- 1575  000022b4          	.proc _min
- 1576  000022b4          	.global _min
- 1577  000022b4          	_min:
- 1578                      ;  Function 'min'; 0 bytes of locals, 2 regs to save.
- 1579  000022b4  afbefffc	sw	-4(r29),r30; push fp
- 1580  000022b8  001df020	add	r30,r0,r29; fp = sp
- 1581  000022bc  afbffff8	sw	-8(r29),r31; push ret addr
- 1582  000022c0  2fbd0010	subui	r29,r29,#16; alloc local storage
- 1583  000022c4  afa20000	sw	0(r29),r2
- 1584  000022c8  afa30004	sw	4(r29),r3
- 1585  000022cc  8fc10000	lw	r1,(r30)
- 1586  000022d0  8fc20004	lw	r2,4(r30)
- 1587  000022d4  0022182c	sle	r3,r1,r2
- 1588  000022d8  14600008	bnez	r3,L109_LF2
- 1589  000022dc  54000000	nop; delay slot nop
- 1590  000022e0  8fc10004	lw	r1,4(r30)
- 1591  000022e4          	L109_LF2:
- 1592  000022e4  08000004	j	L108_LF2
- 1593  000022e8  54000000	nop; delay slot nop
- 1594  000022ec          	L108_LF2:
- 1595  000022ec  8fa20000	lw	r2,0(r29)
- 1596  000022f0  8fa30004	lw	r3,4(r29)
- 1597  000022f4  8fdffff8	lw	r31,-8(r30)
- 1598  000022f8  001ee820	add	r29,r0,r30
- 1599  000022fc  8fdefffc	lw	r30,-4(r30)
- 1600  00002300  4be00000	jr	r31
- 1601  00002304  54000000	nop
- 1602  00002308          	.endproc _min
- 1603                      ;;; Ethan L. Miller, 1999.  Released to the public domain
- 1604                      ;;;
- 1605                      ;;; Most of the traps are called in files from libtraps.
- 1608  00002308          	.align 2
- 1609  00002308          	.proc _exit
- 1610  00002308          	.global _exit
- 1611  00002308          	_exit:
- 1612  00002308  44000300	trap	#0x300
- 1613  0000230c  4be00000	jr	r31
- 1614  00002310  54000000	nop
- 1615  00002314          	.endproc _exit
- 1617                      ; for the benefit of gcc.
- 1618  00002314          	.proc ___main
- 1619  00002314          	.global ___main
- 1620  00002314          	___main:
- 1621  00002314  4be00000	jr	r31
- 1622  00002318  54000000	nop
- 1623  0000231c          	.endproc ___main
- 1624  0000231c          	.text
- 1625  0000231c          	.global _etext
- 1626  0000231c          	_etext:
- 1627  0000231c          	.align 3
- 1628  00002320          	.data
- 1629  0000307d          	.global _edata
- 1630  0000307d          	_edata:
+  369                      ;;; Stub functions for DLX traps.
+  370                      ;;;
+  371                      ;;; Ethan L. Miller, 1999.  Released to the public domain.
+  372                      ;;;
+  373                      ;;; The traps such as Open and Close
+  374                      ;;; (note the capital letters) are for use by user programs.  The traps
+  375                      ;;; with names such as open and close (lower case) are for use by the OS.
+  376                      ;;;
+  379  000014b0          	.align 2
+  381                      ;;; The following are the traps to be used by user-level programs
+  382                      ;;;
+  384  000014b0          	.align 2
+  385  000014b0          	.proc _Open
+  386  000014b0          	.global _Open
+  387  000014b0          	_Open:
+  388                      ;;; Note that trap #0x213 actually causes a trap vector in the OS of
+  389                      ;;; 0x1213.  The same is true for other user traps.  Thus, a user trap
+  390                      ;;; with trap #0x240 will result in a trap vector of 0x1240 in the OS.
+  391  000014b0  44000213	trap	#0x213
+  392  000014b4  4be00000	jr	r31
+  393  000014b8  54000000	nop
+  394  000014bc          	.endproc _Open
+  396  000014bc          	.proc _Close
+  397  000014bc          	.global _Close
+  398  000014bc          	_Close:
+  399  000014bc  44000214	trap	#0x214
+  400  000014c0  4be00000	jr	r31
+  401  000014c4  54000000	nop
+  402  000014c8          	.endproc _Close
+  404  000014c8          	.proc _Read
+  405  000014c8          	.global _Read
+  406  000014c8          	_Read:
+  407  000014c8  44000210	trap	#0x210
+  408  000014cc  4be00000	jr	r31
+  409  000014d0  54000000	nop
+  410  000014d4          	.endproc _Read
+  412  000014d4          	.proc _Write
+  413  000014d4          	.global _Write
+  414  000014d4          	_Write:
+  415  000014d4  44000211	trap	#0x211
+  416  000014d8  4be00000	jr	r31
+  417  000014dc  54000000	nop
+  418  000014e0          	.endproc _Write
+  420  000014e0          	.proc _Lseek
+  421  000014e0          	.global _Lseek
+  422  000014e0          	_Lseek:
+  423  000014e0  44000212	trap	#0x212
+  424  000014e4  4be00000	jr	r31
+  425  000014e8  54000000	nop
+  426  000014ec          	.endproc _Lseek
+  428  000014ec          	.proc _Putchar
+  429  000014ec          	.global _Putchar
+  430  000014ec          	_Putchar:
+  431  000014ec  44000280	trap	#0x280
+  432  000014f0  4be00000	jr	r31
+  433  000014f4  54000000	nop
+  434  000014f8          	.endproc _Putchar
+  436  000014f8          	.proc _Printf
+  437  000014f8          	.global _Printf
+  438  000014f8          	_Printf:
+  439  000014f8  44000201	trap	#0x201
+  440  000014fc  4be00000	jr	r31
+  441  00001500  54000000	nop
+  442  00001504          	.endproc _Printf
+  444  00001504          	.proc _getpid
+  445  00001504          	.global _getpid
+  446  00001504          	_getpid:
+  447  00001504  44000431	trap	#0x431
+  448  00001508  4be00000	jr	r31
+  449  0000150c  54000000	nop
+  450  00001510          	.endproc _getpid
+  452  00001510          	.proc _process_create
+  453  00001510          	.global _process_create
+  454  00001510          	_process_create:
+  455  00001510  44000432	trap	#0x432
+  456  00001514  4be00000	jr	r31
+  457  00001518  54000000	nop
+  458  0000151c          	.endproc _process_create
+  460  0000151c          	.proc _shmget
+  461  0000151c          	.global _shmget
+  462  0000151c          	_shmget:
+  463  0000151c  44000440	trap	#0x440
+  464  00001520  4be00000	jr	r31
+  465  00001524  54000000	nop
+  466  00001528          	.endproc _shmget
+  468  00001528          	.proc _shmat
+  469  00001528          	.global _shmat
+  470  00001528          	_shmat:
+  471  00001528  44000441	trap	#0x441
+  472  0000152c  4be00000	jr	r31
+  473  00001530  54000000	nop
+  474  00001534          	.endproc _shmat
+  476  00001534          	.proc _sem_create
+  477  00001534          	.global _sem_create
+  478  00001534          	_sem_create:
+  479  00001534  44000450	trap	#0x450
+  480  00001538  4be00000	jr	r31
+  481  0000153c  54000000	nop
+  482  00001540          	.endproc _sem_create
+  484  00001540          	.proc _sem_wait
+  485  00001540          	.global _sem_wait
+  486  00001540          	_sem_wait:
+  487  00001540  44000451	trap	#0x451
+  488  00001544  4be00000	jr	r31
+  489  00001548  54000000	nop
+  490  0000154c          	.endproc _sem_wait
+  492  0000154c          	.proc _sem_signal
+  493  0000154c          	.global _sem_signal
+  494  0000154c          	_sem_signal:
+  495  0000154c  44000452	trap	#0x452
+  496  00001550  4be00000	jr	r31
+  497  00001554  54000000	nop
+  498  00001558          	.endproc _sem_signal
+  500  00001558          	.proc _lock_create
+  501  00001558          	.global _lock_create
+  502  00001558          	_lock_create:
+  503  00001558  44000453	trap	#0x453
+  504  0000155c  4be00000	jr	r31
+  505  00001560  54000000	nop
+  506  00001564          	.endproc _lock_create
+  508  00001564          	.proc _lock_acquire
+  509  00001564          	.global _lock_acquire
+  510  00001564          	_lock_acquire:
+  511  00001564  44000454	trap	#0x454
+  512  00001568  4be00000	jr	r31
+  513  0000156c  54000000	nop
+  514  00001570          	.endproc _lock_acquire
+  516  00001570          	.proc _lock_release
+  517  00001570          	.global _lock_release
+  518  00001570          	_lock_release:
+  519  00001570  44000455	trap	#0x455
+  520  00001574  4be00000	jr	r31
+  521  00001578  54000000	nop
+  522  0000157c          	.endproc _lock_release
+  524  0000157c          	.proc _cond_create
+  525  0000157c          	.global _cond_create
+  526  0000157c          	_cond_create:
+  527  0000157c  44000456	trap	#0x456
+  528  00001580  4be00000	jr	r31
+  529  00001584  54000000	nop
+  530  00001588          	.endproc _cond_create
+  532  00001588          	.proc _cond_wait
+  533  00001588          	.global _cond_wait
+  534  00001588          	_cond_wait:
+  535  00001588  44000457	trap	#0x457
+  536  0000158c  4be00000	jr	r31
+  537  00001590  54000000	nop
+  538  00001594          	.endproc _cond_wait
+  540  00001594          	.proc _cond_signal
+  541  00001594          	.global _cond_signal
+  542  00001594          	_cond_signal:
+  543  00001594  44000458	trap	#0x458
+  544  00001598  4be00000	jr	r31
+  545  0000159c  54000000	nop
+  546  000015a0          	.endproc _cond_signal
+  548  000015a0          	.proc _cond_broadcast
+  549  000015a0          	.global _cond_broadcast
+  550  000015a0          	_cond_broadcast:
+  551  000015a0  44000459	trap	#0x459
+  552  000015a4  4be00000	jr	r31
+  553  000015a8  54000000	nop
+  554  000015ac          	.endproc _cond_broadcast
+  556  000015ac          	.proc _mbox_create
+  557  000015ac          	.global _mbox_create
+  558  000015ac          	_mbox_create:
+  559  000015ac  44000460	trap	#0x460
+  560  000015b0  4be00000	jr	r31
+  561  000015b4  54000000	nop
+  562  000015b8          	.endproc _mbox_create
+  564  000015b8          	.proc _mbox_open
+  565  000015b8          	.global _mbox_open
+  566  000015b8          	_mbox_open:
+  567  000015b8  44000461	trap	#0x461
+  568  000015bc  4be00000	jr	r31
+  569  000015c0  54000000	nop
+  570  000015c4          	.endproc _mbox_open
+  572  000015c4          	.proc _mbox_close
+  573  000015c4          	.global _mbox_close
+  574  000015c4          	_mbox_close:
+  575  000015c4  44000462	trap	#0x462
+  576  000015c8  4be00000	jr	r31
+  577  000015cc  54000000	nop
+  578  000015d0          	.endproc _mbox_close
+  580  000015d0          	.proc _mbox_send
+  581  000015d0          	.global _mbox_send
+  582  000015d0          	_mbox_send:
+  583  000015d0  44000463	trap	#0x463
+  584  000015d4  4be00000	jr	r31
+  585  000015d8  54000000	nop
+  586  000015dc          	.endproc _mbox_send
+  588  000015dc          	.proc _mbox_recv
+  589  000015dc          	.global _mbox_recv
+  590  000015dc          	_mbox_recv:
+  591  000015dc  44000464	trap	#0x464
+  592  000015e0  4be00000	jr	r31
+  593  000015e4  54000000	nop
+  594  000015e8          	.endproc _mbox_recv
+  596  000015e8          	.proc _sleep
+  597  000015e8          	.global _sleep
+  598  000015e8          	_sleep:
+  599  000015e8  44000465	trap	#0x465
+  600  000015ec  4be00000	jr	r31
+  601  000015f0  54000000	nop
+  602  000015f4          	.endproc _sleep
+  604  000015f4          	.proc _yield
+  605  000015f4          	.global _yield
+  606  000015f4          	_yield:
+  607  000015f4  44000466	trap	#0x466
+  608  000015f8  4be00000	jr	r31
+  609  000015fc  54000000	nop
+  610  00001600          	.endproc _yield
+  613  00001600          	.proc _Exit
+  614  00001600          	.global _Exit
+  615  00001600          	_Exit:
+  616  00001600  44000500	trap	#0x500
+  617  00001604  4be00000	jr	r31
+  618  00001608  54000000	nop
+  619  0000160c          	.endproc _Exit
+  620                      ; Compiled by GCC
+  622  0000160c          	.align 2
+  623  0000160c          	.proc _isspace
+  624  0000160c          	.global _isspace
+  625  0000160c          	_isspace:
+  626                      ;  Function 'isspace'; 0 bytes of locals, 3 regs to save.
+  627  0000160c  afbefffc	sw	-4(r29),r30; push fp
+  628  00001610  001df020	add	r30,r0,r29; fp = sp
+  629  00001614  afbffff8	sw	-8(r29),r31; push ret addr
+  630  00001618  2fbd0018	subui	r29,r29,#24; alloc local storage
+  631  0000161c  afa20000	sw	0(r29),r2
+  632  00001620  afa30004	sw	4(r29),r3
+  633  00001624  afa40008	sw	8(r29),r4
+  634  00001628  83c20003	lb	r2,3(r30)
+  635  0000162c  20010000	addi	r1,r0,#0
+  636  00001630  304300ff	andi	r3,r2,#0x00ff
+  637  00001634  60640020	seqi	r4,r3,#32
+  638  00001638  1480002c	bnez	r4,L3_LF2
+  639  0000163c  54000000	nop; delay slot nop
+  640  00001640  304300ff	andi	r3,r2,#0x00ff
+  641  00001644  60640009	seqi	r4,r3,#9
+  642  00001648  1480001c	bnez	r4,L3_LF2
+  643  0000164c  54000000	nop; delay slot nop
+  644  00001650  304300ff	andi	r3,r2,#0x00ff
+  645  00001654  6064000a	seqi	r4,r3,#10
+  646  00001658  1480000c	bnez	r4,L3_LF2
+  647  0000165c  54000000	nop; delay slot nop
+  648  00001660  08000008	j	L2_LF2
+  649  00001664  54000000	nop; delay slot nop
+  650  00001668          	L3_LF2:
+  651  00001668  20010001	addi	r1,r0,#1
+  652  0000166c          	L2_LF2:
+  653  0000166c  08000004	j	L1_LF2
+  654  00001670  54000000	nop; delay slot nop
+  655  00001674          	L1_LF2:
+  656  00001674  8fa20000	lw	r2,0(r29)
+  657  00001678  8fa30004	lw	r3,4(r29)
+  658  0000167c  8fa40008	lw	r4,8(r29)
+  659  00001680  8fdffff8	lw	r31,-8(r30)
+  660  00001684  001ee820	add	r29,r0,r30
+  661  00001688  8fdefffc	lw	r30,-4(r30)
+  662  0000168c  4be00000	jr	r31
+  663  00001690  54000000	nop
+  664  00001694          	.endproc _isspace
+  665  00001694          	.align 2
+  666  00001694          	.proc _isxdigit
+  667  00001694          	.global _isxdigit
+  668  00001694          	_isxdigit:
+  669                      ;  Function 'isxdigit'; 0 bytes of locals, 3 regs to save.
+  670  00001694  afbefffc	sw	-4(r29),r30; push fp
+  671  00001698  001df020	add	r30,r0,r29; fp = sp
+  672  0000169c  afbffff8	sw	-8(r29),r31; push ret addr
+  673  000016a0  2fbd0018	subui	r29,r29,#24; alloc local storage
+  674  000016a4  afa20000	sw	0(r29),r2
+  675  000016a8  afa30004	sw	4(r29),r3
+  676  000016ac  afa40008	sw	8(r29),r4
+  677  000016b0  83c20003	lb	r2,3(r30)
+  678  000016b4  20010000	addi	r1,r0,#0
+  679  000016b8  304300ff	andi	r3,r2,#0x00ff
+  680  000016bc  6c64002f	sgtui	r4,r3,#47
+  681  000016c0  1080001c	beqz	r4,L7_LF2
+  682  000016c4  54000000	nop; delay slot nop
+  683  000016c8  304300ff	andi	r3,r2,#0x00ff
+  684  000016cc  70640039	sleui	r4,r3,#57
+  685  000016d0  1480005c	bnez	r4,L6_LF2
+  686  000016d4  54000000	nop; delay slot nop
+  687  000016d8  08000004	j	L7_LF2
+  688  000016dc  54000000	nop; delay slot nop
+  689  000016e0          	L7_LF2:
+  690  000016e0  304300ff	andi	r3,r2,#0x00ff
+  691  000016e4  6c640060	sgtui	r4,r3,#96
+  692  000016e8  1080001c	beqz	r4,L8_LF2
+  693  000016ec  54000000	nop; delay slot nop
+  694  000016f0  304300ff	andi	r3,r2,#0x00ff
+  695  000016f4  70640066	sleui	r4,r3,#102
+  696  000016f8  14800034	bnez	r4,L6_LF2
+  697  000016fc  54000000	nop; delay slot nop
+  698  00001700  08000004	j	L8_LF2
+  699  00001704  54000000	nop; delay slot nop
+  700  00001708          	L8_LF2:
+  701  00001708  304300ff	andi	r3,r2,#0x00ff
+  702  0000170c  6c640040	sgtui	r4,r3,#64
+  703  00001710  10800020	beqz	r4,L5_LF2
+  704  00001714  54000000	nop; delay slot nop
+  705  00001718  304300ff	andi	r3,r2,#0x00ff
+  706  0000171c  70640041	sleui	r4,r3,#65
+  707  00001720  1480000c	bnez	r4,L6_LF2
+  708  00001724  54000000	nop; delay slot nop
+  709  00001728  08000008	j	L5_LF2
+  710  0000172c  54000000	nop; delay slot nop
+  711  00001730          	L6_LF2:
+  712  00001730  20010001	addi	r1,r0,#1
+  713  00001734          	L5_LF2:
+  714  00001734  08000004	j	L4_LF2
+  715  00001738  54000000	nop; delay slot nop
+  716  0000173c          	L4_LF2:
+  717  0000173c  8fa20000	lw	r2,0(r29)
+  718  00001740  8fa30004	lw	r3,4(r29)
+  719  00001744  8fa40008	lw	r4,8(r29)
+  720  00001748  8fdffff8	lw	r31,-8(r30)
+  721  0000174c  001ee820	add	r29,r0,r30
+  722  00001750  8fdefffc	lw	r30,-4(r30)
+  723  00001754  4be00000	jr	r31
+  724  00001758  54000000	nop
+  725  0000175c          	.endproc _isxdigit
+  726  0000175c          	.align 2
+  727  0000175c          	.proc _dstrcpy
+  728  0000175c          	.global _dstrcpy
+  729  0000175c          	_dstrcpy:
+  730                      ;  Function 'dstrcpy'; 8 bytes of locals, 2 regs to save.
+  731  0000175c  afbefffc	sw	-4(r29),r30; push fp
+  732  00001760  001df020	add	r30,r0,r29; fp = sp
+  733  00001764  afbffff8	sw	-8(r29),r31; push ret addr
+  734  00001768  2fbd0018	subui	r29,r29,#24; alloc local storage
+  735  0000176c  afa20000	sw	0(r29),r2
+  736  00001770  afa30004	sw	4(r29),r3
+  737  00001774  8fc10000	lw	r1,(r30)
+  738  00001778  afc1fff4	sw	-12(r30),r1
+  739  0000177c          	L10_LF2:
+  740  0000177c  8fc10000	lw	r1,(r30)
+  741  00001780  20220001	addi	r2,r1,#1
+  742  00001784  afc20000	sw	(r30),r2
+  743  00001788  8fc20004	lw	r2,4(r30)
+  744  0000178c  20430001	addi	r3,r2,#1
+  745  00001790  afc30004	sw	4(r30),r3
+  746  00001794  80420000	lb	r2,(r2)
+  747  00001798  a0220000	sb	(r1),r2
+  748  0000179c  a3c2fff3	sb	-13(r30),r2
+  749  000017a0          	L12_LF2:
+  750  000017a0  93c1fff3	lbu	r1,-13(r30)
+  751  000017a4  64220000	snei	r2,r1,#0
+  752  000017a8  1440000c	bnez	r2,L13_LF2
+  753  000017ac  54000000	nop; delay slot nop
+  754  000017b0  0800000c	j	L11_LF2
+  755  000017b4  54000000	nop; delay slot nop
+  756  000017b8          	L13_LF2:
+  757  000017b8  0bffffc0	j	L10_LF2
+  758  000017bc  54000000	nop; delay slot nop
+  759  000017c0          	L11_LF2:
+  760  000017c0  8fc1fff4	lw	r1,-12(r30)
+  761  000017c4  08000004	j	L9_LF2
+  762  000017c8  54000000	nop; delay slot nop
+  763  000017cc          	L9_LF2:
+  764  000017cc  8fa20000	lw	r2,0(r29)
+  765  000017d0  8fa30004	lw	r3,4(r29)
+  766  000017d4  8fdffff8	lw	r31,-8(r30)
+  767  000017d8  001ee820	add	r29,r0,r30
+  768  000017dc  8fdefffc	lw	r30,-4(r30)
+  769  000017e0  4be00000	jr	r31
+  770  000017e4  54000000	nop
+  771  000017e8          	.endproc _dstrcpy
+  772  000017e8          	.align 2
+  773  000017e8          	.proc _dstrncpy
+  774  000017e8          	.global _dstrncpy
+  775  000017e8          	_dstrncpy:
+  776                      ;  Function 'dstrncpy'; 8 bytes of locals, 2 regs to save.
+  777  000017e8  afbefffc	sw	-4(r29),r30; push fp
+  778  000017ec  001df020	add	r30,r0,r29; fp = sp
+  779  000017f0  afbffff8	sw	-8(r29),r31; push ret addr
+  780  000017f4  2fbd0018	subui	r29,r29,#24; alloc local storage
+  781  000017f8  afa20000	sw	0(r29),r2
+  782  000017fc  afa30004	sw	4(r29),r3
+  783  00001800  8fc10000	lw	r1,(r30)
+  784  00001804  afc1fff4	sw	-12(r30),r1
+  785  00001808          	L15_LF2:
+  786  00001808  8fc10008	lw	r1,8(r30)
+  787  0000180c  2022ffff	addi	r2,r1,#-1
+  788  00001810  afc20008	sw	8(r30),r2
+  789  00001814  70210000	slei	r1,r1,#0
+  790  00001818  1020000c	beqz	r1,L18_LF2
+  791  0000181c  54000000	nop; delay slot nop
+  792  00001820  08000048	j	L16_LF2
+  793  00001824  54000000	nop; delay slot nop
+  794  00001828          	L18_LF2:
+  795  00001828  8fc10000	lw	r1,(r30)
+  796  0000182c  20220001	addi	r2,r1,#1
+  797  00001830  afc20000	sw	(r30),r2
+  798  00001834  8fc20004	lw	r2,4(r30)
+  799  00001838  20430001	addi	r3,r2,#1
+  800  0000183c  afc30004	sw	4(r30),r3
+  801  00001840  80420000	lb	r2,(r2)
+  802  00001844  a0220000	sb	(r1),r2
+  803  00001848  a3c2fff3	sb	-13(r30),r2
+  804  0000184c          	L17_LF2:
+  805  0000184c  93c1fff3	lbu	r1,-13(r30)
+  806  00001850  64220000	snei	r2,r1,#0
+  807  00001854  1440000c	bnez	r2,L19_LF2
+  808  00001858  54000000	nop; delay slot nop
+  809  0000185c  0800000c	j	L16_LF2
+  810  00001860  54000000	nop; delay slot nop
+  811  00001864          	L19_LF2:
+  812  00001864  0bffffa0	j	L15_LF2
+  813  00001868  54000000	nop; delay slot nop
+  814  0000186c          	L16_LF2:
+  815  0000186c  8fc1fff4	lw	r1,-12(r30)
+  816  00001870  08000004	j	L14_LF2
+  817  00001874  54000000	nop; delay slot nop
+  818  00001878          	L14_LF2:
+  819  00001878  8fa20000	lw	r2,0(r29)
+  820  0000187c  8fa30004	lw	r3,4(r29)
+  821  00001880  8fdffff8	lw	r31,-8(r30)
+  822  00001884  001ee820	add	r29,r0,r30
+  823  00001888  8fdefffc	lw	r30,-4(r30)
+  824  0000188c  4be00000	jr	r31
+  825  00001890  54000000	nop
+  826  00001894          	.endproc _dstrncpy
+  827  00001894          	.align 2
+  828  00001894          	.proc _dstrcat
+  829  00001894          	.global _dstrcat
+  830  00001894          	_dstrcat:
+  831                      ;  Function 'dstrcat'; 8 bytes of locals, 1 regs to save.
+  832  00001894  afbefffc	sw	-4(r29),r30; push fp
+  833  00001898  001df020	add	r30,r0,r29; fp = sp
+  834  0000189c  afbffff8	sw	-8(r29),r31; push ret addr
+  835  000018a0  2fbd0018	subui	r29,r29,#24; alloc local storage
+  836  000018a4  afa20000	sw	0(r29),r2
+  837  000018a8  8fc10000	lw	r1,(r30)
+  838  000018ac  afc1fff4	sw	-12(r30),r1
+  839  000018b0          	L21_LF2:
+  840  000018b0  8fc10000	lw	r1,(r30)
+  841  000018b4  90220000	lbu	r2,(r1)
+  842  000018b8  64410000	snei	r1,r2,#0
+  843  000018bc  1420000c	bnez	r1,L23_LF2
+  844  000018c0  54000000	nop; delay slot nop
+  845  000018c4  0800001c	j	L22_LF2
+  846  000018c8  54000000	nop; delay slot nop
+  847  000018cc          	L23_LF2:
+  848  000018cc  8fc20000	lw	r2,(r30)
+  849  000018d0  20410001	addi	r1,r2,#1
+  850  000018d4  00011020	add	r2,r0,r1
+  851  000018d8  afc20000	sw	(r30),r2
+  852  000018dc  0bffffd0	j	L21_LF2
+  853  000018e0  54000000	nop; delay slot nop
+  854  000018e4          	L22_LF2:
+  855  000018e4  23bdfff8	addi	r29,r29,#-8
+  856  000018e8  001d0820	add	r1,r0,r29
+  857  000018ec  8fc20000	lw	r2,(r30)
+  858  000018f0  ac220000	sw	(r1),r2
+  859  000018f4  8fc20004	lw	r2,4(r30)
+  860  000018f8  ac220004	sw	4(r1),r2
+  861  000018fc  0ffffe5c	jal	_dstrcpy
+  862  00001900  54000000	nop; delay slot nop
+  863  00001904  23bd0008	addi	r29,r29,#8
+  864  00001908  8fc1fff4	lw	r1,-12(r30)
+  865  0000190c  08000004	j	L20_LF2
+  866  00001910  54000000	nop; delay slot nop
+  867  00001914          	L20_LF2:
+  868  00001914  8fa20000	lw	r2,0(r29)
+  869  00001918  8fdffff8	lw	r31,-8(r30)
+  870  0000191c  001ee820	add	r29,r0,r30
+  871  00001920  8fdefffc	lw	r30,-4(r30)
+  872  00001924  4be00000	jr	r31
+  873  00001928  54000000	nop
+  874  0000192c          	.endproc _dstrcat
+  875  0000192c          	.align 2
+  876  0000192c          	.proc _dstrncmp
+  877  0000192c          	.global _dstrncmp
+  878  0000192c          	_dstrncmp:
+  879                      ;  Function 'dstrncmp'; 8 bytes of locals, 2 regs to save.
+  880  0000192c  afbefffc	sw	-4(r29),r30; push fp
+  881  00001930  001df020	add	r30,r0,r29; fp = sp
+  882  00001934  afbffff8	sw	-8(r29),r31; push ret addr
+  883  00001938  2fbd0018	subui	r29,r29,#24; alloc local storage
+  884  0000193c  afa20000	sw	0(r29),r2
+  885  00001940  afa30004	sw	4(r29),r3
+  886  00001944  54000000	nop
+  887  00001948  20010000	addi	r1,r0,#0
+  888  0000194c  afc1fff4	sw	-12(r30),r1
+  889  00001950          	L25_LF2:
+  890  00001950  8fc1fff4	lw	r1,-12(r30)
+  891  00001954  8fc20008	lw	r2,8(r30)
+  892  00001958  0022082a	slt	r1,r1,r2
+  893  0000195c  1420000c	bnez	r1,L28_LF2
+  894  00001960  54000000	nop; delay slot nop
+  895  00001964  08000088	j	L26_LF2
+  896  00001968  54000000	nop; delay slot nop
+  897  0000196c          	L28_LF2:
+  898  0000196c  8fc10004	lw	r1,4(r30)
+  899  00001970  90220000	lbu	r2,(r1)
+  900  00001974  64410000	snei	r1,r2,#0
+  901  00001978  14200018	bnez	r1,L29_LF2
+  902  0000197c  54000000	nop; delay slot nop
+  903  00001980  20010000	addi	r1,r0,#0
+  904  00001984  080000d8	j	L24_LF2
+  905  00001988  54000000	nop; delay slot nop
+  906  0000198c  08000028	j	L30_LF2
+  907  00001990  54000000	nop; delay slot nop
+  908  00001994          	L29_LF2:
+  909  00001994  8fc10000	lw	r1,(r30)
+  910  00001998  8fc20004	lw	r2,4(r30)
+  911  0000199c  90210000	lbu	r1,(r1)
+  912  000019a0  90420000	lbu	r2,(r2)
+  913  000019a4  00220829	sne	r1,r1,r2
+  914  000019a8  1020000c	beqz	r1,L30_LF2
+  915  000019ac  54000000	nop; delay slot nop
+  916  000019b0  0800003c	j	L26_LF2
+  917  000019b4  54000000	nop; delay slot nop
+  918  000019b8          	L31_LF2:
+  919  000019b8          	L30_LF2:
+  920  000019b8  8fc20000	lw	r2,(r30)
+  921  000019bc  20410001	addi	r1,r2,#1
+  922  000019c0  00011020	add	r2,r0,r1
+  923  000019c4  afc20000	sw	(r30),r2
+  924  000019c8  8fc20004	lw	r2,4(r30)
+  925  000019cc  20410001	addi	r1,r2,#1
+  926  000019d0  00011020	add	r2,r0,r1
+  927  000019d4  afc20004	sw	4(r30),r2
+  928  000019d8          	L27_LF2:
+  929  000019d8  8fc2fff4	lw	r2,-12(r30)
+  930  000019dc  20410001	addi	r1,r2,#1
+  931  000019e0  00011020	add	r2,r0,r1
+  932  000019e4  afc2fff4	sw	-12(r30),r2
+  933  000019e8  0bffff64	j	L25_LF2
+  934  000019ec  54000000	nop; delay slot nop
+  935  000019f0          	L26_LF2:
+  936  000019f0  8fc1fff4	lw	r1,-12(r30)
+  937  000019f4  8fc20008	lw	r2,8(r30)
+  938  000019f8  00220828	seq	r1,r1,r2
+  939  000019fc  10200018	beqz	r1,L32_LF2
+  940  00001a00  54000000	nop; delay slot nop
+  941  00001a04  20010000	addi	r1,r0,#0
+  942  00001a08  08000054	j	L24_LF2
+  943  00001a0c  54000000	nop; delay slot nop
+  944  00001a10  0800004c	j	L33_LF2
+  945  00001a14  54000000	nop; delay slot nop
+  946  00001a18          	L32_LF2:
+  947  00001a18  8fc20000	lw	r2,(r30)
+  948  00001a1c  90410000	lbu	r1,(r2)
+  949  00001a20  8fc20004	lw	r2,4(r30)
+  950  00001a24  90430000	lbu	r3,(r2)
+  951  00001a28  00230822	sub	r1,r1,r3
+  952  00001a2c  74220000	sgei	r2,r1,#0
+  953  00001a30  10400020	beqz	r2,L34_LF2
+  954  00001a34  54000000	nop; delay slot nop
+  955  00001a38  8fc10000	lw	r1,(r30)
+  956  00001a3c  8fc20004	lw	r2,4(r30)
+  957  00001a40  90210000	lbu	r1,(r1)
+  958  00001a44  90420000	lbu	r2,(r2)
+  959  00001a48  00220829	sne	r1,r1,r2
+  960  00001a4c  08000008	j	L35_LF2
+  961  00001a50  54000000	nop; delay slot nop
+  962  00001a54          	L34_LF2:
+  963  00001a54  2001ffff	addi	r1,r0,#-1
+  964  00001a58          	L35_LF2:
+  965  00001a58  08000004	j	L24_LF2
+  966  00001a5c  54000000	nop; delay slot nop
+  967  00001a60          	L33_LF2:
+  968  00001a60          	L24_LF2:
+  969  00001a60  8fa20000	lw	r2,0(r29)
+  970  00001a64  8fa30004	lw	r3,4(r29)
+  971  00001a68  8fdffff8	lw	r31,-8(r30)
+  972  00001a6c  001ee820	add	r29,r0,r30
+  973  00001a70  8fdefffc	lw	r30,-4(r30)
+  974  00001a74  4be00000	jr	r31
+  975  00001a78  54000000	nop
+  976  00001a7c          	.endproc _dstrncmp
+  977  00001a7c          	.align 2
+  978  00001a7c          	.proc _dstrlen
+  979  00001a7c          	.global _dstrlen
+  980  00001a7c          	_dstrlen:
+  981                      ;  Function 'dstrlen'; 8 bytes of locals, 1 regs to save.
+  982  00001a7c  afbefffc	sw	-4(r29),r30; push fp
+  983  00001a80  001df020	add	r30,r0,r29; fp = sp
+  984  00001a84  afbffff8	sw	-8(r29),r31; push ret addr
+  985  00001a88  2fbd0018	subui	r29,r29,#24; alloc local storage
+  986  00001a8c  afa20000	sw	0(r29),r2
+  987  00001a90  20010000	addi	r1,r0,#0
+  988  00001a94  afc1fff4	sw	-12(r30),r1
+  989  00001a98          	L37_LF2:
+  990  00001a98  8fc10000	lw	r1,(r30)
+  991  00001a9c  20220001	addi	r2,r1,#1
+  992  00001aa0  afc20000	sw	(r30),r2
+  993  00001aa4  90210000	lbu	r1,(r1)
+  994  00001aa8  64220000	snei	r2,r1,#0
+  995  00001aac  1440000c	bnez	r2,L39_LF2
+  996  00001ab0  54000000	nop; delay slot nop
+  997  00001ab4  0800001c	j	L38_LF2
+  998  00001ab8  54000000	nop; delay slot nop
+  999  00001abc          	L39_LF2:
+ 1000  00001abc  8fc2fff4	lw	r2,-12(r30)
+ 1001  00001ac0  20410001	addi	r1,r2,#1
+ 1002  00001ac4  00011020	add	r2,r0,r1
+ 1003  00001ac8  afc2fff4	sw	-12(r30),r2
+ 1004  00001acc  0bffffc8	j	L37_LF2
+ 1005  00001ad0  54000000	nop; delay slot nop
+ 1006  00001ad4          	L38_LF2:
+ 1007  00001ad4  8fc1fff4	lw	r1,-12(r30)
+ 1008  00001ad8  08000004	j	L36_LF2
+ 1009  00001adc  54000000	nop; delay slot nop
+ 1010  00001ae0          	L36_LF2:
+ 1011  00001ae0  8fa20000	lw	r2,0(r29)
+ 1012  00001ae4  8fdffff8	lw	r31,-8(r30)
+ 1013  00001ae8  001ee820	add	r29,r0,r30
+ 1014  00001aec  8fdefffc	lw	r30,-4(r30)
+ 1015  00001af0  4be00000	jr	r31
+ 1016  00001af4  54000000	nop
+ 1017  00001af8          	.endproc _dstrlen
+ 1018  00001af8          	.align 2
+ 1019  00001af8          	.proc _dstrstr
+ 1020  00001af8          	.global _dstrstr
+ 1021  00001af8          	_dstrstr:
+ 1022                      ;  Function 'dstrstr'; 8 bytes of locals, 1 regs to save.
+ 1023  00001af8  afbefffc	sw	-4(r29),r30; push fp
+ 1024  00001afc  001df020	add	r30,r0,r29; fp = sp
+ 1025  00001b00  afbffff8	sw	-8(r29),r31; push ret addr
+ 1026  00001b04  2fbd0018	subui	r29,r29,#24; alloc local storage
+ 1027  00001b08  afa20000	sw	0(r29),r2
+ 1028  00001b0c  23bdfff8	addi	r29,r29,#-8
+ 1029  00001b10  001d0820	add	r1,r0,r29
+ 1030  00001b14  8fc20004	lw	r2,4(r30)
+ 1031  00001b18  ac220000	sw	(r1),r2
+ 1032  00001b1c  0fffff5c	jal	_dstrlen
+ 1033  00001b20  54000000	nop; delay slot nop
+ 1034  00001b24  23bd0008	addi	r29,r29,#8
+ 1035  00001b28  afc1fff4	sw	-12(r30),r1
+ 1036  00001b2c          	L41_LF2:
+ 1037  00001b2c  8fc10000	lw	r1,(r30)
+ 1038  00001b30  90220000	lbu	r2,(r1)
+ 1039  00001b34  64410000	snei	r1,r2,#0
+ 1040  00001b38  1420000c	bnez	r1,L43_LF2
+ 1041  00001b3c  54000000	nop; delay slot nop
+ 1042  00001b40  08000060	j	L42_LF2
+ 1043  00001b44  54000000	nop; delay slot nop
+ 1044  00001b48          	L43_LF2:
+ 1045  00001b48  23bdfff0	addi	r29,r29,#-16
+ 1046  00001b4c  001d0820	add	r1,r0,r29
+ 1047  00001b50  8fc20000	lw	r2,(r30)
+ 1048  00001b54  ac220000	sw	(r1),r2
+ 1049  00001b58  8fc20004	lw	r2,4(r30)
+ 1050  00001b5c  ac220004	sw	4(r1),r2
+ 1051  00001b60  8fc2fff4	lw	r2,-12(r30)
+ 1052  00001b64  ac220008	sw	8(r1),r2
+ 1053  00001b68  0ffffdc0	jal	_dstrncmp
+ 1054  00001b6c  54000000	nop; delay slot nop
+ 1055  00001b70  23bd0010	addi	r29,r29,#16
+ 1056  00001b74  64220000	snei	r2,r1,#0
+ 1057  00001b78  14400010	bnez	r2,L44_LF2
+ 1058  00001b7c  54000000	nop; delay slot nop
+ 1059  00001b80  8fc10000	lw	r1,(r30)
+ 1060  00001b84  08000028	j	L40_LF2
+ 1061  00001b88  54000000	nop; delay slot nop
+ 1062  00001b8c          	L44_LF2:
+ 1063  00001b8c  8fc20000	lw	r2,(r30)
+ 1064  00001b90  20410001	addi	r1,r2,#1
+ 1065  00001b94  00011020	add	r2,r0,r1
+ 1066  00001b98  afc20000	sw	(r30),r2
+ 1067  00001b9c  0bffff8c	j	L41_LF2
+ 1068  00001ba0  54000000	nop; delay slot nop
+ 1069  00001ba4          	L42_LF2:
+ 1070  00001ba4  20010000	addi	r1,r0,#0
+ 1071  00001ba8  08000004	j	L40_LF2
+ 1072  00001bac  54000000	nop; delay slot nop
+ 1073  00001bb0          	L40_LF2:
+ 1074  00001bb0  8fa20000	lw	r2,0(r29)
+ 1075  00001bb4  8fdffff8	lw	r31,-8(r30)
+ 1076  00001bb8  001ee820	add	r29,r0,r30
+ 1077  00001bbc  8fdefffc	lw	r30,-4(r30)
+ 1078  00001bc0  4be00000	jr	r31
+ 1079  00001bc4  54000000	nop
+ 1080  00001bc8          	.endproc _dstrstr
+ 1081  00001bc8          	.align 2
+ 1082  00001bc8          	.proc _dmindex
+ 1083  00001bc8          	.global _dmindex
+ 1084  00001bc8          	_dmindex:
+ 1085                      ;  Function 'dmindex'; 8 bytes of locals, 1 regs to save.
+ 1086  00001bc8  afbefffc	sw	-4(r29),r30; push fp
+ 1087  00001bcc  001df020	add	r30,r0,r29; fp = sp
+ 1088  00001bd0  afbffff8	sw	-8(r29),r31; push ret addr
+ 1089  00001bd4  2fbd0018	subui	r29,r29,#24; alloc local storage
+ 1090  00001bd8  afa20000	sw	0(r29),r2
+ 1091  00001bdc  54000000	nop
+ 1092  00001be0          	L46_LF2:
+ 1093  00001be0  8fc10000	lw	r1,(r30)
+ 1094  00001be4  90220000	lbu	r2,(r1)
+ 1095  00001be8  64410000	snei	r1,r2,#0
+ 1096  00001bec  1420000c	bnez	r1,L48_LF2
+ 1097  00001bf0  54000000	nop; delay slot nop
+ 1098  00001bf4  08000070	j	L47_LF2
+ 1099  00001bf8  54000000	nop; delay slot nop
+ 1100  00001bfc          	L48_LF2:
+ 1101  00001bfc  8fc10004	lw	r1,4(r30)
+ 1102  00001c00  afc1fff4	sw	-12(r30),r1
+ 1103  00001c04          	L49_LF2:
+ 1104  00001c04  8fc1fff4	lw	r1,-12(r30)
+ 1105  00001c08  90220000	lbu	r2,(r1)
+ 1106  00001c0c  64410000	snei	r1,r2,#0
+ 1107  00001c10  1420000c	bnez	r1,L52_LF2
+ 1108  00001c14  54000000	nop; delay slot nop
+ 1109  00001c18  08000044	j	L50_LF2
+ 1110  00001c1c  54000000	nop; delay slot nop
+ 1111  00001c20          	L52_LF2:
+ 1112  00001c20  8fc10000	lw	r1,(r30)
+ 1113  00001c24  8fc2fff4	lw	r2,-12(r30)
+ 1114  00001c28  90210000	lbu	r1,(r1)
+ 1115  00001c2c  90420000	lbu	r2,(r2)
+ 1116  00001c30  00220828	seq	r1,r1,r2
+ 1117  00001c34  10200010	beqz	r1,L51_LF2
+ 1118  00001c38  54000000	nop; delay slot nop
+ 1119  00001c3c  8fc10000	lw	r1,(r30)
+ 1120  00001c40  08000030	j	L45_LF2
+ 1121  00001c44  54000000	nop; delay slot nop
+ 1122  00001c48          	L53_LF2:
+ 1123  00001c48          	L51_LF2:
+ 1124  00001c48  8fc2fff4	lw	r2,-12(r30)
+ 1125  00001c4c  20410001	addi	r1,r2,#1
+ 1126  00001c50  00011020	add	r2,r0,r1
+ 1127  00001c54  afc2fff4	sw	-12(r30),r2
+ 1128  00001c58  0bffffa8	j	L49_LF2
+ 1129  00001c5c  54000000	nop; delay slot nop
+ 1130  00001c60          	L50_LF2:
+ 1131  00001c60  0bffff7c	j	L46_LF2
+ 1132  00001c64  54000000	nop; delay slot nop
+ 1133  00001c68          	L47_LF2:
+ 1134  00001c68  20010000	addi	r1,r0,#0
+ 1135  00001c6c  08000004	j	L45_LF2
+ 1136  00001c70  54000000	nop; delay slot nop
+ 1137  00001c74          	L45_LF2:
+ 1138  00001c74  8fa20000	lw	r2,0(r29)
+ 1139  00001c78  8fdffff8	lw	r31,-8(r30)
+ 1140  00001c7c  001ee820	add	r29,r0,r30
+ 1141  00001c80  8fdefffc	lw	r30,-4(r30)
+ 1142  00001c84  4be00000	jr	r31
+ 1143  00001c88  54000000	nop
+ 1144  00001c8c          	.endproc _dmindex
+ 1145  00001c8c          	.align 2
+ 1146  00001c8c          	.proc _dindex
+ 1147  00001c8c          	.global _dindex
+ 1148  00001c8c          	_dindex:
+ 1149                      ;  Function 'dindex'; 0 bytes of locals, 1 regs to save.
+ 1150  00001c8c  afbefffc	sw	-4(r29),r30; push fp
+ 1151  00001c90  001df020	add	r30,r0,r29; fp = sp
+ 1152  00001c94  afbffff8	sw	-8(r29),r31; push ret addr
+ 1153  00001c98  2fbd0010	subui	r29,r29,#16; alloc local storage
+ 1154  00001c9c  afa20000	sw	0(r29),r2
+ 1155  00001ca0  54000000	nop
+ 1156  00001ca4          	L55_LF2:
+ 1157  00001ca4  8fc10000	lw	r1,(r30)
+ 1158  00001ca8  90220000	lbu	r2,(r1)
+ 1159  00001cac  64410000	snei	r1,r2,#0
+ 1160  00001cb0  1420000c	bnez	r1,L57_LF2
+ 1161  00001cb4  54000000	nop; delay slot nop
+ 1162  00001cb8  08000040	j	L56_LF2
+ 1163  00001cbc  54000000	nop; delay slot nop
+ 1164  00001cc0          	L57_LF2:
+ 1165  00001cc0  8fc10000	lw	r1,(r30)
+ 1166  00001cc4  90220000	lbu	r2,(r1)
+ 1167  00001cc8  8fc10004	lw	r1,4(r30)
+ 1168  00001ccc  00411028	seq	r2,r2,r1
+ 1169  00001cd0  10400010	beqz	r2,L58_LF2
+ 1170  00001cd4  54000000	nop; delay slot nop
+ 1171  00001cd8  8fc10000	lw	r1,(r30)
+ 1172  00001cdc  08000028	j	L54_LF2
+ 1173  00001ce0  54000000	nop; delay slot nop
+ 1174  00001ce4          	L58_LF2:
+ 1175  00001ce4  8fc20000	lw	r2,(r30)
+ 1176  00001ce8  20410001	addi	r1,r2,#1
+ 1177  00001cec  00011020	add	r2,r0,r1
+ 1178  00001cf0  afc20000	sw	(r30),r2
+ 1179  00001cf4  0bffffac	j	L55_LF2
+ 1180  00001cf8  54000000	nop; delay slot nop
+ 1181  00001cfc          	L56_LF2:
+ 1182  00001cfc  20010000	addi	r1,r0,#0
+ 1183  00001d00  08000004	j	L54_LF2
+ 1184  00001d04  54000000	nop; delay slot nop
+ 1185  00001d08          	L54_LF2:
+ 1186  00001d08  8fa20000	lw	r2,0(r29)
+ 1187  00001d0c  8fdffff8	lw	r31,-8(r30)
+ 1188  00001d10  001ee820	add	r29,r0,r30
+ 1189  00001d14  8fdefffc	lw	r30,-4(r30)
+ 1190  00001d18  4be00000	jr	r31
+ 1191  00001d1c  54000000	nop
+ 1192  00001d20          	.endproc _dindex
+ 1193  00001d20          	.align 2
+ 1194  00001d20          	.proc _ditoa
+ 1195  00001d20          	.global _ditoa
+ 1196  00001d20          	_ditoa:
+ 1197                      ;  Function 'ditoa'; 8 bytes of locals, 2 regs to save.
+ 1198  00001d20  afbefffc	sw	-4(r29),r30; push fp
+ 1199  00001d24  001df020	add	r30,r0,r29; fp = sp
+ 1200  00001d28  afbffff8	sw	-8(r29),r31; push ret addr
+ 1201  00001d2c  2fbd0018	subui	r29,r29,#24; alloc local storage
+ 1202  00001d30  afa20000	sw	0(r29),r2
+ 1203  00001d34  afa30004	sw	4(r29),r3
+ 1204  00001d38  8fc10000	lw	r1,(r30)
+ 1205  00001d3c  68220000	slti	r2,r1,#0
+ 1206  00001d40  1040002c	beqz	r2,L60_LF2
+ 1207  00001d44  54000000	nop; delay slot nop
+ 1208  00001d48  8fc10004	lw	r1,4(r30)
+ 1209  00001d4c  20220001	addi	r2,r1,#1
+ 1210  00001d50  afc20004	sw	4(r30),r2
+ 1211  00001d54  2002002d	addi	r2,r0,(#0x2d)&0xff
+ 1212  00001d58  a0220000	sb	(r1),r2
+ 1213  00001d5c  8fc10000	lw	r1,(r30)
+ 1214  00001d60  00011022	sub	r2,r0,r1
+ 1215  00001d64  afc20000	sw	(r30),r2
+ 1216  00001d68  08000118	j	L61_LF2
+ 1217  00001d6c  54000000	nop; delay slot nop
+ 1218  00001d70          	L60_LF2:
+ 1219  00001d70  8fc10000	lw	r1,(r30)
+ 1220  00001d74  64220000	snei	r2,r1,#0
+ 1221  00001d78  14400020	bnez	r2,L62_LF2
+ 1222  00001d7c  54000000	nop; delay slot nop
+ 1223  00001d80  8fc10004	lw	r1,4(r30)
+ 1224  00001d84  20220001	addi	r2,r1,#1
+ 1225  00001d88  afc20004	sw	4(r30),r2
+ 1226  00001d8c  20020030	addi	r2,r0,(#0x30)&0xff
+ 1227  00001d90  a0220000	sb	(r1),r2
+ 1228  00001d94  080000ec	j	L61_LF2
+ 1229  00001d98  54000000	nop; delay slot nop
+ 1230  00001d9c          	L62_LF2:
+ 1231  00001d9c  20010001	addi	r1,r0,#1
+ 1232  00001da0  afc1fff4	sw	-12(r30),r1
+ 1233  00001da4          	L64_LF2:
+ 1234  00001da4  8fc1fff4	lw	r1,-12(r30)
+ 1235  00001da8  8fc20000	lw	r2,(r30)
+ 1236  00001dac  0022082c	sle	r1,r1,r2
+ 1237  00001db0  1420000c	bnez	r1,L66_LF2
+ 1238  00001db4  54000000	nop; delay slot nop
+ 1239  00001db8  08000024	j	L65_LF2
+ 1240  00001dbc  54000000	nop; delay slot nop
+ 1241  00001dc0          	L67_LF2:
+ 1242  00001dc0          	L66_LF2:
+ 1243  00001dc0  8fc1fff4	lw	r1,-12(r30)
+ 1244  00001dc4  00011820	add	r3,r0,r1
+ 1245  00001dc8  50620002	slli	r2,r3,#0x2
+ 1246  00001dcc  00411020	add	r2,r2,r1
+ 1247  00001dd0  50410001	slli	r1,r2,#0x1
+ 1248  00001dd4  afc1fff4	sw	-12(r30),r1
+ 1249  00001dd8  0bffffc8	j	L64_LF2
+ 1250  00001ddc  54000000	nop; delay slot nop
+ 1251  00001de0          	L65_LF2:
+ 1252  00001de0  54000000	nop
+ 1253  00001de4          	L68_LF2:
+ 1254  00001de4  8fc1fff4	lw	r1,-12(r30)
+ 1255  00001de8  2002000a	addi	r2,r0,#10
+ 1256  00001dec  00200035	movi2fp	f0,r1
+ 1257  00001df0  00400835	movi2fp	f1,r2
+ 1258  00001df4  0401000f	div	f0,f0,f1
+ 1259  00001df8  00000834	movfp2i	r1,f0
+ 1260  00001dfc  afc1fff4	sw	-12(r30),r1
+ 1261  00001e00  8fc10004	lw	r1,4(r30)
+ 1262  00001e04  20220001	addi	r2,r1,#1
+ 1263  00001e08  afc20004	sw	4(r30),r2
+ 1264  00001e0c  8fc20000	lw	r2,(r30)
+ 1265  00001e10  8fc3fff4	lw	r3,-12(r30)
+ 1266  00001e14  00400035	movi2fp	f0,r2
+ 1267  00001e18  00600835	movi2fp	f1,r3
+ 1268  00001e1c  0401000f	div	f0,f0,f1
+ 1269  00001e20  00001034	movfp2i	r2,f0
+ 1270  00001e24  00021820	add	r3,r0,r2
+ 1271  00001e28  20620030	addi	r2,r3,#48
+ 1272  00001e2c  a0220000	sb	(r1),r2
+ 1273  00001e30  8fc10000	lw	r1,(r30)
+ 1274  00001e34  8fc3fff4	lw	r3,-12(r30)
+ 1275  00001e38  00200035	movi2fp	f0,r1
+ 1276  00001e3c  00600835	movi2fp	f1,r3
+ 1277  00001e40  0401000f	div	f0,f0,f1
+ 1278  00001e44  00001034	movfp2i	r2,f0
+ 1279  00001e48  8fc3fff4	lw	r3,-12(r30)
+ 1280  00001e4c  00400035	movi2fp	f0,r2
+ 1281  00001e50  00600835	movi2fp	f1,r3
+ 1282  00001e54  0401000e	mult	f0,f0,f1
+ 1283  00001e58  00001034	movfp2i	r2,f0
+ 1284  00001e5c  00220822	sub	r1,r1,r2
+ 1285  00001e60  afc10000	sw	(r30),r1
+ 1286  00001e64          	L70_LF2:
+ 1287  00001e64  8fc1fff4	lw	r1,-12(r30)
+ 1288  00001e68  6c220001	sgti	r2,r1,#1
+ 1289  00001e6c  1440000c	bnez	r2,L71_LF2
+ 1290  00001e70  54000000	nop; delay slot nop
+ 1291  00001e74  0800000c	j	L61_LF2
+ 1292  00001e78  54000000	nop; delay slot nop
+ 1293  00001e7c          	L71_LF2:
+ 1294  00001e7c  0bffff64	j	L68_LF2
+ 1295  00001e80  54000000	nop; delay slot nop
+ 1296  00001e84          	L69_LF2:
+ 1297  00001e84          	L63_LF2:
+ 1298  00001e84          	L61_LF2:
+ 1299  00001e84  8fc10004	lw	r1,4(r30)
+ 1300  00001e88  20020000	addi	r2,r0,(#0x0)&0xff
+ 1301  00001e8c  a0220000	sb	(r1),r2
+ 1302  00001e90          	L59_LF2:
+ 1303  00001e90  8fa20000	lw	r2,0(r29)
+ 1304  00001e94  8fa30004	lw	r3,4(r29)
+ 1305  00001e98  8fdffff8	lw	r31,-8(r30)
+ 1306  00001e9c  001ee820	add	r29,r0,r30
+ 1307  00001ea0  8fdefffc	lw	r30,-4(r30)
+ 1308  00001ea4  4be00000	jr	r31
+ 1309  00001ea8  54000000	nop
+ 1310  00001eac          	.endproc _ditoa
+ 1311  00001eac          	.align 2
+ 1312  00001eac          	.proc _dstrtol
+ 1313  00001eac          	.global _dstrtol
+ 1314  00001eac          	_dstrtol:
+ 1315                      ;  Function 'dstrtol'; 16 bytes of locals, 1 regs to save.
+ 1316  00001eac  afbefffc	sw	-4(r29),r30; push fp
+ 1317  00001eb0  001df020	add	r30,r0,r29; fp = sp
+ 1318  00001eb4  afbffff8	sw	-8(r29),r31; push ret addr
+ 1319  00001eb8  2fbd0020	subui	r29,r29,#32; alloc local storage
+ 1320  00001ebc  afa20000	sw	0(r29),r2
+ 1321  00001ec0  20010000	addi	r1,r0,#0
+ 1322  00001ec4  afc1fff4	sw	-12(r30),r1
+ 1323  00001ec8          	L73_LF2:
+ 1324  00001ec8  8fc10000	lw	r1,(r30)
+ 1325  00001ecc  90220000	lbu	r2,(r1)
+ 1326  00001ed0  60410020	seqi	r1,r2,#32
+ 1327  00001ed4  14200034	bnez	r1,L75_LF2
+ 1328  00001ed8  54000000	nop; delay slot nop
+ 1329  00001edc  8fc10000	lw	r1,(r30)
+ 1330  00001ee0  90220000	lbu	r2,(r1)
+ 1331  00001ee4  60410009	seqi	r1,r2,#9
+ 1332  00001ee8  14200020	bnez	r1,L75_LF2
+ 1333  00001eec  54000000	nop; delay slot nop
+ 1334  00001ef0  8fc10000	lw	r1,(r30)
+ 1335  00001ef4  90220000	lbu	r2,(r1)
+ 1336  00001ef8  6041000a	seqi	r1,r2,#10
+ 1337  00001efc  1420000c	bnez	r1,L75_LF2
+ 1338  00001f00  54000000	nop; delay slot nop
+ 1339  00001f04  0800001c	j	L74_LF2
+ 1340  00001f08  54000000	nop; delay slot nop
+ 1341  00001f0c          	L75_LF2:
+ 1342  00001f0c  8fc20000	lw	r2,(r30)
+ 1343  00001f10  20410001	addi	r1,r2,#1
+ 1344  00001f14  00011020	add	r2,r0,r1
+ 1345  00001f18  afc20000	sw	(r30),r2
+ 1346  00001f1c  0bffffa8	j	L73_LF2
+ 1347  00001f20  54000000	nop; delay slot nop
+ 1348  00001f24          	L74_LF2:
+ 1349  00001f24  8fc10004	lw	r1,4(r30)
+ 1350  00001f28  64220000	snei	r2,r1,#0
+ 1351  00001f2c  10400010	beqz	r2,L76_LF2
+ 1352  00001f30  54000000	nop; delay slot nop
+ 1353  00001f34  8fc10004	lw	r1,4(r30)
+ 1354  00001f38  8fc20000	lw	r2,(r30)
+ 1355  00001f3c  ac220000	sw	(r1),r2
+ 1356  00001f40          	L76_LF2:
+ 1357  00001f40  8fc10000	lw	r1,(r30)
+ 1358  00001f44  90220000	lbu	r2,(r1)
+ 1359  00001f48  64410000	snei	r1,r2,#0
+ 1360  00001f4c  14200010	bnez	r1,L77_LF2
+ 1361  00001f50  54000000	nop; delay slot nop
+ 1362  00001f54  8fc1fff4	lw	r1,-12(r30)
+ 1363  00001f58  08000294	j	L72_LF2
+ 1364  00001f5c  54000000	nop; delay slot nop
+ 1365  00001f60          	L77_LF2:
+ 1366  00001f60  8fc10000	lw	r1,(r30)
+ 1367  00001f64  90220000	lbu	r2,(r1)
+ 1368  00001f68  6041002d	seqi	r1,r2,#45
+ 1369  00001f6c  10200024	beqz	r1,L78_LF2
+ 1370  00001f70  54000000	nop; delay slot nop
+ 1371  00001f74  2001ffff	addi	r1,r0,#-1
+ 1372  00001f78  afc1ffec	sw	-20(r30),r1
+ 1373  00001f7c  8fc20000	lw	r2,(r30)
+ 1374  00001f80  20410001	addi	r1,r2,#1
+ 1375  00001f84  00011020	add	r2,r0,r1
+ 1376  00001f88  afc20000	sw	(r30),r2
+ 1377  00001f8c  0800000c	j	L79_LF2
+ 1378  00001f90  54000000	nop; delay slot nop
+ 1379  00001f94          	L78_LF2:
+ 1380  00001f94  20010001	addi	r1,r0,#1
+ 1381  00001f98  afc1ffec	sw	-20(r30),r1
+ 1382  00001f9c          	L79_LF2:
+ 1383  00001f9c  8fc10008	lw	r1,8(r30)
+ 1384  00001fa0  64220000	snei	r2,r1,#0
+ 1385  00001fa4  14400090	bnez	r2,L80_LF2
+ 1386  00001fa8  54000000	nop; delay slot nop
+ 1387  00001fac  8fc10000	lw	r1,(r30)
+ 1388  00001fb0  90220000	lbu	r2,(r1)
+ 1389  00001fb4  60410030	seqi	r1,r2,#48
+ 1390  00001fb8  10200074	beqz	r1,L81_LF2
+ 1391  00001fbc  54000000	nop; delay slot nop
+ 1392  00001fc0  8fc20000	lw	r2,(r30)
+ 1393  00001fc4  20410001	addi	r1,r2,#1
+ 1394  00001fc8  00011020	add	r2,r0,r1
+ 1395  00001fcc  afc20000	sw	(r30),r2
+ 1396  00001fd0  8fc10000	lw	r1,(r30)
+ 1397  00001fd4  90220000	lbu	r2,(r1)
+ 1398  00001fd8  60410078	seqi	r1,r2,#120
+ 1399  00001fdc  14200020	bnez	r1,L83_LF2
+ 1400  00001fe0  54000000	nop; delay slot nop
+ 1401  00001fe4  8fc10000	lw	r1,(r30)
+ 1402  00001fe8  90220000	lbu	r2,(r1)
+ 1403  00001fec  60410058	seqi	r1,r2,#88
+ 1404  00001ff0  1420000c	bnez	r1,L83_LF2
+ 1405  00001ff4  54000000	nop; delay slot nop
+ 1406  00001ff8  08000024	j	L82_LF2
+ 1407  00001ffc  54000000	nop; delay slot nop
+ 1408  00002000          	L83_LF2:
+ 1409  00002000  20010010	addi	r1,r0,#16
+ 1410  00002004  afc10008	sw	8(r30),r1
+ 1411  00002008  8fc20000	lw	r2,(r30)
+ 1412  0000200c  20410001	addi	r1,r2,#1
+ 1413  00002010  00011020	add	r2,r0,r1
+ 1414  00002014  afc20000	sw	(r30),r2
+ 1415  00002018  0800000c	j	L84_LF2
+ 1416  0000201c  54000000	nop; delay slot nop
+ 1417  00002020          	L82_LF2:
+ 1418  00002020  20010008	addi	r1,r0,#8
+ 1419  00002024  afc10008	sw	8(r30),r1
+ 1420  00002028          	L84_LF2:
+ 1421  00002028  0800000c	j	L80_LF2
+ 1422  0000202c  54000000	nop; delay slot nop
+ 1423  00002030          	L81_LF2:
+ 1424  00002030  2001000a	addi	r1,r0,#10
+ 1425  00002034  afc10008	sw	8(r30),r1
+ 1426  00002038          	L85_LF2:
+ 1427  00002038          	L80_LF2:
+ 1428  00002038  8fc10008	lw	r1,8(r30)
+ 1429  0000203c  70220000	slei	r2,r1,#0
+ 1430  00002040  1440001c	bnez	r2,L87_LF2
+ 1431  00002044  54000000	nop; delay slot nop
+ 1432  00002048  8fc10008	lw	r1,8(r30)
+ 1433  0000204c  6c220010	sgti	r2,r1,#16
+ 1434  00002050  1440000c	bnez	r2,L87_LF2
+ 1435  00002054  54000000	nop; delay slot nop
+ 1436  00002058  08000010	j	L86_LF2
+ 1437  0000205c  54000000	nop; delay slot nop
+ 1438  00002060          	L87_LF2:
+ 1439  00002060  8fc1fff4	lw	r1,-12(r30)
+ 1440  00002064  08000188	j	L72_LF2
+ 1441  00002068  54000000	nop; delay slot nop
+ 1442  0000206c          	L86_LF2:
+ 1443  0000206c  54000000	nop
+ 1444  00002070          	L88_LF2:
+ 1445  00002070  8fc10000	lw	r1,(r30)
+ 1446  00002074  90220000	lbu	r2,(r1)
+ 1447  00002078  6c41002f	sgtui	r1,r2,#47
+ 1448  0000207c  10200030	beqz	r1,L91_LF2
+ 1449  00002080  54000000	nop; delay slot nop
+ 1450  00002084  8fc10000	lw	r1,(r30)
+ 1451  00002088  90220000	lbu	r2,(r1)
+ 1452  0000208c  70410039	sleui	r1,r2,#57
+ 1453  00002090  1020001c	beqz	r1,L91_LF2
+ 1454  00002094  54000000	nop; delay slot nop
+ 1455  00002098  8fc10000	lw	r1,(r30)
+ 1456  0000209c  90220000	lbu	r2,(r1)
+ 1457  000020a0  2041ffd0	addi	r1,r2,#-48
+ 1458  000020a4  afc1fff0	sw	-16(r30),r1
+ 1459  000020a8  0800008c	j	L92_LF2
+ 1460  000020ac  54000000	nop; delay slot nop
+ 1461  000020b0          	L91_LF2:
+ 1462  000020b0  8fc10000	lw	r1,(r30)
+ 1463  000020b4  90220000	lbu	r2,(r1)
+ 1464  000020b8  6c410060	sgtui	r1,r2,#96
+ 1465  000020bc  10200030	beqz	r1,L93_LF2
+ 1466  000020c0  54000000	nop; delay slot nop
+ 1467  000020c4  8fc10000	lw	r1,(r30)
+ 1468  000020c8  90220000	lbu	r2,(r1)
+ 1469  000020cc  7041007a	sleui	r1,r2,#122
+ 1470  000020d0  1020001c	beqz	r1,L93_LF2
+ 1471  000020d4  54000000	nop; delay slot nop
+ 1472  000020d8  8fc10000	lw	r1,(r30)
+ 1473  000020dc  90220000	lbu	r2,(r1)
+ 1474  000020e0  2041ffa9	addi	r1,r2,#-87
+ 1475  000020e4  afc1fff0	sw	-16(r30),r1
+ 1476  000020e8  0800004c	j	L92_LF2
+ 1477  000020ec  54000000	nop; delay slot nop
+ 1478  000020f0          	L93_LF2:
+ 1479  000020f0  8fc10000	lw	r1,(r30)
+ 1480  000020f4  90220000	lbu	r2,(r1)
+ 1481  000020f8  6c410040	sgtui	r1,r2,#64
+ 1482  000020fc  10200030	beqz	r1,L95_LF2
+ 1483  00002100  54000000	nop; delay slot nop
+ 1484  00002104  8fc10000	lw	r1,(r30)
+ 1485  00002108  90220000	lbu	r2,(r1)
+ 1486  0000210c  7041005a	sleui	r1,r2,#90
+ 1487  00002110  1020001c	beqz	r1,L95_LF2
+ 1488  00002114  54000000	nop; delay slot nop
+ 1489  00002118  8fc10000	lw	r1,(r30)
+ 1490  0000211c  90220000	lbu	r2,(r1)
+ 1491  00002120  2041ffc9	addi	r1,r2,#-55
+ 1492  00002124  afc1fff0	sw	-16(r30),r1
+ 1493  00002128  0800000c	j	L92_LF2
+ 1494  0000212c  54000000	nop; delay slot nop
+ 1495  00002130          	L95_LF2:
+ 1496  00002130  200103e8	addi	r1,r0,#1000
+ 1497  00002134  afc1fff0	sw	-16(r30),r1
+ 1498  00002138          	L96_LF2:
+ 1499  00002138          	L94_LF2:
+ 1500  00002138          	L92_LF2:
+ 1501  00002138  8fc1fff0	lw	r1,-16(r30)
+ 1502  0000213c  8fc20008	lw	r2,8(r30)
+ 1503  00002140  0022082a	slt	r1,r1,r2
+ 1504  00002144  10200040	beqz	r1,L90_LF2
+ 1505  00002148  54000000	nop; delay slot nop
+ 1506  0000214c  8fc1fff4	lw	r1,-12(r30)
+ 1507  00002150  8fc20008	lw	r2,8(r30)
+ 1508  00002154  00200035	movi2fp	f0,r1
+ 1509  00002158  00400835	movi2fp	f1,r2
+ 1510  0000215c  0401000e	mult	f0,f0,f1
+ 1511  00002160  00000834	movfp2i	r1,f0
+ 1512  00002164  afc1fff4	sw	-12(r30),r1
+ 1513  00002168  8fc1fff4	lw	r1,-12(r30)
+ 1514  0000216c  8fc2fff0	lw	r2,-16(r30)
+ 1515  00002170  00220820	add	r1,r1,r2
+ 1516  00002174  afc1fff4	sw	-12(r30),r1
+ 1517  00002178  8fc20000	lw	r2,(r30)
+ 1518  0000217c  20410001	addi	r1,r2,#1
+ 1519  00002180  00011020	add	r2,r0,r1
+ 1520  00002184  afc20000	sw	(r30),r2
+ 1521  00002188          	L97_LF2:
+ 1522  00002188          	L90_LF2:
+ 1523  00002188  8fc1fff0	lw	r1,-16(r30)
+ 1524  0000218c  8fc20008	lw	r2,8(r30)
+ 1525  00002190  0022082a	slt	r1,r1,r2
+ 1526  00002194  1420000c	bnez	r1,L98_LF2
+ 1527  00002198  54000000	nop; delay slot nop
+ 1528  0000219c  0800000c	j	L89_LF2
+ 1529  000021a0  54000000	nop; delay slot nop
+ 1530  000021a4          	L98_LF2:
+ 1531  000021a4  0bfffec8	j	L88_LF2
+ 1532  000021a8  54000000	nop; delay slot nop
+ 1533  000021ac          	L89_LF2:
+ 1534  000021ac  8fc10004	lw	r1,4(r30)
+ 1535  000021b0  64220000	snei	r2,r1,#0
+ 1536  000021b4  10400010	beqz	r2,L99_LF2
+ 1537  000021b8  54000000	nop; delay slot nop
+ 1538  000021bc  8fc10004	lw	r1,4(r30)
+ 1539  000021c0  8fc20000	lw	r2,(r30)
+ 1540  000021c4  ac220000	sw	(r1),r2
+ 1541  000021c8          	L99_LF2:
+ 1542  000021c8  8fc1fff4	lw	r1,-12(r30)
+ 1543  000021cc  8fc2ffec	lw	r2,-20(r30)
+ 1544  000021d0  00200035	movi2fp	f0,r1
+ 1545  000021d4  00400835	movi2fp	f1,r2
+ 1546  000021d8  0401000e	mult	f0,f0,f1
+ 1547  000021dc  00000834	movfp2i	r1,f0
+ 1548  000021e0  afc1fff4	sw	-12(r30),r1
+ 1549  000021e4  8fc1fff4	lw	r1,-12(r30)
+ 1550  000021e8  08000004	j	L72_LF2
+ 1551  000021ec  54000000	nop; delay slot nop
+ 1552  000021f0          	L72_LF2:
+ 1553  000021f0  8fa20000	lw	r2,0(r29)
+ 1554  000021f4  8fdffff8	lw	r31,-8(r30)
+ 1555  000021f8  001ee820	add	r29,r0,r30
+ 1556  000021fc  8fdefffc	lw	r30,-4(r30)
+ 1557  00002200  4be00000	jr	r31
+ 1558  00002204  54000000	nop
+ 1559  00002208          	.endproc _dstrtol
+ 1560  00002208          	.align 2
+ 1561  00002208          	.proc _bcopy
+ 1562  00002208          	.global _bcopy
+ 1563  00002208          	_bcopy:
+ 1564                      ;  Function 'bcopy'; 0 bytes of locals, 2 regs to save.
+ 1565  00002208  afbefffc	sw	-4(r29),r30; push fp
+ 1566  0000220c  001df020	add	r30,r0,r29; fp = sp
+ 1567  00002210  afbffff8	sw	-8(r29),r31; push ret addr
+ 1568  00002214  2fbd0010	subui	r29,r29,#16; alloc local storage
+ 1569  00002218  afa20000	sw	0(r29),r2
+ 1570  0000221c  afa30004	sw	4(r29),r3
+ 1571  00002220  54000000	nop
+ 1572  00002224          	L101_LF2:
+ 1573  00002224  8fc10008	lw	r1,8(r30)
+ 1574  00002228  2022ffff	addi	r2,r1,#-1
+ 1575  0000222c  afc20008	sw	8(r30),r2
+ 1576  00002230  6c210000	sgti	r1,r1,#0
+ 1577  00002234  1420000c	bnez	r1,L103_LF2
+ 1578  00002238  54000000	nop; delay slot nop
+ 1579  0000223c  0800002c	j	L102_LF2
+ 1580  00002240  54000000	nop; delay slot nop
+ 1581  00002244          	L103_LF2:
+ 1582  00002244  8fc10004	lw	r1,4(r30)
+ 1583  00002248  20220001	addi	r2,r1,#1
+ 1584  0000224c  afc20004	sw	4(r30),r2
+ 1585  00002250  8fc20000	lw	r2,(r30)
+ 1586  00002254  20430001	addi	r3,r2,#1
+ 1587  00002258  afc30000	sw	(r30),r3
+ 1588  0000225c  80420000	lb	r2,(r2)
+ 1589  00002260  a0220000	sb	(r1),r2
+ 1590  00002264  0bffffbc	j	L101_LF2
+ 1591  00002268  54000000	nop; delay slot nop
+ 1592  0000226c          	L102_LF2:
+ 1593  0000226c          	L100_LF2:
+ 1594  0000226c  8fa20000	lw	r2,0(r29)
+ 1595  00002270  8fa30004	lw	r3,4(r29)
+ 1596  00002274  8fdffff8	lw	r31,-8(r30)
+ 1597  00002278  001ee820	add	r29,r0,r30
+ 1598  0000227c  8fdefffc	lw	r30,-4(r30)
+ 1599  00002280  4be00000	jr	r31
+ 1600  00002284  54000000	nop
+ 1601  00002288          	.endproc _bcopy
+ 1602  00002288          	.align 2
+ 1603  00002288          	.proc _bzero
+ 1604  00002288          	.global _bzero
+ 1605  00002288          	_bzero:
+ 1606                      ;  Function 'bzero'; 0 bytes of locals, 1 regs to save.
+ 1607  00002288  afbefffc	sw	-4(r29),r30; push fp
+ 1608  0000228c  001df020	add	r30,r0,r29; fp = sp
+ 1609  00002290  afbffff8	sw	-8(r29),r31; push ret addr
+ 1610  00002294  2fbd0010	subui	r29,r29,#16; alloc local storage
+ 1611  00002298  afa20000	sw	0(r29),r2
+ 1612  0000229c  54000000	nop
+ 1613  000022a0          	L105_LF2:
+ 1614  000022a0  8fc10004	lw	r1,4(r30)
+ 1615  000022a4  2022ffff	addi	r2,r1,#-1
+ 1616  000022a8  afc20004	sw	4(r30),r2
+ 1617  000022ac  6c210000	sgti	r1,r1,#0
+ 1618  000022b0  1420000c	bnez	r1,L107_LF2
+ 1619  000022b4  54000000	nop; delay slot nop
+ 1620  000022b8  08000020	j	L106_LF2
+ 1621  000022bc  54000000	nop; delay slot nop
+ 1622  000022c0          	L107_LF2:
+ 1623  000022c0  8fc10000	lw	r1,(r30)
+ 1624  000022c4  20220001	addi	r2,r1,#1
+ 1625  000022c8  afc20000	sw	(r30),r2
+ 1626  000022cc  20020000	addi	r2,r0,(#0x0)&0xff
+ 1627  000022d0  a0220000	sb	(r1),r2
+ 1628  000022d4  0bffffc8	j	L105_LF2
+ 1629  000022d8  54000000	nop; delay slot nop
+ 1630  000022dc          	L106_LF2:
+ 1631  000022dc          	L104_LF2:
+ 1632  000022dc  8fa20000	lw	r2,0(r29)
+ 1633  000022e0  8fdffff8	lw	r31,-8(r30)
+ 1634  000022e4  001ee820	add	r29,r0,r30
+ 1635  000022e8  8fdefffc	lw	r30,-4(r30)
+ 1636  000022ec  4be00000	jr	r31
+ 1637  000022f0  54000000	nop
+ 1638  000022f4          	.endproc _bzero
+ 1639  000022f4          	.align 2
+ 1640  000022f4          	.proc _min
+ 1641  000022f4          	.global _min
+ 1642  000022f4          	_min:
+ 1643                      ;  Function 'min'; 0 bytes of locals, 2 regs to save.
+ 1644  000022f4  afbefffc	sw	-4(r29),r30; push fp
+ 1645  000022f8  001df020	add	r30,r0,r29; fp = sp
+ 1646  000022fc  afbffff8	sw	-8(r29),r31; push ret addr
+ 1647  00002300  2fbd0010	subui	r29,r29,#16; alloc local storage
+ 1648  00002304  afa20000	sw	0(r29),r2
+ 1649  00002308  afa30004	sw	4(r29),r3
+ 1650  0000230c  8fc10000	lw	r1,(r30)
+ 1651  00002310  8fc20004	lw	r2,4(r30)
+ 1652  00002314  0022182c	sle	r3,r1,r2
+ 1653  00002318  14600008	bnez	r3,L109_LF2
+ 1654  0000231c  54000000	nop; delay slot nop
+ 1655  00002320  8fc10004	lw	r1,4(r30)
+ 1656  00002324          	L109_LF2:
+ 1657  00002324  08000004	j	L108_LF2
+ 1658  00002328  54000000	nop; delay slot nop
+ 1659  0000232c          	L108_LF2:
+ 1660  0000232c  8fa20000	lw	r2,0(r29)
+ 1661  00002330  8fa30004	lw	r3,4(r29)
+ 1662  00002334  8fdffff8	lw	r31,-8(r30)
+ 1663  00002338  001ee820	add	r29,r0,r30
+ 1664  0000233c  8fdefffc	lw	r30,-4(r30)
+ 1665  00002340  4be00000	jr	r31
+ 1666  00002344  54000000	nop
+ 1667  00002348          	.endproc _min
+ 1668  00002348          	.align 2
+ 1669  00002348          	.proc _max
+ 1670  00002348          	.global _max
+ 1671  00002348          	_max:
+ 1672                      ;  Function 'max'; 0 bytes of locals, 2 regs to save.
+ 1673  00002348  afbefffc	sw	-4(r29),r30; push fp
+ 1674  0000234c  001df020	add	r30,r0,r29; fp = sp
+ 1675  00002350  afbffff8	sw	-8(r29),r31; push ret addr
+ 1676  00002354  2fbd0010	subui	r29,r29,#16; alloc local storage
+ 1677  00002358  afa20000	sw	0(r29),r2
+ 1678  0000235c  afa30004	sw	4(r29),r3
+ 1679  00002360  8fc10000	lw	r1,(r30)
+ 1680  00002364  8fc20004	lw	r2,4(r30)
+ 1681  00002368  0022182d	sge	r3,r1,r2
+ 1682  0000236c  14600008	bnez	r3,L111_LF2
+ 1683  00002370  54000000	nop; delay slot nop
+ 1684  00002374  8fc10004	lw	r1,4(r30)
+ 1685  00002378          	L111_LF2:
+ 1686  00002378  08000004	j	L110_LF2
+ 1687  0000237c  54000000	nop; delay slot nop
+ 1688  00002380          	L110_LF2:
+ 1689  00002380  8fa20000	lw	r2,0(r29)
+ 1690  00002384  8fa30004	lw	r3,4(r29)
+ 1691  00002388  8fdffff8	lw	r31,-8(r30)
+ 1692  0000238c  001ee820	add	r29,r0,r30
+ 1693  00002390  8fdefffc	lw	r30,-4(r30)
+ 1694  00002394  4be00000	jr	r31
+ 1695  00002398  54000000	nop
+ 1696  0000239c          	.endproc _max
+ 1697                      ;;; Ethan L. Miller, 1999.  Released to the public domain
+ 1698                      ;;;
+ 1699                      ;;; Most of the traps are called in files from libtraps.
+ 1702  0000239c          	.align 2
+ 1703  0000239c          	.proc _exit
+ 1704  0000239c          	.global _exit
+ 1705  0000239c          	_exit:
+ 1706  0000239c  44000300	trap	#0x300
+ 1707  000023a0  4be00000	jr	r31
+ 1708  000023a4  54000000	nop
+ 1709  000023a8          	.endproc _exit
+ 1711                      ; for the benefit of gcc.
+ 1712  000023a8          	.proc ___main
+ 1713  000023a8          	.global ___main
+ 1714  000023a8          	___main:
+ 1715  000023a8  4be00000	jr	r31
+ 1716  000023ac  54000000	nop
+ 1717  000023b0          	.endproc ___main
+ 1718  000023b0          	.text
+ 1719  000023b0          	.global _etext
+ 1720  000023b0          	_etext:
+ 1721  000023b0          	.align 3
+ 1722  000023b0          	.data
+ 1723  0000311e          	.global _edata
+ 1724  0000311e          	_edata:

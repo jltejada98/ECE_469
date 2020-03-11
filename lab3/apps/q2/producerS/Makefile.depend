@@ -1,3 +1,2 @@
-work/producerS.o: producerS.c \
- ../../../include/usertraps.h ../../../include/misc.h \
- ../include/utility.h
+work/producerS.o: producerS.c ../../../include/usertraps.h \
+ ../../../include/misc.h ../include/utility.h

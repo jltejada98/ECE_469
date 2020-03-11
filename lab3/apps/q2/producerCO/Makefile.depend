@@ -1,3 +1,2 @@
-work/producerWater.o: producerWater.c ../../../include/lab2-api.h \
- ../../../include/usertraps.h ../../../include/misc.h \
- ../include/utility.h
+work/producerCO.o: producerCO.c ../../../include/usertraps.h \
+ ../../../include/misc.h ../include/utility.h
