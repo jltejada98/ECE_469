@@ -26,6 +26,16 @@ int main(int argc, char const *argv[])
   mmbox_S = dstrtol(argv[3], NULL, 10);
   numReact = dstrtol(argv[4], NULL, 10);
   
+  if(mbox_open(mbox_S) == MBOX_FAIL){
+    Printf("Could not open mbox_S (%d) in", mobx_S);
+    Printf(argv[0]);
+    Exit();
+  }
+  if(mbox_open(mbox_S2) == MBOX_FAIL){
+    Printf("Could not open mbox_S2 (%d) in", mobx_S2);
+    Printf(argv[0]);
+    Exit();
+  }
 
   i = 0;
   txMsg = 1;

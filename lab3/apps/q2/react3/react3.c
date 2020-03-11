@@ -29,9 +29,21 @@ int main(int argc, char const *argv[])
 	mbox_SO4 = dstrtol(argv[4], NULL, 10);
 	numReact = dstrtol(argv[5], NULL, 10);
 
-	mbox_open(mbox_S);
-	mbox_open(mbox_O2);
-	mbox_open(mbox_SO4);
+	if(mbox_open(mbox_S) == MBOX_FAIL){
+		Printf("Could not open mbox_S (%d) in", mobx_S);
+		Printf(argv[0]);
+		Exit();
+	}
+	if(mbox_open(mbox_O2) == MBOX_FAIL){
+		Printf("Could not open mbox_02 (%d) in", mobx_02);
+		Printf(argv[0]);
+		Exit();
+	}
+	if(mbox_open(mbox_SO4) == MBOX_FAIL){
+		Printf("Could not open mbox_S04 (%d) in", mobx_S04);
+		Printf(argv[0]);
+		Exit();
+	}
 
 	i = 0;
 	numS = 0;
