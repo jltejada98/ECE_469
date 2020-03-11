@@ -134,7 +134,7 @@ int main (int argc, char *argv[]){
 
     Printf("%d S2's left over. ", num_S2_init - numReact1);
     Printf("%d S's left over. ", (2*numReact1) - numReact3);
-    Printf("%d CO's left over. ", num_CO_init - numReact2);
+    Printf("%d CO's left over. ", num_CO_init - 4*numReact2);
     Printf("%d O2's left over. ", (2*numReact2) - (2*numReact3));
     Printf("%d C2's created. \n", (2*numReact2));
     Printf("%d SO4's created. \n", (numReact3));
