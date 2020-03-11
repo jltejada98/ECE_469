@@ -16,7 +16,6 @@ int main(int argc, char const *argv[])
 	int msg;
 	int txMsg;
 
-	int numS, numO2;
 
 	if (argc != 6) { 
 		Printf("Incorrect number of arguments (%d) for %s\n", argc, argv[0]);
@@ -46,8 +45,6 @@ int main(int argc, char const *argv[])
 	}
 
 	i = 0;
-	numS = 0;
-	numO2 = 0;
 	txMsg = 1;
 
 	while(i < numReact)
@@ -63,7 +60,6 @@ int main(int argc, char const *argv[])
 			Printf("Error, incorrect message rx\nExiting...\n");
 			Exit();
 		}
-		numS++;
 
 		msg = 0;
 		if(mbox_recv(mbox_O2, sizeof(int), &msg) == MBOX_FAIL)
@@ -76,18 +72,15 @@ int main(int argc, char const *argv[])
 			Printf("Error, incorrect message rx\nExiting...\n");
 			Exit();
 		}
-		numO2++;
 
-		if(numO2 >= 2 && numS >= 1)
+
+		if(mbox_send(mbox_SO4, sizeof(int), &txMsg) == MBOX_FAIL)
 		{
-			if(mbox_send(mbox_SO4, sizeof(int), &txMsg) == MBOX_FAIL)
-			{
-				Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
-				Exit();
-			}
-			Printf("(%d) S + 2 O2 -> SO4 Reacted, PID: %d\n", i+1, getpid());
-			i++;
+			Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
+			Exit();
 		}
+		Printf("(%d) S + 2 O2 -> SO4 Reacted, PID: %d\n", i+1, getpid());
+		i++;
 
 	}
 
