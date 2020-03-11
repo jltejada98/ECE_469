@@ -123,7 +123,7 @@ int main (int argc, char *argv[]){
     process_create(PRODUCER_FILENAME_CO, 0, 0, sem_procs_completed_str, num_CO_init_str, mbox_CO_str, NULL);
     process_create(REACT_FILENAME_1, 0, 0, sem_procs_completed_str,mbox_S2_str, mbox_S_str, numReact1_str, NULL);
     process_create(REACT_FILENAME_2, 0, 0, sem_procs_completed_str, mbox_CO_str, mbox_O2_str, mbox_C2_str, numReact2_str, NULL);
-    process_create(REACT_FILENAME_3, 0, 0, sem_procs_completed_str,mbox_S_str, mbox_O2_str, mbox_SO4_str, numReact1_str, NULL);
+    process_create(REACT_FILENAME_3, 0, 0, sem_procs_completed_str,mbox_S_str, mbox_O2_str, mbox_SO4_str, numReact3_str, NULL);
 
 
     if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
