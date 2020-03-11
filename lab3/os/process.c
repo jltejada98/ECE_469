@@ -254,6 +254,7 @@ void ProcessSchedule () {
 //----------------------------------------------------------------------
 void ProcessSuspend (PCB *suspend) {
   // Make sure it's already a runnable process.
+  suspend->numJiffies += ClkGetCurJiffies() - suspend->lastStartJiffies;
   dbprintf ('p', "ProcessSuspend (%d): function started\n", GetCurrentPid());
   ASSERT (suspend->flags & PROCESS_STATUS_RUNNABLE, "Trying to suspend a non-running process!\n");
   ProcessSetStatus (suspend, PROCESS_STATUS_WAITING);
@@ -303,6 +304,7 @@ void ProcessWakeup (PCB *wakeup) {
     printf("FATAL ERROR: could not insert link into runQueue in ProcessWakeup!\n");
     exitsim();
   }
+  wakeup->lastStartJiffies = ClkGetCurJiffies();
 }
 
 
@@ -321,6 +323,9 @@ void ProcessWakeup (PCB *wakeup) {
 //
 //----------------------------------------------------------------------
 void ProcessDestroy (PCB *pcb) {
+  if(pcb->pinfo)
+    printf(PROCESS_CPUSTATS_FORMAT, GetCurrentPid(), pcb->numJiffies, -1);
+
   dbprintf ('p', "ProcessDestroy (%d): function started\n", GetCurrentPid());
   ProcessSetStatus (pcb, PROCESS_STATUS_ZOMBIE);
   if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
