@@ -82,7 +82,7 @@ int main(int argc, char const *argv[])
         Exit();
       }
     }
-    Printf("(%d) 4 CO -> 2 O2 + 2 C2 Reacted, PID: %d", i, getpid());
+    Printf("(%d) 4 CO -> 2 O2 + 2 C2 Reacted, PID: %d\n", i, getpid());
     i++;
   }
 
