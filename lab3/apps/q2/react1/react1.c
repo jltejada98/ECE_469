@@ -26,14 +26,14 @@ int main(int argc, char const *argv[])
   mmbox_S = dstrtol(argv[3], NULL, 10);
   numReact = dstrtol(argv[4], NULL, 10);
   
-  
+
   i = 0;
   txMsg = 1;
 
   while(i <  numReact)
   {
     msg = 0;
-    Printf("react1 waiting to receive message\n");
+    Printf("react1 waiting to receive message on mbox %d\n", mmbox_S2);
     if(mbox_recv(mmbox_S2, sizeof(int), &msg) == MBOX_FAIL)
     {
       Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
