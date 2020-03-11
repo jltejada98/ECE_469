@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
   sem_t sem_procs_completed;
   int numReact;
   int i;
-  mbox_t mmbox_S2, mmbox_S;
+  mbox_t mbox_S2, mbox_S;
   int msg;
   int txMsg;
   int numS;
@@ -22,8 +22,8 @@ int main(int argc, char const *argv[])
 
 
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
-  mmbox_S2 = dstrtol(argv[2], NULL, 10);
-  mmbox_S = dstrtol(argv[3], NULL, 10);
+  mbox_S2 = dstrtol(argv[2], NULL, 10);
+  mbox_S = dstrtol(argv[3], NULL, 10);
   numReact = dstrtol(argv[4], NULL, 10);
   
   if(mbox_open(mbox_S) == MBOX_FAIL){
@@ -44,7 +44,7 @@ int main(int argc, char const *argv[])
   {
     msg = 0;
     Printf("react1 waiting to receive message on mbox %d\n", mmbox_S2);
-    if(mbox_recv(mmbox_S2, sizeof(int), &msg) == MBOX_FAIL)
+    if(mbox_recv(mbox_S2, sizeof(int), &msg) == MBOX_FAIL)
     {
       Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
       Exit();
@@ -55,12 +55,12 @@ int main(int argc, char const *argv[])
       Exit();
     }
 
-    if(mbox_send(mmbox_S, sizeof(int), &txMsg) == MBOX_FAIL)
+    if(mbox_send(mbox_S, sizeof(int), &txMsg) == MBOX_FAIL)
     {
       Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
       Exit();
     }
-    if(mbox_send(mmbox_S, sizeof(int), &txMsg) == MBOX_FAIL)
+    if(mbox_send(mbox_S, sizeof(int), &txMsg) == MBOX_FAIL)
     {
       Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
       Exit();
