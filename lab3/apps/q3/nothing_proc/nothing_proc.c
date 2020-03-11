@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-  Printf("Exiting program of size %d\n", i);
+  Printf("Exiting program (pid: %d) of size %d\n", getpid(), i);
 
   return 0;
 }
