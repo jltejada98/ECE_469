@@ -324,7 +324,7 @@ int MboxRecv(mbox_t handle, int maxlength, void* message) {
 	//Get lock
 	if(LockHandleAcquire(box->lock) == SYNC_FAIL)
 	{
-		printf("Fatal error: Unable to acquire lock in MboxRecv\n");
+		printf("Fatal error: Unable to acquire lock (%d) in MboxRecv\n", box->lock);
 		exitsim();
 	}
 
