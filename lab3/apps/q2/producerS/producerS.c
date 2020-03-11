@@ -29,7 +29,7 @@
   msg = 1;
   for(i = 0; i < num_to_create; i++)
   {
-    mbox_S2end(mbox_S2, sizeof(int), &msg);
+    mbox_send(mbox_S2, sizeof(int), &msg);
     Printf("S2 injected into Radeon atmosphere, PID: %d \n", getpid());
   }
 
