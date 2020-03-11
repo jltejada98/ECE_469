@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
 
   k = 0;
 
-  Printf("entering loop (pid: %d) of size %d\n", getpid(), i);
+  Printf("entering loop (pid: %d) of size %d\n", getpid(), num);
   for(i = 0; i < num; i++)
   {
     for(j = 0; j < 100; j++)
@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
-  Printf("Exiting program (pid: %d) of size %d\n", getpid(), i);
+  Printf("Exiting program (pid: %d) of size %d\n", getpid(), num);
 
   return 0;
 }
