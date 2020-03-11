@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
 	numReact = dstrtol(argv[5], NULL, 10);
 
 	if(mbox_open(mbox_S) == MBOX_FAIL){
-		Printf("Could not open mbox_S (%d) in", mobx_S);
+		Printf("Could not open mbox_S (%d) in", mbox_S);
 		Printf(argv[0]);
 		Exit();
 	}
