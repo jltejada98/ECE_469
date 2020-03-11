@@ -49,17 +49,6 @@ int main(int argc, char const *argv[])
 
 	while(i < numReact)
 	{
-		msg = 0;
-		if(mbox_recv(mbox_S, sizeof(int), &msg) == MBOX_FAIL)
-		{
-			Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
-			Exit();
-		}
-		if (msg != 1)
-		{
-			Printf("Error, incorrect message rx\nExiting...\n");
-			Exit();
-		}
 
 		msg = 0;
 		if(mbox_recv(mbox_O2, sizeof(int), &msg) == MBOX_FAIL)
@@ -73,6 +62,18 @@ int main(int argc, char const *argv[])
 			Exit();
 		}
 
+		msg = 0;
+		if(mbox_recv(mbox_S, sizeof(int), &msg) == MBOX_FAIL)
+		{
+			Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());
+			Exit();
+		}
+		if (msg != 1)
+		{
+			Printf("Error, incorrect message rx\nExiting...\n");
+			Exit();
+		}
+		
 
 		if(mbox_send(mbox_SO4, sizeof(int), &txMsg) == MBOX_FAIL)
 		{
