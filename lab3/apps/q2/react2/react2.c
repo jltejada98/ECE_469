@@ -16,7 +16,6 @@ int main(int argc, char const *argv[])
   int numReact;
   int i;
   int j;
-  int numCO;
 
 
   if (argc != 6) { 
@@ -30,13 +29,13 @@ int main(int argc, char const *argv[])
   mbox_C2 = dstrtol(argv[4], NULL, 10);
   numReact = dstrtol(argv[5], NULL, 10);
 
-    if(mbox_open(mbox_C0) == MBOX_FAIL){
-    Printf("Could not open mbox_C0 (%d) in", mbox_C0);
+    if(mbox_open(mbox_CO) == MBOX_FAIL){
+    Printf("Could not open mbox_CO (%d) in", mbox_CO);
     Printf(argv[0]);
     Exit();
   }
   if(mbox_open(mbox_O2) == MBOX_FAIL){
-    Printf("Could not open mbox_02 (%d) in", mbox_02);
+    Printf("Could not open mbox_02 (%d) in", mbox_O2);
     Printf(argv[0]);
     Exit();
   }
