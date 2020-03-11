@@ -51,6 +51,8 @@ int ProcessGetFromFile(int fd, unsigned char *buf, uint32 *addr, int max);
 uint32 get_argument(char *string);
 
 
+
+
 
 //----------------------------------------------------------------------
 //
@@ -239,7 +241,7 @@ void ProcessSchedule () {
     pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
 
     if(pcb->pinfo)
-    	printf(PROCESS_CPUSTATS_FORMAT, GetCurrentPid(), pcb->numJiffies, -1);
+    	printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, -1);
 
     dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
     if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
