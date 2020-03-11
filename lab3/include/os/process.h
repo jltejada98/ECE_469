@@ -20,6 +20,9 @@
 
 #define	PROCESS_MAX_PROCS	32	// Maximum number of active processes
 
+#define PROCESS_NUM_PRIORITY_QUEUES 32
+#define PROCESS_PRIORITES_PER_QUEUE 4
+
 #define	PROCESS_INIT_ISR_SYS	0x140	// Initial status reg value for system processes
 #define	PROCESS_INIT_ISR_USER	0x100	// Initial status reg value for user processes
 
@@ -47,6 +50,9 @@ typedef struct PCB {
 
   int           pinfo;          // Turns on printing of runtime stats
   int           pnice;          // Used in priority calculation
+  int           priority;       // Current priority of process
+  int           running;
+  int           estcpu;
   int numJiffies;
   int lastStartJiffies;
 } PCB;

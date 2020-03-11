@@ -211,6 +211,7 @@ void ProcessSchedule () {
   PCB *pcb=NULL;
   int i=0;
   Link *l=NULL;
+  PCB* frontOfRunQueue;
 
   currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
@@ -242,9 +243,31 @@ void ProcessSchedule () {
     printf ("No runnable processes - exiting!\n");
     exitsim ();	// NEVER RETURNS
   }
+ 
+ 	frontOfRunQueue = AQueueFirst(&runQueue)->object;
+	//Update priority of proc that was interrupted
+  if(frontOfRunQueue->running)
+  {
+  	//Decrease priority
+  	(frontOfRunQueue->estcpu)++;
+
+  }
+  Hey dummy note: Currently working on algorithm for priority, line 256 *should* be correct
+  frontOfRunQueue->priority = PROCESS_BASE_PRIORITY_USER + (frontOfRunQueue->estcpu / 4) + (2*frontOfRunQueue->pnice);
+
+  if(10 proccess quanta have passed)
+  {
+  	decay estcpu number for every process in all run queues and recompute priority with new estcpu
+  }
+
+  //Set running flag to false for proc that won't be running
+  frontOfRunQueue->running = 0;
 
   // Move the front of the queue to the end.  The running process was the one in front.
   AQueueMoveAfter(&runQueue, AQueueLast(&runQueue), AQueueFirst(&runQueue));
+
+  //Set running flag to true for proc about to run
+  AQueueFirst(&runQueue)->object->running = 1;
 
   // Now, run the one at the head of the queue.
   pcb = (PCB *)AQueueObject(AQueueFirst(&runQueue));
