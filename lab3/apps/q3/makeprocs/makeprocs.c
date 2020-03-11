@@ -13,7 +13,8 @@ int main (int argc, char *argv[]){
     char large_num_str[10];
 
     if (argc != 1) {
-        Printf(argv[0]); Printf(" should not have any arguments.\n");
+        Printf(argv[0]); 
+        Printf(" should not have any arguments.\n");
         Exit();
     }
 
