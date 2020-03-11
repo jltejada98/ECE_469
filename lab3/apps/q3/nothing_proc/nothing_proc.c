@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
 
   for(i = 0; i < num; i++)
   {
-    for(j = 0; j < 1000; j++)
+    for(j = 0; j < 100; j++)
     {
       k = k + 5 % k;
     }
@@ -38,7 +38,6 @@ int main(int argc, char const *argv[])
   }
 
   Printf("Exiting program of size %d\n", i);
-
-
+  
   return 0;
 }
