@@ -182,13 +182,15 @@ int MboxClose(mbox_t handle) {
 		box->lock = INVALID_LOCK;
 		box->boxNotEmpty = INVALID_COND;
 		box->boxNotFull = INVALID_COND;
+
+		Printf("Closed mbox %d for all procs\n", handle);
+
 	}
 	else if (box->num_procs_open < 0)
 	{
 		printf("Fatal error: Attempting to close mailbox, mailbox now has negative number with it open %d\n", handle);
 		exitsim();
 	}
-
 
 	RestoreIntrs(key);
 
