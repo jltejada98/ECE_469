@@ -120,9 +120,6 @@ void ProcessFreeResources (PCB *pcb) {
 
   dbprintf ('p', "ProcessFreeResources: function started\n");
 
-  if(pcb->pinfo)
-    printf(PROCESS_CPUSTATS_FORMAT, GetCurrentPid(), pcb->numJiffies, -1);
-
 
   //-----------------------------------------------------
   // Your code for closing any open mailbox connections
@@ -238,6 +235,10 @@ void ProcessSchedule () {
   // because it can't be done while the process might still be running
   while (!AQueueEmpty(&zombieQueue)) {
     pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
+
+    if(pcb->pinfo)
+    	printf(PROCESS_CPUSTATS_FORMAT, GetCurrentPid(), pcb->numJiffies, -1);
+    
     dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
     if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
       printf("FATAL ERROR: could not remove zombie process from zombieQueue in ProcessSchedule!\n");
