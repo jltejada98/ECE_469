@@ -35,12 +35,12 @@ int main(int argc, char const *argv[])
 		Exit();
 	}
 	if(mbox_open(mbox_O2) == MBOX_FAIL){
-		Printf("Could not open mbox_02 (%d) in", mobx_02);
+		Printf("Could not open mbox_02 (%d) in", mbox_02);
 		Printf(argv[0]);
 		Exit();
 	}
 	if(mbox_open(mbox_SO4) == MBOX_FAIL){
-		Printf("Could not open mbox_S04 (%d) in", mobx_S04);
+		Printf("Could not open mbox_S04 (%d) in", mbox_S04);
 		Printf(argv[0]);
 		Exit();
 	}

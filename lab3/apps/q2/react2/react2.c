@@ -31,17 +31,17 @@ int main(int argc, char const *argv[])
   numReact = dstrtol(argv[5], NULL, 10);
 
     if(mbox_open(mbox_C0) == MBOX_FAIL){
-    Printf("Could not open mbox_C0 (%d) in", mobx_C0);
+    Printf("Could not open mbox_C0 (%d) in", mbox_C0);
     Printf(argv[0]);
     Exit();
   }
   if(mbox_open(mbox_O2) == MBOX_FAIL){
-    Printf("Could not open mbox_02 (%d) in", mobx_02);
+    Printf("Could not open mbox_02 (%d) in", mbox_02);
     Printf(argv[0]);
     Exit();
   }
   if(mbox_open(mbox_C2) == MBOX_FAIL){
-    Printf("Could not open mbox_C2 (%d) in", mobx_C2);
+    Printf("Could not open mbox_C2 (%d) in", mbox_C2);
     Printf(argv[0]);
     Exit();
   }
