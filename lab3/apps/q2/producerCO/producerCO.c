@@ -19,12 +19,23 @@
 	num_to_create = dstrtol(argv[2], NULL, 10);
 	mbox_CO = dstrtol(argv[3], NULL, 10);
 
-	mbox_open(mbox_CO);
+	if(mbox_open(mbox_CO) == MBOX_FAIL){
+    	Printf("Bad mbox_open in ");
+    	Printf(argv[0]);
+    	Printf("\n");
+    	Exit();
+  	}
 
 	msg = 1;
 	for(i = 0; i < num_to_create; i++)
 	{
-		mbox_send(mbox_CO, sizeof(int), &msg);
+		Printf("Sending mbox_CO: %d\n", mbox_CO);
+		if(mbox_send(mbox_CO, sizeof(int), &msg) == MBOX_FAIL){
+    		Printf("Bad mbox_send in ");
+    		Printf(argv[0]);
+    		Printf("\n");
+    		Exit();
+  		}
 		Printf("CO injected into Radeon atmosphere, PID: %d \n", getpid());
 	}
 

@@ -88,6 +88,20 @@ int main (int argc, char *argv[]){
 
     }
 
+    if (mbox_open(mbox_S2) == MBOX_FAIL || 
+        mbox_open(mbox_S)  == MBOX_FAIL|| 
+        mbox_open(mbox_CO) == MBOX_FAIL||
+        mbox_open(mbox_O2) == MBOX_FAIL||
+        mbox_open(mbox_C2) == MBOX_FAIL||
+        mbox_open(mbox_SO4) == MBOX_FAIL)
+    {
+        Printf("Bad mbox_open in ");
+        Printf(argv[0]);
+        Printf("\n");
+        Exit();
+
+    }
+
     //Convert command line arguments to strings
     ditoa(num_S2_init, num_S2_init_str);
     ditoa(num_CO_init, num_CO_init_str);
