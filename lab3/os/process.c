@@ -202,7 +202,7 @@ void ProcessSchedule () {
   int i=0;
   Link *l=NULL;
 
-  currentPCB->numJiffies += ClkGetCurJiffies() - suspend->lastStartJiffies;
+  currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
   dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, %d ready)\n",
 	    (int)currentPCB, AQueueLength (&runQueue));
