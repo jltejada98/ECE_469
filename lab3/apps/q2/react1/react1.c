@@ -65,7 +65,7 @@ int main(int argc, char const *argv[])
       Exit();
     }
 
-    Printf("S2 -> S + S reacted, PID: %d\n", getpid());
+    Printf("(%d) S2 -> S + S reacted, PID: %d\n", i+1, getpid());
     ++i;
   }
 
