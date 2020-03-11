@@ -46,6 +46,8 @@ int main (int argc, char *argv[]){
       Exit();
     }
 
+    Printf("Exiting makeprocs, pid: %d\n", getpid());
+
     return 0;
 }
 
