@@ -33,7 +33,7 @@ int main (int argc, char *argv[]){
     ditoa(10000, med_num_str);
     ditoa(1000000, large_num_str);
 
-    Prinf("Starting nothing_procs...\n");
+    Printf("Starting nothing_procs...\n");
 
     //All of process creation
     process_create(PROC_FILENAME, 0, 0, small_num_str, NULL);
