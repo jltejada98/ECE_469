@@ -202,6 +202,8 @@ void ProcessSchedule () {
   int i=0;
   Link *l=NULL;
 
+  currentPCB->numJiffies += ClkGetCurJiffies() - suspend->lastStartJiffies;
+
   dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, %d ready)\n",
 	    (int)currentPCB, AQueueLength (&runQueue));
   // The OS exits if there's no runnable process.  This is a feature, not a
@@ -247,6 +249,7 @@ void ProcessSchedule () {
     ProcessFreeResources(pcb);
   }
   dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
+  currentPCB->lastStartJiffies = ClkGetCurJiffies();
 }
 
 //----------------------------------------------------------------------
@@ -262,7 +265,6 @@ void ProcessSchedule () {
 //----------------------------------------------------------------------
 void ProcessSuspend (PCB *suspend) {
   // Make sure it's already a runnable process.
-  suspend->numJiffies += ClkGetCurJiffies() - suspend->lastStartJiffies;
   dbprintf ('p', "ProcessSuspend (%d): function started\n", GetCurrentPid());
   ASSERT (suspend->flags & PROCESS_STATUS_RUNNABLE, "Trying to suspend a non-running process!\n");
   ProcessSetStatus (suspend, PROCESS_STATUS_WAITING);
@@ -312,7 +314,6 @@ void ProcessWakeup (PCB *wakeup) {
     printf("FATAL ERROR: could not insert link into runQueue in ProcessWakeup!\n");
     exitsim();
   }
-  wakeup->lastStartJiffies = ClkGetCurJiffies();
 }
 
 
