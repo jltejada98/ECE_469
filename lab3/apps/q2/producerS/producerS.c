@@ -29,6 +29,7 @@
   msg = 1;
   for(i = 0; i < num_to_create; i++)
   {
+    Printf("Sending mbox_S2: %d\n", mbox_S2);
     mbox_send(mbox_S2, sizeof(int), &msg);
     Printf("S2 injected into Radeon atmosphere, PID: %d \n", getpid());
   }
