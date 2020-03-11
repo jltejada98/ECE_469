@@ -32,7 +32,7 @@ int main (int argc, char *argv[]){
     ditoa(sem_procs_completed, sem_procs_completed_str);
     ditoa(100, small_num_str);
     ditoa(20000, med_num_str);
-    ditoa(100000, large_num_str);
+    ditoa(500000, large_num_str);
 
     Printf("Starting nothing_procs...\n");
 
