@@ -238,7 +238,7 @@ void ProcessSchedule () {
 
     if(pcb->pinfo)
     	printf(PROCESS_CPUSTATS_FORMAT, GetCurrentPid(), pcb->numJiffies, -1);
-    
+
     dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
     if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
       printf("FATAL ERROR: could not remove zombie process from zombieQueue in ProcessSchedule!\n");
@@ -331,8 +331,6 @@ void ProcessWakeup (PCB *wakeup) {
 //
 //----------------------------------------------------------------------
 void ProcessDestroy (PCB *pcb) {
-  if(pcb->pinfo)
-    printf(PROCESS_CPUSTATS_FORMAT, GetCurrentPid(), pcb->numJiffies, -1);
 
   dbprintf ('p', "ProcessDestroy (%d): function started\n", GetCurrentPid());
   ProcessSetStatus (pcb, PROCESS_STATUS_ZOMBIE);
