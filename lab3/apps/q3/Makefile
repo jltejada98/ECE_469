@@ -1,13 +1,10 @@
 default:
 	cd makeprocs; make
-	cd producerS; make
-	cd producerCO; make
-	cd react1; make
-	cd react2; make
-	cd react3; make
+	cd nothing_proc; make
 
 clean:
 	cd makeprocs; make clean
+	cd nothing_proc; make clean
 
 run:
 	cd ../../bin; dlxsim -x os.dlx.obj -a -u makeprocs.dlx.obj 3 5; ee469_fixterminal
