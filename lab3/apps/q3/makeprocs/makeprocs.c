@@ -17,7 +17,7 @@ int main (int argc, char *argv[]){
         Exit();
     }
 
-    sem_procs_completed = sem_create(-(numprocs - 1));
+    sem_procs_completed = sem_create(3);
 
     //Error check semaphore
     if(sem_procs_completed == SYNC_FAIL)
