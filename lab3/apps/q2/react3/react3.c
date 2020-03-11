@@ -18,7 +18,7 @@ int main(int argc, char const *argv[])
 
 	int numS, numO2;
 
-	if (argc != 7) { 
+	if (argc != 6) { 
 		Printf("Incorrect number of arguments (%d) for %s\n", argc, argv[0]);
 	  Exit();
 	} 
@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
 	mbox_S = dstrtol(argv[2], NULL, 10);
 	mbox_O2 = dstrtol(argv[3], NULL, 10);
 	mbox_SO4 = dstrtol(argv[4], NULL, 10);
-	numReact = dstrtol(argv[6], NULL, 10);
+	numReact = dstrtol(argv[5], NULL, 10);
 
 	mbox_open(mbox_S);
 	mbox_open(mbox_O2);
