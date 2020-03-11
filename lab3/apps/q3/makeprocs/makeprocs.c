@@ -18,7 +18,7 @@ int main (int argc, char *argv[]){
         Exit();
     }
 
-    sem_procs_completed = sem_create(-2);
+    sem_procs_completed = sem_create(-3);
 
     //Error check semaphore
     if(sem_procs_completed == SYNC_FAIL)
@@ -40,13 +40,13 @@ int main (int argc, char *argv[]){
     process_create(PROC_FILENAME, 0, 0, sem_procs_completed_str, small_num_str, NULL);
     process_create(PROC_FILENAME, 0, 0, sem_procs_completed_str, med_num_str, NULL);
     process_create(PROC_FILENAME, 0, 0, sem_procs_completed_str, large_num_str, NULL);
+    process_create(PROC_FILENAME, 0, 0, sem_procs_completed_str, large_num_str, NULL);
 
     if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
       Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); Printf(argv[0]); Printf("\n");
       Exit();
     }
 
-    Printf("Exiting makeprocs, pid: %d\n", getpid());
 
     return 0;
 }
