@@ -30,6 +30,7 @@
   for(i = 0; i < num_to_create; i++)
   {
     mbox_send(mbox_S, sizeof(int), &msg);
+    Printf("S2 injected into atmosphere, PID: %d \n", getpid());
   }
 
   mbox_close(mbox_S);
