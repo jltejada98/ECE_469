@@ -18,7 +18,7 @@ int main (int argc, char *argv[]){
         Exit();
     }
 
-    sem_procs_completed = sem_create(-3);
+    sem_procs_completed = sem_create(-2);
 
     //Error check semaphore
     if(sem_procs_completed == SYNC_FAIL)
@@ -32,7 +32,7 @@ int main (int argc, char *argv[]){
     ditoa(sem_procs_completed, sem_procs_completed_str);
     ditoa(100, small_num_str);
     ditoa(10000, med_num_str);
-    ditoa(1000000, large_num_str);
+    ditoa(100000, large_num_str);
 
     Printf("Starting nothing_procs...\n");
 
