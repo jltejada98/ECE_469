@@ -183,7 +183,6 @@ int MboxClose(mbox_t handle) {
 		box->boxNotEmpty = INVALID_COND;
 		box->boxNotFull = INVALID_COND;
 
-		printf("Closed mbox %d for all procs\n", handle);
 
 	}
 	else if (box->num_procs_open < 0)

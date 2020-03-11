@@ -43,7 +43,6 @@ int main(int argc, char const *argv[])
   while(i <  numReact)
   {
     msg = 0;
-    Printf("react1 waiting to receive message on mbox %d\n", mbox_S2);
     if(mbox_recv(mbox_S2, sizeof(int), &msg) == MBOX_FAIL)
     {
       Printf("Bad mailbox recv in %s, PID: %d\nExiting...\n", argv[0], getpid());

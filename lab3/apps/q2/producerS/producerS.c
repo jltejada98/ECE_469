@@ -34,7 +34,6 @@
   msg = 1;
   for(i = 0; i < num_to_create; i++)
   {
-    Printf("Sending mbox_S2: %d\n", mbox_S2);
     if(mbox_send(mbox_S2, sizeof(int), &msg) == MBOX_FAIL){
       Printf("Bad mbox_send in ");
       Printf(argv[0]);
