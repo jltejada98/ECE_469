@@ -21,6 +21,7 @@ int main(int argc, char const *argv[])
 
   k = 0;
 
+  Printf("entering loop\n");
   for(i = 0; i < num; i++)
   {
     for(j = 0; j < 100; j++)
@@ -38,6 +39,6 @@ int main(int argc, char const *argv[])
   }
 
   Printf("Exiting program of size %d\n", i);
-  
+
   return 0;
 }

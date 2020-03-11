@@ -29,6 +29,7 @@ int main (int argc, char *argv[]){
         Exit();
     }
 
+    ditoa(sem_procs_completed, sem_procs_completed_str);
     ditoa(100, small_num_str);
     ditoa(10000, med_num_str);
     ditoa(1000000, large_num_str);
@@ -36,9 +37,9 @@ int main (int argc, char *argv[]){
     Printf("Starting nothing_procs...\n");
 
     //All of process creation
-    process_create(PROC_FILENAME, 0, 0, small_num_str, NULL);
-    process_create(PROC_FILENAME, 0, 0, med_num_str, NULL);
-    process_create(PROC_FILENAME, 0, 0, large_num_str, NULL);
+    process_create(PROC_FILENAME, 0, 0, sem_procs_completed_str, small_num_str, NULL);
+    process_create(PROC_FILENAME, 0, 0, sem_procs_completed_str, med_num_str, NULL);
+    process_create(PROC_FILENAME, 0, 0, sem_procs_completed_str, large_num_str, NULL);
 
     if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
       Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); Printf(argv[0]); Printf("\n");
