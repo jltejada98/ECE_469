@@ -25,7 +25,7 @@
 	for(i = 0; i < num_to_create; i++)
 	{
 		mbox_send(mbox_CO, sizeof(int), &msg);
-		Printf("CO injected into atmosphere, PID: %d \n", getpid());
+		Printf("CO injected into Radeon atmosphere, PID: %d \n", getpid());
 	}
 
 	mbox_close(mbox_CO);
