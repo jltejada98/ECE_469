@@ -85,8 +85,6 @@ int main (int argc, char *argv[]){
         Printf(argv[0]);
         Printf("\n");
         Exit();
-    }
-
 
     //Convert command line arguments to strings
     ditoa(num_S2_init, num_S2_init_str);
@@ -104,30 +102,12 @@ int main (int argc, char *argv[]){
     ditoa(numReact2, numReact2_str);
     ditoa(numReact3, numReact3_str);
 
-    Printf("PRODUCER_FILENAME_S: %s\n", PRODUCER_FILENAME_S);
-    Printf("num_S2_init_str: %s\n", num_S2_init_str);
-    Printf("mbox_S_str: %s\n", mbox_S_str);
-    Printf("sem_procs_completed_str: %s\n", sem_procs_completed_str);
-
-    if(sem_procs_completed_str == NULL)
-        Printf("sem_procs_completed_str is NULL");
-
-    if(num_S2_init_str == NULL)
-        Printf("num_S2_init_str is NULL");
-    
-    if(mbox_S_str == NULL)
-        Printf("mbox_S_str is NULL");
-
-
-    Printf("STARTING PROCS\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-
-
     //All of process creation
     process_create(PRODUCER_FILENAME_S, 0, 0, sem_procs_completed_str, num_S2_init_str, mbox_S_str, NULL);
-    process_create(PRODUCER_FILENAME_CO, 0, 0, sem_procs_completed_str, num_CO_init_str, mbox_CO_str, NULL);
-    process_create(REACT_FILENAME_1, 0, 0, sem_procs_completed_str,mbox_S2_str, mbox_S_str, numReact1_str, NULL);
-    process_create(REACT_FILENAME_2, 0, 0, sem_procs_completed_str, mbox_CO_str, mbox_O2_str, mbox_C2_str, numReact2_str, NULL);
-    process_create(REACT_FILENAME_3, 0, 0, sem_procs_completed_str,mbox_S_str, mbox_O2_str, mbox_SO4_str, numReact1_str, NULL);
+    // process_create(PRODUCER_FILENAME_CO, 0, 0, sem_procs_completed_str, num_CO_init_str, mbox_CO_str, NULL);
+    // process_create(REACT_FILENAME_1, 0, 0, sem_procs_completed_str,mbox_S2_str, mbox_S_str, numReact1_str, NULL);
+    // process_create(REACT_FILENAME_2, 0, 0, sem_procs_completed_str, mbox_CO_str, mbox_O2_str, mbox_C2_str, numReact2_str, NULL);
+    // process_create(REACT_FILENAME_3, 0, 0, sem_procs_completed_str,mbox_S_str, mbox_O2_str, mbox_SO4_str, numReact1_str, NULL);
 
 
     if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
