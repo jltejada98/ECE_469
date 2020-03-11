@@ -79,6 +79,10 @@ void ProcessModuleInit () {
     }
     // Next, set the pcb to be available
     pcbs[i].flags = PROCESS_STATUS_FREE;
+    if(PROCESS_PRINT_RUNTIME_STATS)
+    {
+    	pcbs[i].pinfo = 1;
+    }
     // Finally, insert the link into the queue
     if (AQueueInsertFirst(&freepcbs, pcbs[i].l) != QUEUE_SUCCESS) {
       printf("FATAL ERROR: could not insert PCB link into queue in ProcessModuleInit!\n");
@@ -115,6 +119,9 @@ void ProcessFreeResources (PCB *pcb) {
   int npages = 0;
 
   dbprintf ('p', "ProcessFreeResources: function started\n");
+
+  if(pcb->pinfo)
+    printf(PROCESS_CPUSTATS_FORMAT, GetCurrentPid(), pcb->numJiffies, -1);
 
 
   //-----------------------------------------------------
@@ -352,6 +359,7 @@ void ProcessDestroy (PCB *pcb) {
 //
 //----------------------------------------------------------------------
 static void ProcessExit () {
+
   exit ();
 }
 

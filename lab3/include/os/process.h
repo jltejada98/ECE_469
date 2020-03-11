@@ -16,6 +16,8 @@
 #define PROCESS_FAIL 0
 #define PROCESS_SUCCESS 1
 
+#define PROCESS_PRINT_RUNTIME_STATS 1
+
 #define	PROCESS_MAX_PROCS	32	// Maximum number of active processes
 
 #define	PROCESS_INIT_ISR_SYS	0x140	// Initial status reg value for system processes
