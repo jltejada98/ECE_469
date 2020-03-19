@@ -1076,7 +1076,7 @@ int numProcsReady(){
 	count = 0;
 	for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
 	{
-		count += AQueueLength(runQueues[i]);
+		count += AQueueLength(&runQueues[i]);
 	}
 	return count;
 }
