@@ -452,7 +452,7 @@ void ProcessWakeup (PCB *wakeup) {
     exitsim();
   }
   if (AQueueInsertLast(GetPriorityQueue(wakeup), wakeup->l) != QUEUE_SUCCESS) {
-    printf("FATAL ERROR: could not insert link into priority queue %d in ProcessWakeup!\n", pQueue);
+    printf("FATAL ERROR: could not insert link into priority queue %d in ProcessWakeup!\n", GetPriorityQueueIdx(wakeup));
     exitsim();
   }
   wakeup->running = 0;
