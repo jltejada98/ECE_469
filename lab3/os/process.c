@@ -314,7 +314,7 @@ void ProcessSchedule () {
     printf ("No runnable processes - exiting!\n");
     exitsim ();	// NEVER RETURNS
   } else {
-  	runQueue = FindRunnableQueue();
+  	runQueue = *FindRunnableQueue();
   }
  
  	frontOfRunQueue = AQueueFirst(&runQueue)->object;
