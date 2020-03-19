@@ -224,8 +224,8 @@ void ProcessComputePriority (Link* l) {
 	//Change the priority of the process
   pcb->priority = PROCESS_BASE_PRIORITY_USER + (pcb->estcpu / 4) + (2*pcb->pnice);
 
-  if(lastQueue != GetPriorityQueueIdx(pcb))
-  {
+  //if(lastQueue != GetPriorityQueueIdx(pcb))
+  //{
 		//Remove pcb from its current priority queue, free link
 		if(AQueueRemove(&l) != QUEUE_SUCCESS)
 		{
@@ -251,7 +251,7 @@ void ProcessComputePriority (Link* l) {
 		}
 
 		printf("Process %d in Queue %d\n", GetPidFromAddress(pcb), GetPriorityQueueIdx(pcb));
-	}
+	//}
 }
 
 
@@ -328,10 +328,9 @@ void ProcessSchedule () {
 		//Decrease priority
 		printf("Proc %d used entire timeslice, decr priority\n", GetPidFromAddress(currentPCB));
 		(currentPCB->estcpu)++;
-
 	}
 
-		//Set running flag to false for proc that won't be running
+	//Set running flag to false for proc that won't be running
 	currentPCB->running = 0;
 
 	//Recomputes priority and moves to back of correct queue
@@ -364,7 +363,6 @@ void ProcessSchedule () {
     exitsim ();	// NEVER RETURNS
   } 
 
-	
   // Now, run the one at the head of the queue.
   pcb = (PCB *)AQueueObject(AQueueFirst(runQueue));
   currentPCB = pcb;
