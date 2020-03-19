@@ -353,9 +353,9 @@ void ProcessSchedule () {
     }
     ProcessFreeResources(pcb);
   }
-  printf("done cleaning zombie quueue\n");
   dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
   currentPCB->lastStartJiffies = ClkGetCurJiffies();
+  printf("leaving schedule proc");
 }
 
 //----------------------------------------------------------------------
