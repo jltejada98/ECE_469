@@ -213,22 +213,22 @@ Queue* FindRunnableQueue () {
 //	Computes the priority for a single process
 //
 //----------------------------------------------------------------------
-void ProcessComputePriority (Link** l) {
+void ProcessComputePriority (Link* l) {
 	PCB* pcb;
 
-	pcb = (*l)->object;
+	pcb = l->object;
 
 	//Change the priority of the process
   pcb->priority = PROCESS_BASE_PRIORITY_USER + (pcb->estcpu / 4) + (2*pcb->pnice);
 
   //Remove pcb from its current priority queue, free link
-  AQueueRemove(l);
+  AQueueRemove(&l);
 
   //reallocate link with same pcb
-  *l = AQueueAllocLink(pcb);
+  l = AQueueAllocLink(pcb);
 
   //Put pcb in correct priority queue
-  AQueueInsertLast(GetPriorityQueue(pcb), *l);
+  AQueueInsertLast(GetPriorityQueue(pcb), l);
 }
 
 
@@ -257,7 +257,7 @@ void ProcessDecayEstCPUs (Queue* currQueue) {
 			proc->estcpu = (proc->estcpu * (2 * PROC_LOAD) / (2 * PROC_LOAD + 1)) + proc->pnice;
 			
 			//Set priority
-			ProcessComputePriority(&l);
+			ProcessComputePriority(l);
 
 			l = AQueueNext(l);
 		}
@@ -335,7 +335,7 @@ void ProcessSchedule () {
 	frontOfRunQueue->running = 0;
 
   //Recomputes priority and moves to back of correct queue
-  ProcessComputePriority(&(AQueueFirst(&runQueue)));
+  ProcessComputePriority(AQueueFirst(&runQueue));
 
   if(ClkGetCurJiffies() - lastJiffies > 100)	//10 proc quanta have passed
   {
