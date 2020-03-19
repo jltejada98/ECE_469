@@ -202,6 +202,7 @@ Queue* FindRunnableQueue () {
 			return &runQueues[i];
 	}
 
+	printf("Could not find any runnable processes!\n");
 	return NULL;
 }
 
