@@ -109,7 +109,7 @@ void ProcessUserSleep(int seconds);
 void ProcessYield();
 
 //Our functions
-void ProcessComputePriority (PCB* pcb);
+void ProcessComputePriority (Link* l);
 void ProcessDecayEstCPUs (Queue* currQueue);
 Queue* GetPriorityQueue(PCB* pcb);
 
