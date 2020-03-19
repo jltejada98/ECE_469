@@ -339,6 +339,7 @@ void ProcessSchedule () {
 
   // Clean up zombie processes here.  This is done at interrupt time
   // because it can't be done while the process might still be running
+  printf("Cleaning zombie queue\n");
   while (!AQueueEmpty(&zombieQueue)) {
     pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
 
@@ -352,6 +353,7 @@ void ProcessSchedule () {
     }
     ProcessFreeResources(pcb);
   }
+  printf("done cleaning zombie quueue\n");
   dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
   currentPCB->lastStartJiffies = ClkGetCurJiffies();
 }
