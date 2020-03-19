@@ -1057,8 +1057,8 @@ int GetPriorityQueueIdx(PCB* pcb){
 	int result;
 
 	result = getPriority(pcb) / PROCESS_PRIORITES_PER_QUEUE;
-	if (result > PROCESS_NUM_PRIORITY_QUEUES)
-		result = PROCESS_NUM_PRIORITY_QUEUES;
+	if (result > PROCESS_NUM_PRIORITY_QUEUES-1)
+		result = PROCESS_NUM_PRIORITY_QUEUES-1;
 
 	return result;
 }
