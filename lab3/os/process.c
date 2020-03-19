@@ -99,6 +99,7 @@ void ProcessModuleInit () {
     pcbs[i].sleepTime = 0;
     pcbs[i].numJiffies = 0;
     pcbs[i].lastStartJiffies = 0;
+    pcbs[i].priority = 12;
   }
   // There are no processes running at this point, so currentPCB=NULL
   currentPCB = NULL;
@@ -618,6 +619,7 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     // Set the correct address at which to execute a user process.
     stackframe[PROCESS_STACK_IAR] = (uint32)start;
     pcb->flags |= PROCESS_TYPE_USER;
+    pcb->priority = 12;
   } else {
     // Set r31 to ProcessExit().  This will only be called for a system
     // process; user processes do an exit() trap.
@@ -647,7 +649,7 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     printf("FATAL ERROR: could not get link for forked PCB in ProcessFork!\n");
     exitsim();
   }
-  if (AQueueInsertLast(&runQueue, pcb->l) != QUEUE_SUCCESS) {
+  if (AQueueInsertLast(GetPriorityQueue(pcb), pcb->l) != QUEUE_SUCCESS) {
     printf("FATAL ERROR: could not insert link into runQueue in ProcessFork!\n");
     exitsim();
   }
