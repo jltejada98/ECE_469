@@ -271,16 +271,16 @@ void ProcessSchedule () {
 	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, tot_runable=%d)\n",
 	    (int)currentPCB, numProcsReady());
 
-	printf("currentPCB: %d\n", GetPidFromAddress(currentPCB));
+	printf("currentPCB: %d, running:%d \n", GetPidFromAddress(currentPCB), currentPCB->running);
 	printf("%d processes ready in runQueues at beginning of scheduler\n", numProcsReady());
 
 	if(currentPCB->running)
 	{
 		(currentPCB->estcpu)++;
+		
+		//Move to back of correct queue
+		ProcessMoveToBack(currentPCB);
 	}
-
-	//Move to back of correct queue
-	ProcessMoveToBack(currentPCB);
 
 
 	currentPCB->running = 0;
@@ -366,6 +366,7 @@ void ProcessSuspend (PCB *suspend) {
     exitsim();
   }
   dbprintf ('p', "ProcessSuspend (%d): function complete\n", GetCurrentPid());
+  suspend->running = 0;
 }
 
 //----------------------------------------------------------------------
