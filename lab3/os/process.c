@@ -284,9 +284,7 @@ void ProcessSchedule () {
   	AQueueEmpty(&(runQueue))){
   	currentPriorityQueue++;
   	runQueue = runQueues[currentPriorityQueue];
-  	printf("IN LOOP 1\n");
   }
-  printf("Leaving loop 1\n");
 
   if (AQueueEmpty(&runQueue)) {
     if (!AQueueEmpty(&waitQueue)) {
@@ -339,7 +337,6 @@ void ProcessSchedule () {
 
   // Clean up zombie processes here.  This is done at interrupt time
   // because it can't be done while the process might still be running
-  printf("Cleaning zombie queue\n");
   while (!AQueueEmpty(&zombieQueue)) {
     pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
 
@@ -355,7 +352,8 @@ void ProcessSchedule () {
   }
   dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
   currentPCB->lastStartJiffies = ClkGetCurJiffies();
-  printf("leaving schedule proc");
+  printf ("Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
+
 }
 
 //----------------------------------------------------------------------
