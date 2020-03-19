@@ -658,6 +658,9 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     currentPCB = pcb;
   }
 
+  pcb->pnice = pnice;
+  pcb->pinfo = pinfo;
+
   dbprintf ('p', "Leaving ProcessFork (%s)\n", name);
   // Return the process number (found by subtracting the PCB number
   // from the base of the PCB array).
