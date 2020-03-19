@@ -27,8 +27,7 @@ static Queue	freepcbs;
 
 // List of processes that are ready to run (ie, not waiting for something
 // to happen).
-static Queue runQueues[PROCESS_NUM_PRIORITY_QUEUES];
-int lastJiffies = 0;
+static Queue	runQueue;
 
 // List of processes that are waiting for something to happen.  There's no
 // reason why this must be a single list; there could be many lists for many
@@ -66,17 +65,10 @@ uint32 get_argument(char *string);
 //----------------------------------------------------------------------
 void ProcessModuleInit () {
   int		i;
-  int currentPriorityQueue;
 
   dbprintf ('p', "ProcessModuleInit: function started\n");
-  for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
-  {
-  	AQueueInit(&(runQueues[i]));
-  }
-
-  currentPriorityQueue = 0;
-
   AQueueInit (&freepcbs);
+  AQueueInit(&runQueue);
   AQueueInit (&waitQueue);
   AQueueInit (&zombieQueue);
   // For each PCB slot in the global pcbs array:
@@ -185,106 +177,6 @@ void ProcessSetResult (PCB * pcb, uint32 result) {
   pcb->currentSavedFrame[PROCESS_STACK_IREG+1] = result;
 }
 
-//----------------------------------------------------------------------
-//
-//	FindRunnableQueue
-//
-//	Finds the highest priority queue with a runnable process in runQueues
-//	Returns NULL if no runnable procs
-//
-//----------------------------------------------------------------------
-Queue* FindRunnableQueue () {
-	int i;
-
-	for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
-	{
-		if(!AQueueEmpty(&runQueues[i]))
-			return &runQueues[i];
-	}
-
-	printf("Could not find any runnable processes!\n");
-	return NULL;
-}
-
-//----------------------------------------------------------------------
-//
-//	ProcessComputePriority
-//
-//	Computes the priority for a single process
-//
-//----------------------------------------------------------------------
-void ProcessComputePriority (Link* l) {
-	PCB* pcb;
-	int lastQueue;
-
-	pcb = l->object;
-
-	lastQueue = GetPriorityQueueIdx(pcb);
-
-	//Change the priority of the process
-  pcb->priority = PROCESS_BASE_PRIORITY_USER + (pcb->estcpu / 4) + (2*pcb->pnice);
-
-  //if(lastQueue != GetPriorityQueueIdx(pcb))
-  //{
-		//Remove pcb from its current priority queue, free link
-		if(AQueueRemove(&l) != QUEUE_SUCCESS)
-		{
-			printf("FATAL ERROR: could not move process %d from current priority queue\n");
-			exitsim();
-		}
-
-		//reallocate link with same pcb
-		l = AQueueAllocLink(pcb);
-		if(l == NULL)
-		{
-			printf("FATAL ERROR: could not get link for inserting process into new priority queue\n");
-			exitsim();
-		}
-
-		pcb->l = l;
-
-		//Put pcb in correct priority queue
-		if(AQueueInsertLast(GetPriorityQueue(pcb), l) != QUEUE_SUCCESS)
-		{
-			printf("FATAL ERROR: Could not insert new linke into priority queue\n");
-			exitsim();
-		}
-
-		printf("Process %d in Queue %d\n", GetPidFromAddress(pcb), GetPriorityQueueIdx(pcb));
-	//}
-}
-
-
-//----------------------------------------------------------------------
-//
-//	ProcessDecayEstCPUs
-//
-//	decay estcpu number for every process in all run queues
-//	and recompute priority with new estcpu
-//
-//----------------------------------------------------------------------
-void ProcessDecayEstCPUs (Queue* currQueue) {
-	PCB* proc;
-	Link* l;
-
-	if(!AQueueEmpty(currQueue))
-	{
-		l = AQueueFirst(currQueue);
-		while(l != NULL)
-		{
-			proc = l->object;
-
-			//Decay estcpu
-			proc->estcpu = (proc->estcpu * (2 * PROC_LOAD) / (2 * PROC_LOAD + 1)) + proc->pnice;
-			
-			//Set priority
-			ProcessComputePriority(l);
-
-			l = AQueueNext(l);
-		}
-	}
-}
-
 
 //----------------------------------------------------------------------
 //
@@ -308,47 +200,18 @@ void ProcessDecayEstCPUs (Queue* currQueue) {
 //
 //----------------------------------------------------------------------
 void ProcessSchedule () {
-	Queue*	runQueue;
   PCB *pcb=NULL;
   int i=0;
   Link *l=NULL;
 
   currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
-  //TODO Write function that finds how many processes are in array of queues
   dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, %d ready)\n",
-	    (int)currentPCB, AQueueLength (runQueue));
+	    (int)currentPCB, AQueueLength (&runQueue));
   // The OS exits if there's no runnable process.  This is a feature, not a
   // bug.  An easy solution to allowing no runnable "user" processes is to
   // have an "idle" process that's simply an infinite loop.
-
-	//Update priority of proc that was interrupted
-	if(currentPCB->running)
-	{
-		//Decrease priority
-		printf("Proc %d used entire timeslice, decr priority\n", GetPidFromAddress(currentPCB));
-		(currentPCB->estcpu)++;
-	}
-
-	//Set running flag to false for proc that won't be running
-	currentPCB->running = 0;
-
-	//Recomputes priority and moves to back of correct queue
-	ProcessComputePriority(currentPCB->l);
-
-	if(ClkGetCurJiffies() - lastJiffies > 100)	//10 proc quanta have passed
-	{
-		//Increase priority for all procs
-		for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
-		{
-			ProcessDecayEstCPUs(&runQueues[i]);
-		}
-		lastJiffies = ClkGetCurJiffies();
-	}
-
-	runQueue = FindRunnableQueue();
-
-  if (runQueue == NULL) {
+  if (AQueueEmpty(&runQueue)) {
     if (!AQueueEmpty(&waitQueue)) {
       printf("FATAL ERROR: no runnable processes, but there are sleeping processes waiting!\n");
       l = AQueueFirst(&waitQueue);
@@ -361,10 +224,13 @@ void ProcessSchedule () {
     }
     printf ("No runnable processes - exiting!\n");
     exitsim ();	// NEVER RETURNS
-  } 
+  }
+
+  // Move the front of the queue to the end.  The running process was the one in front.
+  AQueueMoveAfter(&runQueue, AQueueLast(&runQueue), AQueueFirst(&runQueue));
 
   // Now, run the one at the head of the queue.
-  pcb = (PCB *)AQueueObject(AQueueFirst(runQueue));
+  pcb = (PCB *)AQueueObject(AQueueFirst(&runQueue));
   currentPCB = pcb;
   dbprintf ('p',"About to switch to PCB 0x%x,flags=0x%x @ 0x%x\n",
 	    (int)pcb, pcb->flags, (int)(pcb->sysStackPtr[PROCESS_STACK_IAR]));
@@ -385,9 +251,7 @@ void ProcessSchedule () {
     ProcessFreeResources(pcb);
   }
   dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
-  currentPCB->running = 1;
   currentPCB->lastStartJiffies = ClkGetCurJiffies();
-
 }
 
 //----------------------------------------------------------------------
@@ -419,7 +283,6 @@ void ProcessSuspend (PCB *suspend) {
     printf("FATAL ERROR: could not insert suspend PCB into waitQueue!\n");
     exitsim();
   }
-  suspend->running = 0;
   dbprintf ('p', "ProcessSuspend (%d): function complete\n", GetCurrentPid());
 }
 
@@ -449,11 +312,10 @@ void ProcessWakeup (PCB *wakeup) {
     printf("FATAL ERROR: could not get link for wakeup PCB in ProcessWakeup!\n");
     exitsim();
   }
-  if (AQueueInsertLast(GetPriorityQueue(wakeup), wakeup->l) != QUEUE_SUCCESS) {
-    printf("FATAL ERROR: could not insert link into priority queue %d in ProcessWakeup!\n", GetPriorityQueueIdx(wakeup));
+  if (AQueueInsertLast(&runQueue, wakeup->l) != QUEUE_SUCCESS) {
+    printf("FATAL ERROR: could not insert link into runQueue in ProcessWakeup!\n");
     exitsim();
   }
-  wakeup->running = 0;
 }
 
 
@@ -707,7 +569,7 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     printf("FATAL ERROR: could not get link for forked PCB in ProcessFork!\n");
     exitsim();
   }
-  if (AQueueInsertLast(GetPriorityQueue(pcb), pcb->l) != QUEUE_SUCCESS) {
+  if (AQueueInsertLast(&runQueue, pcb->l) != QUEUE_SUCCESS) {
     printf("FATAL ERROR: could not insert link into runQueue in ProcessFork!\n");
     exitsim();
   }
@@ -1107,18 +969,6 @@ void process_create(char *name, ...)
 
 int GetPidFromAddress(PCB *pcb) {
   return (int)(pcb - pcbs);
-}
-
-Queue* GetPriorityQueue(PCB* pcb){
-	return &runQueues[GetPriorityQueueIdx(pcb)];
-}
-
-int GetPriorityQueueIdx(PCB* pcb){
-	int result;
-	result = (pcb->priority) / PROCESS_PRIORITES_PER_QUEUE;
-	if (result > PROCESS_NUM_PRIORITY_QUEUES)
-		result = PROCESS_NUM_PRIORITY_QUEUES;
-	return result;
 }
 
 //--------------------------------------------------------
