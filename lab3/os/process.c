@@ -236,7 +236,7 @@ void ProcessMoveToBack(PCB* pcb) {
 		printf("FATAL ERROR: could not insert process into new priority queue %d\n", pcb->priority);
 		exitsim();
 	}
-
+	printf("Added proc (%d) to queue %d", GetPidFromAddress(pcb), pcb->priority);
 }
 
 
