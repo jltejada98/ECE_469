@@ -225,6 +225,8 @@ void ProcessDecayEstCPUs (Queue* currQueue) {
 		l = AQueueFirst(currQueue);
 		while(l != NULL)
 		{
+  		printf("IN LOOP 2\n");
+
 			proc = l->object;
 
 			//Decay estcpu
@@ -281,6 +283,7 @@ void ProcessSchedule () {
   	AQueueEmpty(&(runQueue))){
   	currentPriorityQueue++;
   	runQueue = runQueues[currentPriorityQueue];
+  	printf("IN LOOP 1\n");
   }
 
   if (AQueueEmpty(&runQueue)) {
