@@ -28,7 +28,6 @@ static Queue	freepcbs;
 // List of processes that are ready to run (ie, not waiting for something
 // to happen).
 static Queue runQueues[PROCESS_NUM_PRIORITY_QUEUES];
-int currentPriorityQueue;
 int lastJiffies = 0;
 
 // List of processes that are waiting for something to happen.  There's no
@@ -67,6 +66,7 @@ uint32 get_argument(char *string);
 //----------------------------------------------------------------------
 void ProcessModuleInit () {
   int		i;
+  int currentPriorityQueue;
 
   dbprintf ('p', "ProcessModuleInit: function started\n");
   for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
@@ -187,6 +187,26 @@ void ProcessSetResult (PCB * pcb, uint32 result) {
 
 //----------------------------------------------------------------------
 //
+//	FindRunnableQueue
+//
+//	Finds the highest priority queue with a runnable process in runQueues
+//	Returns NULL if no runnable procs
+//
+//----------------------------------------------------------------------
+Queue* FindRunnableQueue () {
+	int i;
+
+	for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
+	{
+		if(!AQueueEmpty(&runQueues[i]))
+			return &runQueues[i];
+	}
+
+	return NULL;
+}
+
+//----------------------------------------------------------------------
+//
 //	ProcessComputePriority
 //
 //	Computes the priority for a single process
@@ -273,20 +293,14 @@ void ProcessSchedule () {
   currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
   //TODO Write function that finds how many processes are in array of queues
-  dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, %d ready at priority %d)\n",
-	    (int)currentPCB, AQueueLength (&runQueue), currentPriorityQueue);
+  dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, %d ready)\n",
+	    (int)currentPCB, AQueueLength (&runQueue));
   // The OS exits if there's no runnable process.  This is a feature, not a
   // bug.  An easy solution to allowing no runnable "user" processes is to
   // have an "idle" process that's simply an infinite loop.
-  currentPriorityQueue = 0;
-  runQueue = runQueues[currentPriorityQueue];
-  while(currentPriorityQueue < PROCESS_NUM_PRIORITY_QUEUES && 
-  	AQueueEmpty(&(runQueue))){
-  	currentPriorityQueue++;
-  	runQueue = runQueues[currentPriorityQueue];
-  }
+  runQueue = * FindRunnableQueue();
 
-  if (AQueueEmpty(&runQueue)) {
+  if (runQueue == NULL) {
     if (!AQueueEmpty(&waitQueue)) {
       printf("FATAL ERROR: no runnable processes, but there are sleeping processes waiting!\n");
       l = AQueueFirst(&waitQueue);
@@ -325,6 +339,9 @@ void ProcessSchedule () {
   		ProcessDecayEstCPUs(&runQueues[i]);
   	}
   }
+
+  // When priority recomputed, runQueue may have changed, need to find new runQueue
+	runQueue = * FindRunnableQueue();
 
   //Set running flag to true for proc about to run
   ((PCB*) (AQueueFirst(&runQueue)->object))->running = 1;
