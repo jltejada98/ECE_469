@@ -231,7 +231,7 @@ void ProcessMoveToBack(PCB* pcb) {
 	}
 
 	//Add object to new queue
-	if (AQueueInsertLast(&runQueues[pcb->priority], &(pcb->l)) != QUEUE_SUCCESS) {
+	if (AQueueInsertLast(&runQueues[pcb->priority], (pcb->l)) != QUEUE_SUCCESS) {
 		printf("FATAL ERROR: could not insert process into new priority queue %d\n", pcb->priority);
 		exitsim();
 	}
@@ -268,8 +268,8 @@ void ProcessSchedule () {
 
 	currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
-	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, %d ready)\n",
-	    (int)currentPCB, AQueueLength (&runQueue));
+	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x)\n",
+	    (int)currentPCB);
 
 	if(currentPCB->running)
 	{
@@ -277,7 +277,7 @@ void ProcessSchedule () {
 	}
 
 	//Calculate new priority
-	currentPCB->priority = GetPriorityQueueIdx(currentPCB);
+	updatePriority(currentPCB);
 
 	//Move to back of correct queue
 	ProcessMoveToBack(currentPCB);
@@ -1050,15 +1050,11 @@ int GetPidFromAddress(PCB *pcb) {
 }
 
 Queue* GetPriorityQueue(PCB* pcb){
-	return &runQueues[GetPriorityQueueIdx(pcb)];
+	return &runQueues[pcb->priority];
 }
 
-int GetPriorityQueueIdx(PCB* pcb){
-	int result;
-	result = (pcb->priority) / PROCESS_PRIORITES_PER_QUEUE;
-	if (result > PROCESS_NUM_PRIORITY_QUEUES)
-		result = PROCESS_NUM_PRIORITY_QUEUES;
-	return result;
+void updatePriority(PCB* pcb){
+	pcb->priority = PROCESS_BASE_PRIORITY_USER + (pcb->estcpu/4) + (2*pcb->pnice);
 }
 
 //--------------------------------------------------------
