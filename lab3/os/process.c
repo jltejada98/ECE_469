@@ -99,7 +99,7 @@ void ProcessModuleInit () {
     pcbs[i].sleepTime = 0;
     pcbs[i].numJiffies = 0;
     pcbs[i].lastStartJiffies = 0;
-    pcbs[i].priority = 12;
+    pcbs[i].priority = PROCESS_BASE_PRIORITY_USER;
   }
   // There are no processes running at this point, so currentPCB=NULL
   currentPCB = NULL;
@@ -232,7 +232,7 @@ void ProcessMoveToBack(PCB* pcb) {
 	}
 
 	//Add object to new queue
-	if (AQueueInsertLast(&runQueues[pcb->priority], (pcb->l)) != QUEUE_SUCCESS) {
+	if (AQueueInsertLast(GetPriorityQueue(pcb), (pcb->l)) != QUEUE_SUCCESS) {
 		printf("FATAL ERROR: could not insert process into new priority queue %d\n", pcb->priority);
 		exitsim();
 	}
