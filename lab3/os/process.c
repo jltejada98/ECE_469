@@ -1053,7 +1053,17 @@ int GetPidFromAddress(PCB *pcb) {
 }
 
 Queue* GetPriorityQueue(PCB* pcb){
-	return &runQueues[pcb->priority];
+	return &runQueues[GetPriorityQueueIdx(pcb)];
+}
+
+int GetPriorityQueueIdx(PCB* pcb){
+	int result;
+
+	result = pcb->priority / PROCESS_PRIORITES_PER_QUEUE;
+	if (result > PROCESS_NUM_PRIORITY_QUEUES)
+		result = PROCESS_NUM_PRIORITY_QUEUES;
+
+	return result;
 }
 
 void updatePriority(PCB* pcb){
