@@ -314,8 +314,9 @@ void ProcessSchedule () {
 
 	if(pcb->pinfo){
 		printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, getPriority(pcb));
-		printf("pnice = %d\n", pcb->pnice);
 	}
+		printf("pnice = %d\n", pcb->pnice);
+		printf("pinfo = %d\n", pcb->pinfo);
 
 	dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
 	if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
