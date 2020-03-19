@@ -270,8 +270,6 @@ void ProcessSchedule () {
 	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, tot_runable=%d)\n",
 	    (int)currentPCB, numProcsReady());
 
-	printf("currentPCB: %d\n", GetPidFromAddress(currentPCB));
-	printf("%d processes ready in runQueues at beginning of scheduler\n", numProcsReady());
 
 	if(currentPCB->flags & PROCESS_STATUS_RUNNABLE)
 	{
@@ -324,9 +322,7 @@ void ProcessSchedule () {
 	ProcessFreeResources(pcb);
 	}
 	dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
-	printf ("Leaving ProcessSchedule (cur=%d)\n", GetPidFromAddress(currentPCB));
 
-	printf("%d processes ready in runQueues at END of scheduler\n", numProcsReady());
 
 	currentPCB->lastStartJiffies = ClkGetCurJiffies();
 }
