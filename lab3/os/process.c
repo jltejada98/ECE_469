@@ -335,7 +335,7 @@ void ProcessSchedule () {
 	frontOfRunQueue->running = 0;
 
   //Recomputes priority and moves to back of correct queue
-  ProcessComputePriority(&AQueueFirst(&runQueue));
+  ProcessComputePriority(&(AQueueFirst(&runQueue)));
 
   if(ClkGetCurJiffies() - lastJiffies > 100)	//10 proc quanta have passed
   {
