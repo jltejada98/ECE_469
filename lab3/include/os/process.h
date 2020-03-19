@@ -51,8 +51,8 @@ typedef struct PCB {
 
   int           pinfo;          // Turns on printing of runtime stats
   int           pnice;          // Used in priority calculation
-  int           priority;       // Current priority of process
   int           running;        // Flag to determine if process was just running
+  int           priority;       // Current priority queue proc is in
   int           estcpu;         // Used in priority calculationl
   int           sleepTime;      // System time in jiffies when proc went to sleep
   int           numJiffies;     // Total runtime for runtime stats

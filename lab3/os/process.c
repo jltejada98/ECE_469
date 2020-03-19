@@ -27,7 +27,7 @@ static Queue	freepcbs;
 
 // List of processes that are ready to run (ie, not waiting for something
 // to happen).
-static Queue	runQueue;
+static Queue	runQueues[PROCESS_NUM_PRIORITY_QUEUES];
 
 // List of processes that are waiting for something to happen.  There's no
 // reason why this must be a single list; there could be many lists for many
@@ -67,8 +67,11 @@ void ProcessModuleInit () {
   int		i;
 
   dbprintf ('p', "ProcessModuleInit: function started\n");
+  for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
+  {
+  	AQueueInit(&(runQueues[i]));
+  }
   AQueueInit (&freepcbs);
-  AQueueInit(&runQueue);
   AQueueInit (&waitQueue);
   AQueueInit (&zombieQueue);
   // For each PCB slot in the global pcbs array:
@@ -90,6 +93,12 @@ void ProcessModuleInit () {
       printf("FATAL ERROR: could not insert PCB link into queue in ProcessModuleInit!\n");
       exitsim();
     }
+    pcbs[i].pinfo = 1;
+    pcbs[i].running = 0;
+    pcbs[i].estcpu = 0;
+    pcbs[i].sleepTime = 0;
+    pcbs[i].numJiffies = 0;
+    pcbs[i].lastStartJiffies = 0;
   }
   // There are no processes running at this point, so currentPCB=NULL
   currentPCB = NULL;
@@ -177,6 +186,58 @@ void ProcessSetResult (PCB * pcb, uint32 result) {
   pcb->currentSavedFrame[PROCESS_STACK_IREG+1] = result;
 }
 
+//----------------------------------------------------------------------
+//
+//	FindRunnableQueue
+//
+//	Finds the highest priority queue with a runnable process in runQueues
+//	Returns NULL if no runnable procs
+//
+//----------------------------------------------------------------------
+Queue* FindRunnableQueue () {
+	int i;
+
+	for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
+	{
+		if(!AQueueEmpty(&runQueues[i]))
+			return &runQueues[i];
+	}
+
+	printf("Could not find any runnable processes!\n");
+	return NULL;
+}
+
+//----------------------------------------------------------------------
+//
+//	ProcessMoveToBack
+//
+//	Moves process to back of queue it belongs in based
+//	off of priority field (does NOT calculate priority based
+//	on estcpu)
+//
+//----------------------------------------------------------------------
+void ProcessMoveToBack(PCB* pcb) {
+	//Remove object from Queue
+	if(AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
+		printf("FATAL ERROR: could not remove process from its current run queue\n");
+		exitsim();
+	}
+
+	//Create new link for object
+	pcb->l = AQueueAllocLink(pcb);
+	if (pcb->l == NULL) {
+		printf("FATAL ERROR: could not get link for PCB in ProcessMoveToBack!\n");
+		exitsim();
+	}
+
+	//Add object to new queue
+	if (AQueueInsertLast(&runQueues[pcb->priority], &(pcb->l)) != QUEUE_SUCCESS) {
+		printf("FATAL ERROR: could not insert process into new priority queue %d\n", pcb->priority);
+		exitsim();
+	}
+
+}
+
 
 //----------------------------------------------------------------------
 //
@@ -200,58 +261,75 @@ void ProcessSetResult (PCB * pcb, uint32 result) {
 //
 //----------------------------------------------------------------------
 void ProcessSchedule () {
-  PCB *pcb=NULL;
-  int i=0;
-  Link *l=NULL;
+	PCB *pcb=NULL;
+	int i=0;
+	Link *l=NULL;
+	Queue* runQueue;
 
-  currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
+	currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
-  dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, %d ready)\n",
+	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, %d ready)\n",
 	    (int)currentPCB, AQueueLength (&runQueue));
-  // The OS exits if there's no runnable process.  This is a feature, not a
-  // bug.  An easy solution to allowing no runnable "user" processes is to
-  // have an "idle" process that's simply an infinite loop.
-  if (AQueueEmpty(&runQueue)) {
-    if (!AQueueEmpty(&waitQueue)) {
-      printf("FATAL ERROR: no runnable processes, but there are sleeping processes waiting!\n");
-      l = AQueueFirst(&waitQueue);
-      while (l != NULL) {
-        pcb = AQueueObject(l);
-        printf("Sleeping process %d: ", i++); printf("PID = %d\n", (int)(pcb - pcbs));
-        l = AQueueNext(l);
-      }
-      exitsim();
-    }
-    printf ("No runnable processes - exiting!\n");
-    exitsim ();	// NEVER RETURNS
-  }
 
-  // Move the front of the queue to the end.  The running process was the one in front.
-  AQueueMoveAfter(&runQueue, AQueueLast(&runQueue), AQueueFirst(&runQueue));
+	if(currentPCB->running)
+	{
+		(currentPCB->estcpu)++;
+	}
 
-  // Now, run the one at the head of the queue.
-  pcb = (PCB *)AQueueObject(AQueueFirst(&runQueue));
-  currentPCB = pcb;
-  dbprintf ('p',"About to switch to PCB 0x%x,flags=0x%x @ 0x%x\n",
+	//Calculate new priority
+	currentPCB->priority = GetPriorityQueueIdx(currentPCB);
+
+	//Move to back of correct queue
+	ProcessMoveToBack(currentPCB);
+
+
+	currentPCB->running = 0;
+
+
+	// The OS exits if there's no runnable process.  This is a feature, not a
+	// bug.  An easy solution to allowing no runnable "user" processes is to
+	// have an "idle" process that's simply an infinite loop.
+
+	runQueue = FindRunnableQueue();
+
+	if (runQueue == NULL) {
+	if (!AQueueEmpty(&waitQueue)) {
+	  printf("FATAL ERROR: no runnable processes, but there are sleeping processes waiting!\n");
+	  l = AQueueFirst(&waitQueue);
+	  while (l != NULL) {
+	    pcb = AQueueObject(l);
+	    printf("Sleeping process %d: ", i++); printf("PID = %d\n", (int)(pcb - pcbs));
+	    l = AQueueNext(l);
+	  }
+	  exitsim();
+	}
+	printf ("No runnable processes - exiting!\n");
+	exitsim ();	// NEVER RETURNS
+	}
+
+	// Now, run the one at the head of the queue.
+	pcb = (PCB *)AQueueObject(AQueueFirst(runQueue));
+	currentPCB = pcb;
+	dbprintf ('p',"About to switch to PCB 0x%x,flags=0x%x @ 0x%x\n",
 	    (int)pcb, pcb->flags, (int)(pcb->sysStackPtr[PROCESS_STACK_IAR]));
 
-  // Clean up zombie processes here.  This is done at interrupt time
-  // because it can't be done while the process might still be running
-  while (!AQueueEmpty(&zombieQueue)) {
-    pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
+	// Clean up zombie processes here.  This is done at interrupt time
+	// because it can't be done while the process might still be running
+	while (!AQueueEmpty(&zombieQueue)) {
+	pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
 
-    if(pcb->pinfo)
-    	printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, -1);
+	if(pcb->pinfo)
+		printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, -1);
 
-    dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
-    if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
-      printf("FATAL ERROR: could not remove zombie process from zombieQueue in ProcessSchedule!\n");
-      exitsim();
-    }
-    ProcessFreeResources(pcb);
-  }
-  dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
-  currentPCB->lastStartJiffies = ClkGetCurJiffies();
+	dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
+	if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
+	  printf("FATAL ERROR: could not remove zombie process from zombieQueue in ProcessSchedule!\n");
+	  exitsim();
+	}
+	ProcessFreeResources(pcb);
+	}
+	dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
+	currentPCB->lastStartJiffies = ClkGetCurJiffies();
 }
 
 //----------------------------------------------------------------------
@@ -969,6 +1047,18 @@ void process_create(char *name, ...)
 
 int GetPidFromAddress(PCB *pcb) {
   return (int)(pcb - pcbs);
+}
+
+Queue* GetPriorityQueue(PCB* pcb){
+	return &runQueues[GetPriorityQueueIdx(pcb)];
+}
+
+int GetPriorityQueueIdx(PCB* pcb){
+	int result;
+	result = (pcb->priority) / PROCESS_PRIORITES_PER_QUEUE;
+	if (result > PROCESS_NUM_PRIORITY_QUEUES)
+		result = PROCESS_NUM_PRIORITY_QUEUES;
+	return result;
 }
 
 //--------------------------------------------------------
