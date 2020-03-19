@@ -22,6 +22,7 @@
 
 #define PROCESS_NUM_PRIORITY_QUEUES 32
 #define PROCESS_PRIORITES_PER_QUEUE 4
+#define PROCESS_BASE_PRIORITY_USER 50
 
 #define	PROCESS_INIT_ISR_SYS	0x140	// Initial status reg value for system processes
 #define	PROCESS_INIT_ISR_USER	0x100	// Initial status reg value for user processes
@@ -106,5 +107,9 @@ int GetPidFromAddress(PCB *pcb);
 
 void ProcessUserSleep(int seconds);
 void ProcessYield();
+
+//Our functions
+void ProcessComputePriority (PCB* pcb);
+void ProcessDecayEstCPUs (Queue* currQueue);
 
 #endif	/* __process_h__ */
