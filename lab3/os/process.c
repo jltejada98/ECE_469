@@ -265,7 +265,6 @@ void ProcessSchedule () {
 	Link *l=NULL;
 	Queue* runQueue;
 
-	printf("%d processes ready in runQueues at START of scheduler\n", numProcsReady());
 
 	currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
@@ -325,7 +324,6 @@ void ProcessSchedule () {
 	}
 	dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
 
-	printf("%d processes ready in runQueues at END of scheduler\n", numProcsReady());
 
 	currentPCB->lastStartJiffies = ClkGetCurJiffies();
 }
@@ -360,7 +358,6 @@ void ProcessSuspend (PCB *suspend) {
     exitsim();
   }
   dbprintf ('p', "ProcessSuspend (%d): function complete\n", GetCurrentPid());
-  printf("Suspeneded Proc: %d\n", GetPidFromAddress(suspend));
 }
 
 //----------------------------------------------------------------------
