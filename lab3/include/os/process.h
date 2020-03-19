@@ -51,11 +51,11 @@ typedef struct PCB {
   int           pinfo;          // Turns on printing of runtime stats
   int           pnice;          // Used in priority calculation
   int           priority;       // Current priority of process
-  int           running;
-  int           estcpu;
-  int           sleepTime;
-  int numJiffies;               // Total runtime for runtime stats
-  int lastStartJiffies;
+  int           running;        // Flag to determine if process was just running
+  int           estcpu;         // Used in priority calculationl
+  int           sleepTime;      // System time in jiffies when proc went to sleep
+  int           numJiffies;     // Total runtime for runtime stats
+  int           lastStartJiffies;// Used in runtime stats to calculate how long a proc ran in its window
 } PCB;
 
 // Offsets of various registers from the stack pointer in the register
