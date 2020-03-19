@@ -291,7 +291,6 @@ void ProcessSchedule () {
   PCB *pcb=NULL;
   int i=0;
   Link *l=NULL;
-  PCB* frontOfRunQueue;
 
   currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
@@ -320,18 +319,18 @@ void ProcessSchedule () {
   	runQueue = *FindRunnableQueue();
   }
  
- 	frontOfRunQueue = AQueueFirst(&runQueue)->object;
 
 	//Update priority of proc that was interrupted
-  if(frontOfRunQueue->running)
+  if(currentPCB->running)
   {
   	//Decrease priority
-  	(frontOfRunQueue->estcpu)++;
+  	printf("Proc %d used entire timeslice, decr priority\n", GetPidFromAddress(currentPCB));
+  	(currentPCB->estcpu)++;
 
   }
 
  	//Set running flag to false for proc that won't be running
-	frontOfRunQueue->running = 0;
+	currentPCB->running = 0;
 
   //Recomputes priority and moves to back of correct queue
   ProcessComputePriority(AQueueFirst(&runQueue));
@@ -347,9 +346,6 @@ void ProcessSchedule () {
 
   // When priority recomputed, runQueue may have changed, need to find new runQueue
 	runQueue = * FindRunnableQueue();
-
-  //Set running flag to true for proc about to run
-  ((PCB*) (AQueueFirst(&runQueue)->object))->running = 1;
 
   // Now, run the one at the head of the queue.
   pcb = (PCB *)AQueueObject(AQueueFirst(&runQueue));
@@ -373,6 +369,7 @@ void ProcessSchedule () {
     ProcessFreeResources(pcb);
   }
   dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
+  currentPCB->running = 1;
   currentPCB->lastStartJiffies = ClkGetCurJiffies();
 
 }
