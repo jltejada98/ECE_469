@@ -285,7 +285,6 @@ void ProcessDecayEstCPUs (Queue* currQueue) {
 //----------------------------------------------------------------------
 void ProcessSchedule () {
 	Queue	runQueue;
-	Queue runQueuePtr;
   PCB *pcb=NULL;
   int i=0;
   Link *l=NULL;
@@ -299,9 +298,9 @@ void ProcessSchedule () {
   // The OS exits if there's no runnable process.  This is a feature, not a
   // bug.  An easy solution to allowing no runnable "user" processes is to
   // have an "idle" process that's simply an infinite loop.
-  runQueuePtr = * FindRunnableQueue();
 
-  if (runQueuePtr == NULL) {
+
+  if (FindRunnableQueue() == NULL) {
     if (!AQueueEmpty(&waitQueue)) {
       printf("FATAL ERROR: no runnable processes, but there are sleeping processes waiting!\n");
       l = AQueueFirst(&waitQueue);
@@ -315,7 +314,7 @@ void ProcessSchedule () {
     printf ("No runnable processes - exiting!\n");
     exitsim ();	// NEVER RETURNS
   } else {
-  	runQueue = * runQueuePtr;
+  	runQueue = FindRunnableQueue();
   }
  
  	frontOfRunQueue = AQueueFirst(&runQueue)->object;
