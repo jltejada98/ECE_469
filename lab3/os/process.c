@@ -99,7 +99,6 @@ void ProcessModuleInit () {
     pcbs[i].sleepTime = 0;
     pcbs[i].numJiffies = 0;
     pcbs[i].lastStartJiffies = 0;
-    pcbs[i].priority = PROCESS_BASE_PRIORITY_USER;
   }
   // There are no processes running at this point, so currentPCB=NULL
   currentPCB = NULL;
@@ -233,7 +232,7 @@ void ProcessMoveToBack(PCB* pcb) {
 
 	//Add object to new queue
 	if (AQueueInsertLast(GetPriorityQueue(pcb), (pcb->l)) != QUEUE_SUCCESS) {
-		printf("FATAL ERROR: could not insert process into new priority queue %d\n", pcb->priority);
+		printf("FATAL ERROR: could not insert process into new priority queue %d\n", GetPriorityQueueIdx(pcb));
 		exitsim();
 	}
 	printf("Added proc (%d) to queue %d\n", GetPidFromAddress(pcb), GetPriorityQueueIdx(pcb));
@@ -617,7 +616,6 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     // Set the correct address at which to execute a user process.
     stackframe[PROCESS_STACK_IAR] = (uint32)start;
     pcb->flags |= PROCESS_TYPE_USER;
-    pcb->priority = 12;
   } else {
     // Set r31 to ProcessExit().  This will only be called for a system
     // process; user processes do an exit() trap.
