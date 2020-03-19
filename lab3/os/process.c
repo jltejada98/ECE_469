@@ -360,6 +360,7 @@ void ProcessSuspend (PCB *suspend) {
     exitsim();
   }
   dbprintf ('p', "ProcessSuspend (%d): function complete\n", GetCurrentPid());
+  printf("Suspeneded Proc: %d\n", GetPidFromAddress(suspend));
 }
 
 //----------------------------------------------------------------------
