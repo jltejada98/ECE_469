@@ -249,7 +249,6 @@ void ProcessDecayEstCPUs (Queue* currQueue) {
 		l = AQueueFirst(currQueue);
 		while(l != NULL)
 		{
-  		printf("IN LOOP 2\n");
 
 			proc = l->object;
 
@@ -261,7 +260,6 @@ void ProcessDecayEstCPUs (Queue* currQueue) {
 
 			l = AQueueNext(l);
 		}
-		printf("Leaving Loop 2\n");
 	}
 }
 
@@ -375,7 +373,6 @@ void ProcessSchedule () {
   }
   dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
   currentPCB->lastStartJiffies = ClkGetCurJiffies();
-  printf ("Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
 
 }
 
