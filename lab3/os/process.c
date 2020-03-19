@@ -312,8 +312,10 @@ void ProcessSchedule () {
 	while (!AQueueEmpty(&zombieQueue)) {
 	pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
 
-	if(pcb->pinfo)
+	if(pcb->pinfo){
 		printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, getPriority(pcb));
+		printf("pnice = %d\n", pcb->pnice);
+	}
 
 	dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
 	if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
