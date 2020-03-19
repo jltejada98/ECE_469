@@ -235,7 +235,7 @@ void ProcessMoveToBack(PCB* pcb) {
 		printf("FATAL ERROR: could not insert process into new priority queue %d\n", GetPriorityQueueIdx(pcb));
 		exitsim();
 	}
-	printf("Added proc (%d) to queue %d\n", GetPidFromAddress(pcb), GetPriorityQueueIdx(pcb));
+	//printf("Added proc (%d) to queue %d\n", GetPidFromAddress(pcb), GetPriorityQueueIdx(pcb));
 }
 
 
@@ -290,18 +290,18 @@ void ProcessSchedule () {
 	runQueue = FindRunnableQueue();
 
 	if (runQueue == NULL) {
-	if (!AQueueEmpty(&waitQueue)) {
-	  printf("FATAL ERROR: no runnable processes, but there are sleeping processes waiting!\n");
-	  l = AQueueFirst(&waitQueue);
-	  while (l != NULL) {
-	    pcb = AQueueObject(l);
-	    printf("Sleeping process %d: ", i++); printf("PID = %d\n", (int)(pcb - pcbs));
-	    l = AQueueNext(l);
-	  }
-	  exitsim();
-	}
-	printf ("No runnable processes - exiting!\n");
-	exitsim ();	// NEVER RETURNS
+		if (!AQueueEmpty(&waitQueue)) {
+		  printf("FATAL ERROR: no runnable processes, but there are sleeping processes waiting!\n");
+		  l = AQueueFirst(&waitQueue);
+		  while (l != NULL) {
+		    pcb = AQueueObject(l);
+		    printf("Sleeping process %d: ", i++); printf("PID = %d\n", (int)(pcb - pcbs));
+		    l = AQueueNext(l);
+		  }
+		  exitsim();
+		}
+		printf ("No runnable processes - exiting!\n");
+		exitsim ();	// NEVER RETURNS
 	}
 
 	// Now, run the one at the head of the queue.
@@ -326,6 +326,8 @@ void ProcessSchedule () {
 	ProcessFreeResources(pcb);
 	}
 	dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
+	printf ("Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
+
 	currentPCB->lastStartJiffies = ClkGetCurJiffies();
 }
 
