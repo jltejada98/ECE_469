@@ -84,6 +84,11 @@ typedef struct PCB {
 // Use this format string for printing CPU stats
 #define PROCESS_CPUSTATS_FORMAT "CPUStats: Process %d has run for %d jiffies, prio = %d\n"
 
+///////EDITED DEFINITIONS////////
+#define PROC_LOAD 1 //In this assignment, assume that load is always 1,
+///////END EDITED DEFINITION/////
+
+
 extern PCB	*currentPCB;
 
 int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, int isUser);
