@@ -327,7 +327,7 @@ void ProcessSchedule () {
   }
 
   //Set running flag to true for proc about to run
-  ((PCB*) AQueueObject(&runQueue))->running = 1;
+  ((PCB*) (AQueueFirst(&runQueue)->object))->running = 1;
 
   // Now, run the one at the head of the queue.
   pcb = (PCB *)AQueueObject(AQueueFirst(&runQueue));
@@ -671,7 +671,7 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     printf("FATAL ERROR: could not get link for forked PCB in ProcessFork!\n");
     exitsim();
   }
-  if (AQueueInsertLast((pcb), pcb->l) != QUEUE_SUCCESS) {
+  if (AQueueInsertLast(GetPriorityQueue(pcb), pcb->l) != QUEUE_SUCCESS) {
     printf("FATAL ERROR: could not insert link into runQueue in ProcessFork!\n");
     exitsim();
   }
