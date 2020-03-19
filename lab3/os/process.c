@@ -226,6 +226,7 @@ void ProcessComputePriority (Link* l) {
 
   //reallocate link with same pcb
   l = AQueueAllocLink(pcb);
+  pcb->l = l;
 
   //Put pcb in correct priority queue
   AQueueInsertLast(GetPriorityQueue(pcb), l);
@@ -333,7 +334,7 @@ void ProcessSchedule () {
 	currentPCB->running = 0;
 
   //Recomputes priority and moves to back of correct queue
-  ProcessComputePriority(AQueueFirst(&runQueue));
+  ProcessComputePriority(currentPCB->l);
 
   if(ClkGetCurJiffies() - lastJiffies > 100)	//10 proc quanta have passed
   {
