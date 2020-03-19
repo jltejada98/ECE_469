@@ -29,6 +29,7 @@ static Queue	freepcbs;
 // to happen).
 static Queue runQueues[PROCESS_NUM_PRIORITY_QUEUES];
 int currentPriorityQueue;
+int lastJiffies = 0;
 
 // List of processes that are waiting for something to happen.  There's no
 // reason why this must be a single list; there could be many lists for many
@@ -184,6 +185,18 @@ void ProcessSetResult (PCB * pcb, uint32 result) {
   pcb->currentSavedFrame[PROCESS_STACK_IREG+1] = result;
 }
 
+
+//----------------------------------------------------------------------
+//
+//	ProcessDecayPriorities
+//
+//	Decays the priority for every process in the running runQueues
+//
+//----------------------------------------------------------------------
+void ProcessDecayPriorities () {
+  int i;
+}
+
 
 //----------------------------------------------------------------------
 //
@@ -255,9 +268,10 @@ void ProcessSchedule () {
   Hey dummy note: Currently working on algorithm for priority, line 256 *should* be correct
   frontOfRunQueue->priority = PROCESS_BASE_PRIORITY_USER + (frontOfRunQueue->estcpu / 4) + (2*frontOfRunQueue->pnice);
 
-  if(10 proccess quanta have passed)
+  if(ClkGetCurJiffies() - lastJiffies > 100)	//10 proc quanta have passed
   {
-  	decay estcpu number for every process in all run queues and recompute priority with new estcpu
+  	//decay estcpu number for every process in all run queues
+  	//and recompute priority with new estcpu
   }
 
   //Set running flag to false for proc that won't be running
