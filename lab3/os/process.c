@@ -192,8 +192,20 @@ void ProcessSetResult (PCB * pcb, uint32 result) {
 //	Computes the priority for a single process
 //
 //----------------------------------------------------------------------
-void ProcessComputePriority (PCB* pcb) {
+void ProcessComputePriority (Link* l) {
+	PCB* pcb;
+
+	pcb = l->object;
+
+	//Change the priority of the process
   pcb->priority = PROCESS_BASE_PRIORITY_USER + (pcb->estcpu / 4) + (2*pcb->pnice);
+
+  //Remove pcb from its current priority queue
+  AQueueRemove(&l);
+
+  //Put pcb in correct priority queue
+  AQueueInsertLast(GetPriorityQueue(pcb), l);
+
   //TODO: Change queue according to priority
   printf("Not switching proc to different queue yet\n");
 }
@@ -222,7 +234,7 @@ void ProcessDecayEstCPUs (Queue* currQueue) {
 			proc->estcpu = (proc->estcpu * (2 * PROC_LOAD) / (2 * PROC_LOAD + 1)) + proc->pnice;
 			
 			//Set priority
-			ProcessComputePriority(proc);
+			ProcessComputePriority(l);
 
 			l = AQueueNext(l);
 		}
@@ -290,6 +302,7 @@ void ProcessSchedule () {
   }
  
  	frontOfRunQueue = AQueueFirst(&runQueue)->object;
+
 	//Update priority of proc that was interrupted
   if(frontOfRunQueue->running)
   {
@@ -297,25 +310,24 @@ void ProcessSchedule () {
   	(frontOfRunQueue->estcpu)++;
 
   }
-  ProcessComputePriotiry(frontOfRunQueue);
+
+ 	//Set running flag to false for proc that won't be running
+	frontOfRunQueue->running = 0;
+
+  //Recomputes priority and moves to back of correct queue
+  ProcessComputePriority(AQueueFirst(&runQueue));
 
   if(ClkGetCurJiffies() - lastJiffies > 100)	//10 proc quanta have passed
   {
   	//Increase priority for all procs
   	for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
   	{
-  		ProcessDecayEstCPUs(runQueues[i]);
+  		ProcessDecayEstCPUs(&runQueues[i]);
   	}
   }
 
-  //Set running flag to false for proc that won't be running
-  frontOfRunQueue->running = 0;
-
-  // Move the front of the queue to the end.  The running process was the one in front.
-  AQueueMoveAfter(&runQueue, AQueueLast(&runQueue), AQueueFirst(&runQueue));
-
   //Set running flag to true for proc about to run
-  AQueueFirst(&runQueue)->object->running = 1;
+  ((PCB*) AQueueObject(&runQueue))->running = 1;
 
   // Now, run the one at the head of the queue.
   pcb = (PCB *)AQueueObject(AQueueFirst(&runQueue));
@@ -659,7 +671,7 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     printf("FATAL ERROR: could not get link for forked PCB in ProcessFork!\n");
     exitsim();
   }
-  if (AQueueInsertLast(&(runQueues[GetPriorityQueue(pcb)]), pcb->l) != QUEUE_SUCCESS) {
+  if (AQueueInsertLast((pcb), pcb->l) != QUEUE_SUCCESS) {
     printf("FATAL ERROR: could not insert link into runQueue in ProcessFork!\n");
     exitsim();
   }
@@ -1062,7 +1074,7 @@ int GetPidFromAddress(PCB *pcb) {
 }
 
 Queue* GetPriorityQueue(PCB* pcb){
-	return runQueues[(pcb->priority) /PROCESS_PRIORITES_PER_QUEUE];
+	return &runQueues[(pcb->priority) /PROCESS_PRIORITES_PER_QUEUE];
 }
 
 //--------------------------------------------------------

@@ -111,5 +111,6 @@ void ProcessYield();
 //Our functions
 void ProcessComputePriority (PCB* pcb);
 void ProcessDecayEstCPUs (Queue* currQueue);
+Queue* GetPriorityQueue(PCB* pcb);
 
 #endif	/* __process_h__ */
