@@ -94,7 +94,6 @@ void ProcessModuleInit () {
       exitsim();
     }
     pcbs[i].pinfo = 1;
-    pcbs[i].running = 0;
     pcbs[i].estcpu = 0;
     pcbs[i].sleepTime = 0;
     pcbs[i].numJiffies = 0;
@@ -274,24 +273,12 @@ void ProcessSchedule () {
 	printf("currentPCB: %d, running:%d \n", GetPidFromAddress(currentPCB), currentPCB->running);
 	printf("%d processes ready in runQueues at beginning of scheduler\n", numProcsReady());
 
-	if(currentPCB->running)
-	{
-		(currentPCB->estcpu)++;
-
-		//Move to back of correct queue
-		ProcessMoveToBack(currentPCB);
-	}
-
-	printf("Process %d is ");
 	if(currentPCB->flags & PROCESS_STATUS_RUNNABLE)
 	{
-		printf("runnable\n");
+		//Move to back of correct queue
+		(currentPCB->estcpu)++;
+		ProcessMoveToBack(currentPCB);
 	}
-	else
-		printf("not runnable\n");
-
-
-	currentPCB->running = 0;
 
 
 	// The OS exits if there's no runnable process.  This is a feature, not a
@@ -374,7 +361,6 @@ void ProcessSuspend (PCB *suspend) {
     exitsim();
   }
   dbprintf ('p', "ProcessSuspend (%d): function complete\n", GetCurrentPid());
-  suspend->running = 0;
 }
 
 //----------------------------------------------------------------------
