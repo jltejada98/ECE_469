@@ -277,10 +277,18 @@ void ProcessSchedule () {
 	if(currentPCB->running)
 	{
 		(currentPCB->estcpu)++;
-		
+
 		//Move to back of correct queue
 		ProcessMoveToBack(currentPCB);
 	}
+
+	printf("Process %d is ");
+	if(currentPCB->flags & PROCESS_STATUS_RUNNABLE)
+	{
+		printf("runnable\n");
+	}
+	else
+		printf("not runnable\n");
 
 
 	currentPCB->running = 0;
