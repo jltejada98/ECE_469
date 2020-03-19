@@ -112,5 +112,6 @@ void ProcessYield();
 void ProcessComputePriority (Link* l);
 void ProcessDecayEstCPUs (Queue* currQueue);
 Queue* GetPriorityQueue(PCB* pcb);
+int GetPriorityQueueIdx(PCB* pcb);
 
 #endif	/* __process_h__ */

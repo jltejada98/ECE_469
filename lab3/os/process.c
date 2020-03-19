@@ -229,6 +229,7 @@ void ProcessComputePriority (Link* l) {
 
   //Put pcb in correct priority queue
   AQueueInsertLast(GetPriorityQueue(pcb), l);
+  printf("Process %d in Queue %d\n", GetPidFromAddress(pcb), GetPriorityQueueIdx(pcb));
 }
 
 
@@ -1097,6 +1098,10 @@ int GetPidFromAddress(PCB *pcb) {
 
 Queue* GetPriorityQueue(PCB* pcb){
 	return &runQueues[(pcb->priority) /PROCESS_PRIORITES_PER_QUEUE];
+}
+
+int GetPriorityQueueIdx(PCB* pcb){
+	return (pcb->priority) / PROCESS_PRIORITES_PER_QUEUE;
 }
 
 //--------------------------------------------------------
