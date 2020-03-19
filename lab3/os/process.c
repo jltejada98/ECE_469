@@ -194,6 +194,8 @@ void ProcessSetResult (PCB * pcb, uint32 result) {
 //----------------------------------------------------------------------
 void ProcessComputePriority (PCB* pcb) {
   pcb->priority = PROCESS_BASE_PRIORITY_USER + (pcb->estcpu / 4) + (2*pcb->pnice);
+  //TODO: Change queue according to priority
+  printf("Not switching proc to different queue yet\n");
 }
 
 
@@ -208,7 +210,7 @@ void ProcessComputePriority (PCB* pcb) {
 void ProcessDecayEstCPUs (Queue* currQueue) {
 	PCB* proc;
 	Link* l;
-	
+
 	if(!AQueueEmpty(currQueue))
 	{
 		l = AQueueFirst(currQueue);
@@ -300,11 +302,10 @@ void ProcessSchedule () {
   if(ClkGetCurJiffies() - lastJiffies > 100)	//10 proc quanta have passed
   {
   	//Increase priority for all procs
-  	ProcessDecayEstCPUs(runQueue);
-
-  	//Do something for sleeping procs
-  	ProcessDecayEstCPUs(runQueue);
-
+  	for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
+  	{
+  		ProcessDecayEstCPUs(runQueues[i]);
+  	}
   }
 
   //Set running flag to false for proc that won't be running

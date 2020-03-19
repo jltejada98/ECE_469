@@ -53,7 +53,8 @@ typedef struct PCB {
   int           priority;       // Current priority of process
   int           running;
   int           estcpu;
-  int numJiffies;
+  int           sleepTime;
+  int numJiffies;               // Total runtime for runtime stats
   int lastStartJiffies;
 } PCB;
 
