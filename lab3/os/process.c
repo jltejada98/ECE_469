@@ -271,6 +271,7 @@ void ProcessSchedule () {
 	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, tot_runable=%d)\n",
 	    (int)currentPCB, numProcsReady());
 
+	printf("currentPCB: %d\n", GetPidFromAddress(currentPCB));
 	printf("%d processes ready in runQueues at beginning of scheduler\n", numProcsReady());
 
 	if(currentPCB->running)
