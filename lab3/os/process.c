@@ -185,16 +185,46 @@ void ProcessSetResult (PCB * pcb, uint32 result) {
   pcb->currentSavedFrame[PROCESS_STACK_IREG+1] = result;
 }
 
+//----------------------------------------------------------------------
+//
+//	ProcessComputePriority
+//
+//	Computes the priority for a single process
+//
+//----------------------------------------------------------------------
+void ProcessComputePriority (PCB* pcb) {
+  pcb->priority = PROCESS_BASE_PRIORITY_USER + (pcb->estcpu / 4) + (2*pcb->pnice);
+}
+
 
 //----------------------------------------------------------------------
 //
-//	ProcessDecayPriorities
+//	ProcessDecayEstCPUs
 //
-//	Decays the priority for every process in the running runQueues
+//	decay estcpu number for every process in all run queues
+//	and recompute priority with new estcpu
 //
 //----------------------------------------------------------------------
-void ProcessDecayPriorities () {
-  int i;
+void ProcessDecayEstCPUs (Queue* currQueue) {
+	PCB* proc;
+	Link* l;
+	
+	if(!AQueueEmpty(currQueue))
+	{
+		l = AQueueFirst(currQueue);
+		while(l != NULL)
+		{
+			proc = l->object;
+
+			//Decay estcpu
+			proc->estcpu = (proc->estcpu * (2 * PROC_LOAD) / (2 * PROC_LOAD + 1)) + proc->pnice;
+			
+			//Set priority
+			ProcessComputePriority(proc);
+
+			l = AQueueNext(l);
+		}
+	}
 }
 
 
@@ -265,13 +295,16 @@ void ProcessSchedule () {
   	(frontOfRunQueue->estcpu)++;
 
   }
-  Hey dummy note: Currently working on algorithm for priority, line 256 *should* be correct
-  frontOfRunQueue->priority = PROCESS_BASE_PRIORITY_USER + (frontOfRunQueue->estcpu / 4) + (2*frontOfRunQueue->pnice);
+  ProcessComputePriotiry(frontOfRunQueue);
 
   if(ClkGetCurJiffies() - lastJiffies > 100)	//10 proc quanta have passed
   {
-  	//decay estcpu number for every process in all run queues
-  	//and recompute priority with new estcpu
+  	//Increase priority for all procs
+  	ProcessDecayEstCPUs(runQueue);
+
+  	//Do something for sleeping procs
+  	ProcessDecayEstCPUs(runQueue);
+
   }
 
   //Set running flag to false for proc that won't be running
