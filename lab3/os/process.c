@@ -236,7 +236,7 @@ void ProcessMoveToBack(PCB* pcb) {
 		printf("FATAL ERROR: could not insert process into new priority queue %d\n", pcb->priority);
 		exitsim();
 	}
-	printf("Added proc (%d) to queue %d\n", GetPidFromAddress(pcb), GetPriorityQueueIdx);
+	printf("Added proc (%d) to queue %d\n", GetPidFromAddress(pcb), GetPriorityQueueIdx(pcb));
 }
 
 
@@ -276,9 +276,6 @@ void ProcessSchedule () {
 	{
 		(currentPCB->estcpu)++;
 	}
-
-	//Calculate new priority
-	updatePriority(currentPCB);
 
 	//Move to back of correct queue
 	ProcessMoveToBack(currentPCB);
@@ -1059,15 +1056,15 @@ Queue* GetPriorityQueue(PCB* pcb){
 int GetPriorityQueueIdx(PCB* pcb){
 	int result;
 
-	result = pcb->priority / PROCESS_PRIORITES_PER_QUEUE;
+	result = getPriority(pcb) / PROCESS_PRIORITES_PER_QUEUE;
 	if (result > PROCESS_NUM_PRIORITY_QUEUES)
 		result = PROCESS_NUM_PRIORITY_QUEUES;
 
 	return result;
 }
 
-void updatePriority(PCB* pcb){
-	pcb->priority = PROCESS_BASE_PRIORITY_USER + (pcb->estcpu/4) + (2*pcb->pnice);
+void getPriority(PCB* pcb){
+	return PROCESS_BASE_PRIORITY_USER + ((pcb->estcpu)/4) + (2*(pcb->pnice));
 }
 
 //--------------------------------------------------------
