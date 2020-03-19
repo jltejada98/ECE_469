@@ -268,8 +268,10 @@ void ProcessSchedule () {
 
 	currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
-	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x)\n",
-	    (int)currentPCB);
+	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, tot_runable=%d)\n",
+	    (int)currentPCB, numProcsReady());
+
+	printf("%d processes ready in runQueues\n", numProcsReady());
 
 	if(currentPCB->running)
 	{
@@ -1065,6 +1067,18 @@ int GetPriorityQueueIdx(PCB* pcb){
 
 void getPriority(PCB* pcb){
 	return PROCESS_BASE_PRIORITY_USER + ((pcb->estcpu)/4) + (2*(pcb->pnice));
+}
+
+int numProcsReady(){
+	int i;
+	int count;
+
+	count = 0;
+	for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
+	{
+		count += AQueueLength(runQueues[i]);
+	}
+	return count;
 }
 
 //--------------------------------------------------------

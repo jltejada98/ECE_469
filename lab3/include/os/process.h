@@ -111,5 +111,6 @@ void ProcessYield();
 Queue* GetPriorityQueue(PCB* pcb);
 int GetPriorityQueueIdx(PCB* pcb);
 void updatePriority(PCB* pcb);
+int numProcsReady();
 
 #endif	/* __process_h__ */
