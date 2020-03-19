@@ -205,9 +205,6 @@ void ProcessComputePriority (Link* l) {
 
   //Put pcb in correct priority queue
   AQueueInsertLast(GetPriorityQueue(pcb), l);
-
-  //TODO: Change queue according to priority
-  printf("Not switching proc to different queue yet\n");
 }
 
 
