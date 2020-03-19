@@ -265,6 +265,8 @@ void ProcessSchedule () {
 	Link *l=NULL;
 	Queue* runQueue;
 
+	printf("%d processes ready in runQueues at START of scheduler\n", numProcsReady());
+
 	currentPCB->numJiffies += ClkGetCurJiffies() - currentPCB->lastStartJiffies;
 
 	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, tot_runable=%d)\n",
@@ -323,6 +325,7 @@ void ProcessSchedule () {
 	}
 	dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
 
+	printf("%d processes ready in runQueues at END of scheduler\n", numProcsReady());
 
 	currentPCB->lastStartJiffies = ClkGetCurJiffies();
 }
