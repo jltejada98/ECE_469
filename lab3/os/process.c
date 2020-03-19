@@ -237,6 +237,7 @@ void ProcessDecayEstCPUs (Queue* currQueue) {
 
 			l = AQueueNext(l);
 		}
+		printf("Leaving Loop 2\n");
 	}
 }
 
@@ -285,6 +286,7 @@ void ProcessSchedule () {
   	runQueue = runQueues[currentPriorityQueue];
   	printf("IN LOOP 1\n");
   }
+  printf("Leaving loop 1\n");
 
   if (AQueueEmpty(&runQueue)) {
     if (!AQueueEmpty(&waitQueue)) {
