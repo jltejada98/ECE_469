@@ -42,6 +42,9 @@ static Queue	zombieQueue;
 // we can't use malloc() inside the OS.
 static PCB	pcbs[PROCESS_MAX_PROCS];
 
+// Static var to determine last time estcpu values were decayed in jiffies
+long long last_estcpu_decay;
+
 // String listing debugging options to print out.
 char	debugstr[200];
 
@@ -98,6 +101,7 @@ void ProcessModuleInit () {
     pcbs[i].numJiffies = 0;
     pcbs[i].lastStartJiffies = 0;
   }
+  lastestcpuDecay = 0;
   // There are no processes running at this point, so currentPCB=NULL
   currentPCB = NULL;
   dbprintf ('p', "ProcessModuleInit: function complete\n");
@@ -210,8 +214,7 @@ Queue* FindRunnableQueue () {
 //	ProcessMoveToBack
 //
 //	Moves process to back of queue it belongs in based
-//	off of priority field (does NOT calculate priority based
-//	on estcpu)
+//	off of priority calculation based off estcpu
 //
 //----------------------------------------------------------------------
 void ProcessMoveToBack(PCB* pcb) {
@@ -233,7 +236,49 @@ void ProcessMoveToBack(PCB* pcb) {
 		printf("FATAL ERROR: could not insert process into new priority queue %d\n", GetPriorityQueueIdx(pcb));
 		exitsim();
 	}
-	//printf("Added proc (%d) to queue %d\n", GetPidFromAddress(pcb), GetPriorityQueueIdx(pcb));
+}
+
+//----------------------------------------------------------------------
+//
+//	decay_estcpu
+//
+//	Decays estcpu value for given PCB
+//
+//----------------------------------------------------------------------
+void decay_estcpu(PCB* pcb) {
+	int estcpu;
+	int load = 1;
+
+	estcpu = pcb->estcpu;
+
+	pcb->estcpu = (estcpu * (2*load)/(2*load + 1)) + pcb->pnice;
+}
+
+//----------------------------------------------------------------------
+//
+//	decay_estcpus_runQueues
+//
+//	Decays estcpu value for all pcbs in runQueues
+//
+//----------------------------------------------------------------------
+void decay_estcpus_runQueues() {
+	Queue* currQueue;
+	Link* l;
+	int i;
+
+	for(int i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
+	{
+		currQueue = runQueues[i];
+		if(!AQueueEmpty(runQueue))
+		{
+			l = AQueueFirst(currQueue);
+			while(l != NULL)
+			{
+				decay_estcpu(l->object);
+				ProcessMoveToBack(l->object);
+			}
+		}
+	}
 }
 
 
@@ -270,12 +315,19 @@ void ProcessSchedule () {
 	dbprintf ('p', "Now entering ProcessSchedule (cur=0x%x, tot_runable=%d)\n",
 	    (int)currentPCB, numProcsReady());
 
-
+	// If process is running
 	if(currentPCB->flags & PROCESS_STATUS_RUNNABLE)
 	{
 		//Move to back of correct queue
 		(currentPCB->estcpu)++;
 		ProcessMoveToBack(currentPCB);
+	}
+
+	//if 10 proc quanta pass
+	if(ClkGetCurJiffies() - last_estcpu_decay > 100)
+	{
+		//decay estcpu value for every process in runQueues
+		decay_estcpus_runQueues();
 	}
 
 
