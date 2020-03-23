@@ -268,7 +268,7 @@ void decay_estcpus_runQueues() {
 
 	for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
 	{
-		currQueue = runQueues[i];
+		currQueue = &runQueues[i];
 		if(!AQueueEmpty(runQueue))
 		{
 			l = AQueueFirst(currQueue);
