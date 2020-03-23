@@ -1119,7 +1119,7 @@ int GetPriorityQueueIdx(PCB* pcb){
 	return result;
 }
 
-void getPriority(PCB* pcb){
+int getPriority(PCB* pcb){
 	return PROCESS_BASE_PRIORITY_USER + ((pcb->estcpu)/4) + (2*(pcb->pnice));
 }
 
