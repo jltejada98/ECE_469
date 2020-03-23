@@ -311,6 +311,8 @@ void ProcessSchedule () {
 	while (!AQueueEmpty(&zombieQueue)) {
 	pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
 
+	printf("pid: %d, pinfo: %d, pnice: %d", GetPidFromAddress(pcb), pcb->pinfo, pcb->pnice);
+
 	if(pcb->pinfo){
 		printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, getPriority(pcb));
 		printf("pnice: %d\n", pcb->pnice);
