@@ -10,7 +10,6 @@ void main (int argc, char *argv[])
   sem_t s_procs_completed;        // Semaphore used to wait until all spawned processes have completed
   char s_procs_completed_str[10]; // Used as command-line argument to pass page_mapped handle to new processes
   char program_index_str[10];     // Used to store incrementing program numbers
-  int pnice_vals[] = {0, 0, 1};
 
   if (argc != 2) {
     Printf("Usage: %s <number of processes to create\n", argv[0]);
@@ -43,7 +42,7 @@ void main (int argc, char *argv[])
 
   for(i=0; i<numprocs; i++) {
     ditoa(i, program_index_str);
-    process_create(FILENAME_TO_RUN, pnice_vals[i], 0, program_index_str, s_procs_completed_str, NULL);
+    process_create(FILENAME_TO_RUN, i, 0, program_index_str, s_procs_completed_str, NULL);
     Printf("makeprocs (%d): Process %d created\n", getpid(), i);
   }
 
