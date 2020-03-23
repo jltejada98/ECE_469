@@ -43,7 +43,7 @@ static Queue	zombieQueue;
 static PCB	pcbs[PROCESS_MAX_PROCS];
 
 // Static var to determine last time estcpu values were decayed in jiffies
-long long last_estcpu_decay;
+int last_estcpu_decay;
 
 // String listing debugging options to print out.
 char	debugstr[200];
@@ -101,7 +101,7 @@ void ProcessModuleInit () {
     pcbs[i].numJiffies = 0;
     pcbs[i].lastStartJiffies = 0;
   }
-  lastestcpuDecay = 0;
+  last_estcpu_decay = 0;
   // There are no processes running at this point, so currentPCB=NULL
   currentPCB = NULL;
   dbprintf ('p', "ProcessModuleInit: function complete\n");
@@ -328,6 +328,7 @@ void ProcessSchedule () {
 	{
 		//decay estcpu value for every process in runQueues
 		decay_estcpus_runQueues();
+		last_estcpu_decay = ClkGetCurJiffies();
 	}
 
 
