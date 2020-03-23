@@ -46,6 +46,8 @@ void main (int argc, char *argv[])
     Printf("makeprocs (%d): Process %d created\n", getpid(), i);
   }
 
+  //NOTE: process_create(filename, pnice, pinfo, argv[1], argv[2], ... ,NULL);
+
   // And finally, wait until all spawned processes have finished.
   if (sem_wait(s_procs_completed) != SYNC_SUCCESS) {
     Printf("Bad semaphore s_procs_completed (%d) in ", s_procs_completed); Printf(argv[0]); Printf("\n");
