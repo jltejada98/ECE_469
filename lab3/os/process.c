@@ -311,8 +311,6 @@ void ProcessSchedule () {
 	while (!AQueueEmpty(&zombieQueue)) {
 	pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
 
-	printf("pid: %d, pinfo: %d, pnice: %d\n", GetPidFromAddress(pcb), pcb->pinfo, pcb->pnice);
-
 	if(pcb->pinfo){
 		printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, getPriority(pcb));
 		printf("pnice: %d\n", pcb->pnice);
@@ -470,7 +468,6 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
   uint32 dum[MAX_ARGS+8], count, offset;
   char *str;
 
-  printf("pinfo: %d\n", pinfo);
 
   dbprintf ('p', "ProcessFork (%d): function started\n", GetCurrentPid());
   intrs = DisableIntrs ();
@@ -664,7 +661,6 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
   pcb->pnice = pnice;
   pcb->pinfo = pinfo;
 
-  printf("creating process with %d with pnice=%d and pinfo=%d\n", GetPidFromAddress(pcb), pnice, pinfo);
 
   dbprintf ('p', "Leaving ProcessFork (%s)\n", name);
   // Return the process number (found by subtracting the PCB number
