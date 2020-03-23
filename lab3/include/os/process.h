@@ -101,15 +101,16 @@ extern void	ProcessSleep ();
 extern void     ProcessDestroy(PCB *pcb);
 extern unsigned GetCurrentPid();
 void process_create(char *name, ...);
-int GetPidFromAddress(PCB *pcb);
 
 void ProcessUserSleep(int seconds);
 void ProcessYield();
 
 //Our functions
+int GetPidFromAddress(PCB *pcb);
 Queue* GetPriorityQueue(PCB* pcb);
 int GetPriorityQueueIdx(PCB* pcb);
-void updatePriority(PCB* pcb);
+void getPriority(PCB* pcb);
 int numProcsReady();
+
 
 #endif	/* __process_h__ */
