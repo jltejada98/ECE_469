@@ -325,8 +325,10 @@ void ProcessSchedule () {
 	}
 
 	//if 10 proc quanta pass
+	printf("In ProcessSchedule\n");
 	if(ClkGetCurJiffies() - last_estcpu_decay > 100)
 	{
+		printf("Decaying estcpu\n");
 		//decay estcpu value for every process in runQueues
 		decay_estcpus_runQueues();
 		last_estcpu_decay = ClkGetCurJiffies();
