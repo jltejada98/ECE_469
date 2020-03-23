@@ -186,7 +186,7 @@ static void TrapProcessCreateHandler(uint32 *trapArgs, int sysmode) {
     }
     numargs = i+1;
   }
-
+  printf("In Traps.c pinfo: %d\n", pinfo);
   ProcessFork(0, (uint32)allargs, pnice, pinfo, name, 1);
 }
 
