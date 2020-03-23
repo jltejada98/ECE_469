@@ -85,15 +85,14 @@ void ProcessModuleInit () {
     // Next, set the pcb to be available
     pcbs[i].flags = PROCESS_STATUS_FREE;
     if(PROCESS_PRINT_RUNTIME_STATS)
-    {
     	pcbs[i].pinfo = 1;
-    }
+    else
+    	pcbs[i].pinfo = 0;
     // Finally, insert the link into the queue
     if (AQueueInsertFirst(&freepcbs, pcbs[i].l) != QUEUE_SUCCESS) {
       printf("FATAL ERROR: could not insert PCB link into queue in ProcessModuleInit!\n");
       exitsim();
     }
-    pcbs[i].pinfo = 1;
     pcbs[i].estcpu = 0;
     pcbs[i].sleepTime = 0;
     pcbs[i].numJiffies = 0;
@@ -314,6 +313,7 @@ void ProcessSchedule () {
 
 	if(pcb->pinfo){
 		printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, getPriority(pcb));
+		printf("pnice: %d\n", pcb->pnice);
 	}
 
 	dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
