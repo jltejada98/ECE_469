@@ -277,6 +277,7 @@ void decay_estcpus_runQueues() {
 				printf("Decaying estcpu for %d\n", GetPidFromAddress(l->object));
 				decay_estcpu(l->object);
 				ProcessMoveToBack(l->object);
+				l = AQueueNext(l);
 			}
 		}
 	}
