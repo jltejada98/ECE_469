@@ -40,11 +40,15 @@ void main (int argc, char *argv[])
   // Now we can create the processes.  Note that you MUST end your call to
   // process_create with a NULL argument so that the operating system
   // knows how many arguments you are sending.
-  for(i=0; i<numprocs; i++) {
+    process_create(FILENAME_TO_RUN, 0, 0, program_index_str, s_procs_completed_str, NULL);
+    process_create(FILENAME_TO_RUN, 0, 0, program_index_str, s_procs_completed_str, NULL);
+    process_create(FILENAME_TO_RUN, 2, 0, program_index_str, s_procs_completed_str, NULL);
+
+/*  for(i=0; i<numprocs; i++) {
     ditoa(i, program_index_str);
     process_create(FILENAME_TO_RUN, i, 0, program_index_str, s_procs_completed_str, NULL);
     Printf("makeprocs (%d): Process %d created\n", getpid(), i);
-  }
+  }*/
 
   //NOTE: process_create(filename, pnice, pinfo, argv[1], argv[2], ... ,NULL);
 
