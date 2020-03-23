@@ -109,7 +109,7 @@ void ProcessYield();
 int GetPidFromAddress(PCB *pcb);
 Queue* GetPriorityQueue(PCB* pcb);
 int GetPriorityQueueIdx(PCB* pcb);
-void getPriority(PCB* pcb);
+int getPriority(PCB* pcb);
 int numProcsReady();
 
 
