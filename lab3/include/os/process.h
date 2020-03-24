@@ -115,5 +115,7 @@ int GetPriorityQueueIdx(PCB* pcb);
 int getPriority(PCB* pcb);
 int numProcsReady();
 
+void ProcessIdle();
+
 
 #endif	/* __process_h__ */
