@@ -213,7 +213,6 @@ Queue* FindRunnableQueue () {
 	{
 		if(!AQueueEmpty(&runQueues[i]))
 		{
-			printf("Found item in queue %d\n", i);
 			return &runQueues[i];
 		}
 	}
@@ -505,7 +504,7 @@ void ProcessWakeup (PCB *wakeup) {
 
 	if(wakeup->estcpu > 350 || wakeup->estcpu < 49)
 	{
-		printf("ERROR: Something went wrong with estcpu calculation\n");
+		printf("ERROR: Something went wrong with estcpu calculatio (%d)\n", wakeup->estcpu);
 		exitsim();
 	}
 
