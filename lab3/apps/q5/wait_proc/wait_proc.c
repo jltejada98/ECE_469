@@ -9,13 +9,19 @@ int main(int argc, char const *argv[])
   int sleep_time;
   int i;
 
+  if (argc >= 3)
+  {
+    Printf("Incorrect number of arguments (%d) for %s, expecting at least 3.\n", argc, argv[0]);
+    Exit();
+  }
+
+  sem_procs_completed = dstrtol(argv[1], NULL, 10);
+  num_sleep = dstrtol(argv[2], NULL, 10);
+
   if (argc != 3 + num_sleep) { 
     Printf("Incorrect number of arguments (%d) for %s, expecting %d\n", argc, argv[0], 3 + num_sleep);
     Exit();
   } 
-
-  sem_procs_completed = dstrtol(argv[1], NULL, 10);
-  num_sleep = dstrtol(argv[2], NULL, 10);
 
   for(i = 0; i < num_sleep; i++)
   {
