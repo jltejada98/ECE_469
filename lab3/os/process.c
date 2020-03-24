@@ -485,25 +485,7 @@ void ProcessWakeup (PCB *wakeup) {
 
   timeSlept = ((int)ClkGetCurJiffies()) - wakeup->timeOfSleep;
 
-	num_windows_asleep = timeSlept / 100;
-	printf("num_windows_asleep: %d\n", 184 / 100);
-	printf("prod: %lf, num_windows_asleep: %d, timeSlept: %d\n", prod, num_windows_asleep, timeSlept);
-
-  if (timeSlept >= 100) {
-
-		prod = ((2*load)/(2*load+1));
-		for(i = 0; i < num_windows_asleep; i++)
-		{
-			wakeup->estcpu = wakeup->estcpu * prod;
-		}
-	}
-
-	if(wakeup->estcpu > 350 || wakeup->estcpu < 49)
-	{
-		printf("ERROR: Something went wrong with estcpu calculatio (%d)\n", wakeup->estcpu);
-		printf("prod: %lf, num_windows_asleep: %d, timeSlept: %d\n", prod, num_windows_asleep, timeSlept);
-		exitsim();
-	}
+  printf("Time Slept %d\n", timeSlept);
 
   printf("TODO: Still need to recalculate decayed estcpu for proc being woken up\n");
   // Make sure it's not yet a runnable process.
