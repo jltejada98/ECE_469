@@ -33,21 +33,26 @@ int main (int argc, char *argv[]){
 
     ditoa(sem_procs_completed, sem_procs_completed_str);
 
-    ditoa(3, num_sleeps);
-
-    ditoa(0, sleep_time1);
-    ditoa(1, sleep_time2);
-    ditoa(2, sleep_time3);
+    ditoa(2, num_sleeps);
+    ditoa(1, sleep_time1);
+    ditoa(5, sleep_time2);
 
     //process creation
-    process_create(SLEEP_PROC_NAME, 0, 0, sem_procs_completed_str, num_sleeps, sleep_time1, sleep_time2, sleep_time3, NULL);
+    process_create(SLEEP_PROC_NAME, 0, 0, sem_procs_completed_str, num_sleeps, sleep_time1, sleep_time2, NULL);
+    
+    ditoa(2, num_sleeps);
+    ditoa(2, sleep_time1);
+    ditoa(6, sleep_time2);
+
+    //process creation
+    process_create(SLEEP_PROC_NAME, 0, 0, sem_procs_completed_str, num_sleeps, sleep_time1, sleep_time2, NULL);
 
     if (sem_wait(sem_procs_completed) != SYNC_SUCCESS) {
       Printf("Bad semaphore sem_procs_completed (%d) in ", sem_procs_completed); Printf(argv[0]); Printf("\n");
       Exit();
     }
 
-    Printf("EXITING MAKEPROCS!!\n");
+    Printf("Exiting Makeprocs!\n");
 
     return 0;
 }
