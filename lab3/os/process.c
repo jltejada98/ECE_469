@@ -362,6 +362,7 @@ void ProcessSchedule () {
 		 AQueueEmpty(&waitQueue))
 	{
 		printf("No runnable processes - exiting!\n");
+		exitsim();
 	}
 
 /*	if (runQueue == NULL) {
