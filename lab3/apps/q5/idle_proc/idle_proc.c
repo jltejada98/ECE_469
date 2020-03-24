@@ -5,11 +5,6 @@
 int main(int argc, char const *argv[])
 {
   sem_t sem_procs_completed;
-  int num;
-  int i;
-  int j;
-  int k;
-
 
   if (argc != 2) { 
     Printf("Incorrect number of arguments (%d) for %s\n", argc, argv[0]);
