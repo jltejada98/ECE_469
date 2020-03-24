@@ -20,7 +20,7 @@ int main (int argc, char *argv[]){
         Exit();
     }
 
-    sem_procs_completed = sem_create(0);
+    sem_procs_completed = sem_create(-1);
 
     //Error check semaphore
     if(sem_procs_completed == SYNC_FAIL)
