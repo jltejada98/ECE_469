@@ -259,7 +259,7 @@ void ProcessMoveToBack(PCB* pcb) {
 //----------------------------------------------------------------------
 void decay_estcpu(PCB* pcb) {
 	int estcpu;
-	int load = 1;
+	double load = PROCESS_EST_CPU_DECAY_LOAD;
 
 	estcpu = pcb->estcpu;
 
@@ -483,32 +483,28 @@ void ProcessWakeup (PCB *wakeup) {
 
   dbprintf ('p',"Waking up PID %d.\n", (int)(wakeup - pcbs));
 
+  //Catch sleeping processes up for the decay windows
   timeSlept = ClkGetCurJiffies() - wakeup->timeOfSleep;
-  printf("Time Slept %d\n", timeSlept);
-
   if(timeSlept >= 100)
   {
   	num_windows_asleep = timeSlept / 100;
-  	printf("num_windows_asleep: %d\n", num_windows_asleep);
 
   	for(i = 0; i < 3; i++)
   	{
   		prod = prod * (2*load)/(2*load+1);
   	}
-  	printf("prod: %lf\n", prod);
 
   	wakeup->estcpu = wakeup->estcpu * prod;
   	if(wakeup->estcpu < 50){
   		wakeup->estcpu = 50;
   	}
+
   	if(prod > 1) {
   		printf("FATAL ERROR: estcpu was increased after waking proc up\n");
   		exitsim();
   	}
   }
 
-
-  printf("TODO: Still need to recalculate decayed estcpu for proc being woken up\n");
   // Make sure it's not yet a runnable process.
   ASSERT (wakeup->flags & PROCESS_STATUS_WAITING, "Trying to wake up a non-sleeping process!\n");
   ProcessSetStatus (wakeup, PROCESS_STATUS_RUNNABLE);
