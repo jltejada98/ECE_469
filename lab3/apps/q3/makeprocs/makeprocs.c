@@ -47,6 +47,8 @@ int main (int argc, char *argv[]){
       Exit();
     }
 
+    Printf("Exiting makeprocs!\n");
+
     return 0;
 }
 
