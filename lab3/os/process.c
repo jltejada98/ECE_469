@@ -486,7 +486,7 @@ void ProcessWakeup (PCB *wakeup) {
   timeSlept = ClkGetCurJiffies() - wakeup->timeOfSleep;
 
   if (timeSlept >= 100) {
-		num_windows_asleep = timeSlept / (10 * 10);
+		num_windows_asleep = timeSlept / (100);
 
 		if(num_windows_asleep == 0)
 		{
