@@ -773,6 +773,13 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     pcb->flags |= PROCESS_TYPE_SYSTEM;
   }
 
+  //This is the idle process
+  if(func == &ProcessIdle)
+  {
+  	idlePCB = pcb;
+  	pcb->estcpu = 308;
+  }
+
   // Place PCB onto run queue
   intrs = DisableIntrs ();
   if ((pcb->l = AQueueAllocLink(pcb)) == NULL) {
@@ -794,11 +801,6 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     ProcessFork(&ProcessIdle, param, 0, 0, name, 0);
   }
 
-  if(func == &ProcessIdle)
-  {
-  	idlePCB = pcb;
-  	pcb->estcpu = 308;
-  }
 
   pcb->pnice = pnice;
   pcb->pinfo = pinfo;
