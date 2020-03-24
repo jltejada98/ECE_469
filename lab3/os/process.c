@@ -104,7 +104,6 @@ void ProcessModuleInit () {
       exitsim();
     }
     pcbs[i].estcpu = 0;
-    pcbs[i].sleepTime = 0;
     pcbs[i].numJiffies = 0;
     pcbs[i].lastStartJiffies = 0;
 

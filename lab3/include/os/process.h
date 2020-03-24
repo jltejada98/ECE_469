@@ -52,7 +52,6 @@ typedef struct PCB {
   int           pinfo;          // Turns on printing of runtime stats
   int           pnice;          // Used in priority calculation
   int           estcpu;         // Used in priority calculationl
-  int           sleepTime;      // System time in jiffies when proc went to sleep
   int           numJiffies;     // Total runtime for runtime stats
   int           lastStartJiffies;// Used in runtime stats to calculate how long a proc ran in its window
 
