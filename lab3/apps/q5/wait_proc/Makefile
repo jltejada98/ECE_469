@@ -1,7 +1,7 @@
 
 
-SRCS=idle_proc.c
-EXEC=idle_proc.dlx.obj
+SRCS=wait_proc.c
+EXEC=wait_proc.dlx.obj
 
 include ../Makerules
 

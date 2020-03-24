@@ -1,2 +1,2 @@
-#define IDLE_PROC_NAME "idle_proc.dlx.obj"
+#define WAIT_PROC_NAME "wait_proc.dlx.obj"
 
