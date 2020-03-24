@@ -1173,5 +1173,8 @@ void ProcessYield() {
 //-----------------------------------------------------
 void ProcessIdle() {
 	currentPCB->idle = 1;
-	while(1);
+	while(1)
+	{
+		printf("Idling...\n");
+	}
 }
