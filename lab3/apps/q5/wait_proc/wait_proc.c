@@ -28,7 +28,7 @@ int main(int argc, char const *argv[])
     sleep_time = dstrtol(argv[3 + i], NULL, 10);
     sleep(sleep_time);
     
-    printf("Process %d slept for the %d time for %d seconds", getpid(), i+1, sleep_time);
+    Printf("Process %d slept for the %d time for %d seconds", getpid(), i+1, sleep_time);
   }
 
   //Signal semaphore
