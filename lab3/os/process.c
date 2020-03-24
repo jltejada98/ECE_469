@@ -369,6 +369,10 @@ void ProcessSchedule () {
 	if(pcb == idlePCB &&
 		 AQueueEmpty(&sleepQueue))
 	{
+		if(numProcsReady() > 1)
+		{
+			printf("FATAL ERROR: idle process was not last runnable process, %d proccesses ready to run!\n", numProcsReady());
+		}
 		if(!AQueueEmpty(&waitQueue))
 		{
 			printf("There may be processes that have not completed yet!\n");
