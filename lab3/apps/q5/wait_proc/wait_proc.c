@@ -9,8 +9,8 @@ int main(int argc, char const *argv[])
   int sleep_time;
   int i;
 
-  if (argc != 2 + num_sleep) { 
-    Printf("Incorrect number of arguments (%d) for %s\n", argc, argv[0]);
+  if (argc != 3 + num_sleep) { 
+    Printf("Incorrect number of arguments (%d) for %s, expecting %d\n", argc, argv[0], 3 + num_sleep);
     Exit();
   } 
 
