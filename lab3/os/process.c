@@ -505,7 +505,7 @@ void ProcessWakeup (PCB *wakeup) {
 	if(wakeup->estcpu > 350 || wakeup->estcpu < 49)
 	{
 		printf("ERROR: Something went wrong with estcpu calculatio (%d)\n", wakeup->estcpu);
-		printf("prod: %lf, num_windows_asleep: %d, timeSlept: %d", prod, num_windows_asleep, timeSlept);
+		printf("prod: %lf, num_windows_asleep: %d, timeSlept: %d\n", prod, num_windows_asleep, timeSlept);
 		exitsim();
 	}
 
