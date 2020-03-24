@@ -721,11 +721,7 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     currentPCB = pcb;
 
     // This is the first process, we must also create the idle process
-    if(ProcessFork((int) ProcessIdle, param, pnice, pinfo, name, isUser) == GetCurrentPid())
-    {
-    	printf("Jumping to proc idle\n");
-    	ProcessIdle();
-    }
+    ProcessFork(&ProcessIdle, param, pnice, pinfo, name, 0);
   }
 
   pcb->pnice = pnice;
