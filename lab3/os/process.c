@@ -32,6 +32,10 @@ static Queue	freepcbs;
 // to happen).
 static Queue	runQueues[PROCESS_NUM_PRIORITY_QUEUES];
 
+// List of processes sleeping for a certain amount of time
+// These processes will be marked as PROCESS_STATUS_WAITING
+static Queue sleepQueue;
+
 // List of processes that are waiting for something to happen.  There's no
 // reason why this must be a single list; there could be many lists for many
 // different conditions.
@@ -365,21 +369,6 @@ void ProcessSchedule () {
 		exitsim();
 	}
 
-/*	if (runQueue == NULL) {
-		if (!AQueueEmpty(&waitQueue)) {
-		  printf("FATAL ERROR: no runnable processes, but there are sleeping processes waiting!\n");
-		  l = AQueueFirst(&waitQueue);
-		  while (l != NULL) {
-				pcb = AQueueObject(l);
-				printf("Sleeping process %d: ", i++); printf("PID = %d\n", (int)(pcb - pcbs));
-				l = AQueueNext(l);
-		  }
-		  exitsim();
-		}
-		printf ("No runnable processes - exiting!\n");
-		exitsim ();	// NEVER RETURNS
-	}*/
-
 	// Now, run the one at the head of the queue.
 	currentPCB = pcb;
 
@@ -389,23 +378,34 @@ void ProcessSchedule () {
 	// Clean up zombie processes here.  This is done at interrupt time
 	// because it can't be done while the process might still be running
 	while (!AQueueEmpty(&zombieQueue)) {
-	pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
+		pcb = (PCB *)AQueueObject(AQueueFirst(&zombieQueue));
 
-	if(pcb->pinfo){
-		printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, getPriority(pcb));
-		//printf("pnice: %d\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n", pcb->pnice);
+		if(pcb->pinfo){
+			printf(PROCESS_CPUSTATS_FORMAT, GetPidFromAddress(pcb), pcb->numJiffies, getPriority(pcb));
+			//printf("pnice: %d\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n", pcb->pnice);
+		}
+
+		dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
+		if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
+		  printf("FATAL ERROR: could not remove zombie process from zombieQueue in ProcessSchedule!\n");
+		  exitsim();
+		}
+		ProcessFreeResources(pcb);
 	}
 
-	dbprintf ('p', "Freeing zombie PCB 0x%x.\n", (int)pcb);
-	if (AQueueRemove(&(pcb->l)) != QUEUE_SUCCESS) {
-	  printf("FATAL ERROR: could not remove zombie process from zombieQueue in ProcessSchedule!\n");
-	  exitsim();
+	// Wake up sleeping processes that are ready
+	if(! AQueueEmpty(sleepQueue))
+	{
+		for(l = AQueueFirst(sleepQueue); l != NULL; l = AQueueNext(l))
+		{
+			pcb = l->object;
+			if(ClkGetCurJiffies() - pcb->timeOfSleep >= pcb->sleepTime){
+				ProcessWakeup(pcb);
+			}
+		}
 	}
-	ProcessFreeResources(pcb);
-	}
+
 	dbprintf ('p', "Leaving ProcessSchedule (cur=0x%x)\n", (int)currentPCB);
-
-
 	currentPCB->lastStartJiffies = ClkGetCurJiffies();
 }
 
@@ -424,21 +424,21 @@ void ProcessSuspend (PCB *suspend) {
   // Make sure it's already a runnable process.
   dbprintf ('p', "ProcessSuspend (%d): function started\n", GetCurrentPid());
   ASSERT (suspend->flags & PROCESS_STATUS_RUNNABLE, "Trying to suspend a non-running process!\n");
-  ProcessSetStatus (suspend, PROCESS_STATUS_WAITING);
+		ProcessSetStatus (suspend, PROCESS_STATUS_WAITING);
 
-  if (AQueueRemove(&(suspend->l)) != QUEUE_SUCCESS) {
-    printf("FATAL ERROR: could not remove process from run Queue in ProcessSuspend!\n");
-    exitsim();
-  }
-  if ((suspend->l = AQueueAllocLink(suspend)) == NULL) {
-    printf("FATAL ERROR: could not get Queue Link in ProcessSuspend!\n");
-    exitsim();
-  }
-  if (AQueueInsertLast(&waitQueue, suspend->l) != QUEUE_SUCCESS) {
-    printf("FATAL ERROR: could not insert suspend PCB into waitQueue!\n");
-    exitsim();
-  }
-  dbprintf ('p', "ProcessSuspend (%d): function complete\n", GetCurrentPid());
+		if (AQueueRemove(&(suspend->l)) != QUEUE_SUCCESS) {
+			printf("FATAL ERROR: could not remove process from run Queue in ProcessSuspend!\n");
+			exitsim();
+		}
+		if ((suspend->l = AQueueAllocLink(suspend)) == NULL) {
+			printf("FATAL ERROR: could not get Queue Link in ProcessSuspend!\n");
+			exitsim();
+		}
+		if (AQueueInsertLast(&waitQueue, suspend->l) != QUEUE_SUCCESS) {
+			printf("FATAL ERROR: could not insert suspend PCB into waitQueue!\n");
+			exitsim();
+		}
+		dbprintf ('p', "ProcessSuspend (%d): function complete\n", GetCurrentPid());
 }
 
 //----------------------------------------------------------------------
@@ -461,7 +461,7 @@ void ProcessWakeup (PCB *wakeup) {
   ASSERT (wakeup->flags & PROCESS_STATUS_WAITING, "Trying to wake up a non-sleeping process!\n");
   ProcessSetStatus (wakeup, PROCESS_STATUS_RUNNABLE);
   if (AQueueRemove(&(wakeup->l)) != QUEUE_SUCCESS) {
-    printf("FATAL ERROR: could not remove wakeup PCB from waitQueue in ProcessWakeup!\n");
+    printf("FATAL ERROR: could not remove wakeup PCB from Queue in ProcessWakeup!\n");
     exitsim();
   }
   if ((wakeup->l = AQueueAllocLink(wakeup)) == NULL) {
@@ -1179,6 +1179,25 @@ int numProcsReady(){
 //--------------------------------------------------------
 void ProcessUserSleep(int seconds) {
   // Your code here
+	PCB* sleep = currentPCB;
+	ProcessSetStatus (sleep, PROCESS_STATUS_WAITING);
+
+	sleep->sleepTime = seconds * 1000;	//Jiffies per second = 1000
+	sleep->timeOfSleep = ClkGetCurJiffies();
+
+	if (AQueueRemove(&(sleep->l)) != QUEUE_SUCCESS) {
+		printf("FATAL ERROR: could not remove process from run Queue in ProcessSuspend!\n");
+		exitsim();
+	}
+	if ((sleep->l = AQueueAllocLink(sleep)) == NULL) {
+		printf("FATAL ERROR: could not get Queue Link in ProcessSuspend!\n");
+		exitsim();
+	}
+	if (AQueueInsertLast(&sleepQueue, sleep->l) != QUEUE_SUCCESS) {
+		printf("FATAL ERROR: could not insert suspend PCB into waitQueue!\n");
+		exitsim();
+	}
+
 }
 
 //-----------------------------------------------------
