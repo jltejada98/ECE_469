@@ -1177,6 +1177,6 @@ void ProcessIdle() {
 	while(1)
 	{
 		i++;
-		printf("Proc %d is idling...\n", GetCurrentPid());
+		//printf("Proc %d is idling...\n", GetCurrentPid());
 	}
 }
