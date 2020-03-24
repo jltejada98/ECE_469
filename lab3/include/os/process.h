@@ -55,6 +55,9 @@ typedef struct PCB {
   int           sleepTime;      // System time in jiffies when proc went to sleep
   int           numJiffies;     // Total runtime for runtime stats
   int           lastStartJiffies;// Used in runtime stats to calculate how long a proc ran in its window
+
+  int           idle;           //Current proc is idling
+  int           yielding;          //Current proc just yielded
 } PCB;
 
 // Offsets of various registers from the stack pointer in the register
