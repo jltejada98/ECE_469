@@ -5,15 +5,25 @@
 int main(int argc, char const *argv[])
 {
   sem_t sem_procs_completed;
+  int num_sleep;
+  int sleep_time;
+  int i;
 
-  if (argc != 2) { 
+  if (argc != 2 + num_sleep) { 
     Printf("Incorrect number of arguments (%d) for %s\n", argc, argv[0]);
     Exit();
   } 
 
   sem_procs_completed = dstrtol(argv[1], NULL, 10);
+  num_sleep = dstrtol(argv[2], NULL, 10);
 
-  ProcessIdle();
+  for(i = 0; i < num_sleep; i++)
+  {
+    sleep_time = dstrtol(argv[3 + i], NULL, 10);
+    sleep(sleep_time);
+    
+    printf("Process %d slept for the %d time for %d seconds", getpid(), i+1, sleep_time);
+  }
 
   //Signal semaphore
   if(sem_signal(sem_procs_completed) != SYNC_SUCCESS){
