@@ -484,14 +484,20 @@ void ProcessWakeup (PCB *wakeup) {
   dbprintf ('p',"Waking up PID %d.\n", (int)(wakeup - pcbs));
 
   timeSlept = ClkGetCurJiffies() - wakeup->timeOfSleep;
+  printf("Time Slept %d\n", timeSlept);
 
   if(timeSlept >= 100)
   {
   	num_windows_asleep = timeSlept / 100;
   	printf("num_windows_asleep: %d\n", num_windows_asleep);
+
+  	for(i = 0; i < num_windows_asleep; i++)
+  	{
+  		prod = prod * (2*load)/(2*load+1);
+  	}
+  	printf("prod: %lf", prod);
   }
 
-  printf("Time Slept %d\n", timeSlept);
 
   printf("TODO: Still need to recalculate decayed estcpu for proc being woken up\n");
   // Make sure it's not yet a runnable process.
