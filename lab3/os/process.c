@@ -319,7 +319,6 @@ void decay_estcpus_runQueues() {
 //----------------------------------------------------------------------
 void ProcessSchedule () {
 	PCB *pcb=NULL;
-	int i=0;
 	Link *l=NULL;
 	Queue* runQueue;
 
@@ -473,12 +472,13 @@ void ProcessWakeup (PCB *wakeup) {
 	int num_windows_asleep;
 	int prod = 1;
 	int i;
+
   dbprintf ('p',"Waking up PID %d.\n", (int)(wakeup - pcbs));
 
   timeSlept = ClkGetCurJiffies() - wakeup->timeOfSleep;
 
   if (timeSlept >= 100) {
-		num_windows_asleep = sleeptime / (10 * 10);
+		num_windows_asleep = timeSlept / (10 * 10);
 
 		if(num_windows_asleep == 0)
 		{
@@ -486,7 +486,7 @@ void ProcessWakeup (PCB *wakeup) {
 		}
 		else
 		{
-			for(i = 0; i < num_windows_asleep)
+			for(i = 0; i < num_windows_asleep; i++)
 			{
 				prod = ((2*load)/(2*load+1));
 			}

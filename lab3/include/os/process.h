@@ -24,6 +24,8 @@
 #define PROCESS_PRIORITES_PER_QUEUE 4
 #define PROCESS_BASE_PRIORITY_USER 50
 
+#define PROCESS_EST_CPU_DECAY_LOAD 1.0
+
 #define	PROCESS_INIT_ISR_SYS	0x140	// Initial status reg value for system processes
 #define	PROCESS_INIT_ISR_USER	0x100	// Initial status reg value for user processes
 
