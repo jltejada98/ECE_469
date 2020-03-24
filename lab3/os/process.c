@@ -100,6 +100,8 @@ void ProcessModuleInit () {
     pcbs[i].sleepTime = 0;
     pcbs[i].numJiffies = 0;
     pcbs[i].lastStartJiffies = 0;
+
+    pcbs[i].idle = 0;
   }
   last_estcpu_decay = 0;
   // There are no processes running at this point, so currentPCB=NULL
@@ -319,8 +321,12 @@ void ProcessSchedule () {
 	// If process is running
 	if(currentPCB->flags & PROCESS_STATUS_RUNNABLE)
 	{
+		if(currentPCB->yielding)
+			currentPCB->yielding = 0;
+		else
+			(currentPCB->estcpu)++;
+
 		//Move to back of correct queue
-		(currentPCB->estcpu)++;
 		ProcessMoveToBack(currentPCB);
 	}
 
@@ -721,7 +727,7 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
   // from the base of the PCB array).
   dbprintf ('p', "ProcessFork (%d): function complete\n", GetCurrentPid());
 
-  return (pcb - pcbs);
+  return GetPidFromAddress(pcb);
 }
 
 //----------------------------------------------------------------------
@@ -1151,4 +1157,14 @@ void ProcessUserSleep(int seconds) {
 //-----------------------------------------------------
 void ProcessYield() {
   // Your code here
+  currentPCB->yielding = 1;
+
+}
+//-----------------------------------------------------
+// ProcessIdle marks the process as idle then enters
+// an infinite while loop
+//-----------------------------------------------------
+void ProcessIdle() {
+	currentPCB->idle = 1;
+	while(1);
 }
