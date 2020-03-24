@@ -107,6 +107,10 @@ void ProcessModuleInit () {
     pcbs[i].sleepTime = 0;
     pcbs[i].numJiffies = 0;
     pcbs[i].lastStartJiffies = 0;
+
+    pcbs[i].yielding = 0;
+    pcbs[i].timeToSleep = 0;
+    pcbs[i].timeOfSleep = 0;
   }
   last_estcpu_decay = 0;
   // There are no processes running at this point, so currentPCB=NULL
@@ -399,7 +403,7 @@ void ProcessSchedule () {
 		for(l = AQueueFirst(sleepQueue); l != NULL; l = AQueueNext(l))
 		{
 			pcb = l->object;
-			if(ClkGetCurJiffies() - pcb->timeOfSleep >= pcb->sleepTime){
+			if(ClkGetCurJiffies() - pcb->timeOfSleep >= pcb->timeToSleep){
 				ProcessWakeup(pcb);
 			}
 		}
@@ -1182,7 +1186,7 @@ void ProcessUserSleep(int seconds) {
 	PCB* sleep = currentPCB;
 	ProcessSetStatus (sleep, PROCESS_STATUS_WAITING);
 
-	sleep->sleepTime = seconds * 1000;	//Jiffies per second = 1000
+	sleep->timeToSleep = seconds * 1000;	//Jiffies per second = 1000
 	sleep->timeOfSleep = ClkGetCurJiffies();
 
 	if (AQueueRemove(&(sleep->l)) != QUEUE_SUCCESS) {
