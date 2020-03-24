@@ -488,18 +488,11 @@ void ProcessWakeup (PCB *wakeup) {
   if (timeSlept >= 100) {
 		num_windows_asleep = timeSlept / (100);
 
-		if(num_windows_asleep == 0)
+		prod = ((2*load)/(2*load+1));
+		for(i = 0; i < num_windows_asleep; i++)
 		{
-			prod = 1;
+			wakeup->estcpu = wakeup->estcpu * prod;
 		}
-		else
-		{
-			for(i = 0; i < num_windows_asleep; i++)
-			{
-				prod = ((2*load)/(2*load+1)) * prod;
-			}
-		}
-		wakeup->estcpu = wakeup->estcpu * prod;
 	}
 
 	if(wakeup->estcpu > 350 || wakeup->estcpu < 49)
