@@ -1176,10 +1176,11 @@ void ProcessYield() {
 //-----------------------------------------------------
 void ProcessIdle() {
 	int i;
-
 	currentPCB->idle = 1;
+
 	while(1)
 	{
 		i++;
+		printf("Proc %d is idling...\n", GetCurrentPid());
 	}
 }
