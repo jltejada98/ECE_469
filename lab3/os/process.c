@@ -487,6 +487,7 @@ void ProcessWakeup (PCB *wakeup) {
 
 	num_windows_asleep = timeSlept / 100;
 	printf("num_windows_asleep: %d\n", 184 / 100);
+	printf("prod: %lf, num_windows_asleep: %d, timeSlept: %d\n", prod, num_windows_asleep, timeSlept);
 
   if (timeSlept >= 100) {
 
