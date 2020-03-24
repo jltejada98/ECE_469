@@ -351,25 +351,37 @@ void ProcessSchedule () {
 	// have an "idle" process that's simply an infinite loop.
 
 	runQueue = FindRunnableQueue();
+	if(runQueue == NULL) {
+		printf("FATAL ERROR: idle process is not running!\n");
+		exitsim();
+	}
 
-	if (runQueue == NULL) {
+	pcb = (PCB *)AQueueObject(AQueueFirst(runQueue));
+
+	if(pcb == idlePCB &&
+		 AQueueEmpty(&waitQueue))
+	{
+		printf("No runnable processes - exiting!\n");
+	}
+
+/*	if (runQueue == NULL) {
 		if (!AQueueEmpty(&waitQueue)) {
 		  printf("FATAL ERROR: no runnable processes, but there are sleeping processes waiting!\n");
 		  l = AQueueFirst(&waitQueue);
 		  while (l != NULL) {
-		    pcb = AQueueObject(l);
-		    printf("Sleeping process %d: ", i++); printf("PID = %d\n", (int)(pcb - pcbs));
-		    l = AQueueNext(l);
+				pcb = AQueueObject(l);
+				printf("Sleeping process %d: ", i++); printf("PID = %d\n", (int)(pcb - pcbs));
+				l = AQueueNext(l);
 		  }
 		  exitsim();
 		}
 		printf ("No runnable processes - exiting!\n");
 		exitsim ();	// NEVER RETURNS
-	}
+	}*/
 
 	// Now, run the one at the head of the queue.
-	pcb = (PCB *)AQueueObject(AQueueFirst(runQueue));
 	currentPCB = pcb;
+
 	dbprintf ('p',"About to switch to PCB 0x%x,flags=0x%x @ 0x%x\n",
 	    (int)pcb, pcb->flags, (int)(pcb->sysStackPtr[PROCESS_STACK_IAR]));
 
