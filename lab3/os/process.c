@@ -727,7 +727,7 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
   // from the base of the PCB array).
   dbprintf ('p', "ProcessFork (%d): function complete\n", GetCurrentPid());
 
-  return GetPidFromAddress(pcb);
+  return (pcb - pcbs);
 }
 
 //----------------------------------------------------------------------
