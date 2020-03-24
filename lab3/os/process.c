@@ -1176,6 +1176,6 @@ void ProcessIdle() {
 	while(1)
 	{
 		i++;
-		printf("Idling");
+		printf("Idling...\n");
 	}
 }
