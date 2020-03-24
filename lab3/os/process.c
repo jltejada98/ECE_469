@@ -483,7 +483,7 @@ void ProcessWakeup (PCB *wakeup) {
 
   dbprintf ('p',"Waking up PID %d.\n", (int)(wakeup - pcbs));
 
-  timeSlept = ((int)ClkGetCurJiffies()) - wakeup->timeOfSleep;
+  timeSlept = ClkGetCurJiffies() - wakeup->timeOfSleep;
 
   printf("Time Slept %d\n", timeSlept);
 
