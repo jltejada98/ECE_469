@@ -1175,8 +1175,9 @@ void ProcessYield() {
 // an infinite while loop
 //-----------------------------------------------------
 void ProcessIdle() {
-	currentPCB->idle = 1;
 	int i;
+
+	currentPCB->idle = 1;
 	while(1)
 	{
 		i++;
