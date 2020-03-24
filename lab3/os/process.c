@@ -353,7 +353,6 @@ void ProcessSchedule () {
 		//decay estcpu value for every process in runQueues
 		decay_estcpus_runQueues();
 		last_estcpu_decay = ClkGetCurJiffies();
-		printf("10 Proc quanta passed\n");
 	}
 
 
@@ -506,7 +505,7 @@ void ProcessWakeup (PCB *wakeup) {
 	if(wakeup->estcpu > 350 || wakeup->estcpu < 49)
 	{
 		printf("ERROR: Something went wrong with estcpu calculatio (%d)\n", wakeup->estcpu);
-		printf("prod: %lf", prod);
+		printf("prod: %lf, num_windows_asleep: %d, timeSlept: %d", prod, num_windows_asleep, timeSlept);
 		exitsim();
 	}
 
