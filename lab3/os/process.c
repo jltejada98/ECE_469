@@ -477,7 +477,7 @@ void ProcessSuspend (PCB *suspend) {
 void ProcessWakeup (PCB *wakeup) {
 	int timeSlept;	//in jiffies
 	int num_windows_asleep;
-	int prod = 1;
+	double prod = 1;
 	double load = PROCESS_EST_CPU_DECAY_LOAD;
 	int i;
 
@@ -496,7 +496,7 @@ void ProcessWakeup (PCB *wakeup) {
 		{
 			for(i = 0; i < num_windows_asleep; i++)
 			{
-				prod = ((2*load)/(2*load+1));
+				prod = ((2*load)/(2*load+1)) * prod;
 			}
 		}
 		wakeup->estcpu = wakeup->estcpu * prod;
@@ -505,6 +505,7 @@ void ProcessWakeup (PCB *wakeup) {
 	if(wakeup->estcpu > 350 || wakeup->estcpu < 49)
 	{
 		printf("ERROR: Something went wrong with estcpu calculatio (%d)\n", wakeup->estcpu);
+		printf("prod: %lf", prod);
 		exitsim();
 	}
 
