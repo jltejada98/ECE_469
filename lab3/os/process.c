@@ -434,6 +434,8 @@ void ProcessSchedule () {
 //----------------------------------------------------------------------
 void ProcessSuspend (PCB *suspend) {
   // Make sure it's already a runnable process.
+  suspend->timeOfSleep = ClkGetCurJiffies();
+
   dbprintf ('p', "ProcessSuspend (%d): function started\n", GetCurrentPid());
   ASSERT (suspend->flags & PROCESS_STATUS_RUNNABLE, "Trying to suspend a non-running process!\n");
 		ProcessSetStatus (suspend, PROCESS_STATUS_WAITING);
@@ -467,7 +469,36 @@ void ProcessSuspend (PCB *suspend) {
 //
 //----------------------------------------------------------------------
 void ProcessWakeup (PCB *wakeup) {
+	int timeSlept;	//in jiffies
+	int num_windows_asleep;
+	int prod = 1;
+	int i;
   dbprintf ('p',"Waking up PID %d.\n", (int)(wakeup - pcbs));
+
+  timeSlept = ClkGetCurJiffies() - wakeup->timeOfSleep;
+
+  if (timeSlept >= 100) {
+		num_windows_asleep = sleeptime / (10 * 10);
+
+		if(num_windows_asleep == 0)
+		{
+			prod = 1;
+		}
+		else
+		{
+			for(i = 0; i < num_windows_asleep)
+			{
+				prod = ((2*load)/(2*load+1));
+			}
+		}
+		wakeup->estcpu = wakeup->estcpu * prod;
+	}
+
+	if(wakeup->estcpu > 350 || wakeup->estcpu < 49)
+	{
+		printf("ERROR: Something went wrong with estcpu calculation\n");
+	}
+
   printf("TODO: Still need to recalculate decayed estcpu for proc being woken up\n");
   // Make sure it's not yet a runnable process.
   ASSERT (wakeup->flags & PROCESS_STATUS_WAITING, "Trying to wake up a non-sleeping process!\n");
@@ -1191,6 +1222,8 @@ void ProcessUserSleep(int seconds) {
   // Your code here
 	PCB* sleep = currentPCB;
 	ProcessSetStatus (sleep, PROCESS_STATUS_WAITING);
+
+  sleep->timeOfSleep = ClkGetCurJiffies();
 
 	sleep->timeToSleep = seconds * 1000;	//Jiffies per second = 1000
 	sleep->timeOfSleep = ClkGetCurJiffies();
