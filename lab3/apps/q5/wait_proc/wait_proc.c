@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
   int sleep_time;
   int i;
 
-  if (argc >= 3)
+  if (argc < 3)
   {
     Printf("Incorrect number of arguments (%d) for %s, expecting at least 3.\n", argc, argv[0]);
     Exit();
