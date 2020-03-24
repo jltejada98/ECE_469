@@ -724,9 +724,9 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
 
   if(func == &ProcessIdle)
   {
-  	printf("Idle proc detetcted!\n");
+  	printf("Idle proc (%d) detetcted!\n", GetPidFromAddress(pcb));
   	idlePCB = pcb;
-  	pcb->estcpu = 458;
+  	pcb->estcpu = 308;
   	printf("Priority: %d\n", getPriority(pcb));
   }
 
