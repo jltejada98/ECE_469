@@ -496,6 +496,15 @@ void ProcessWakeup (PCB *wakeup) {
   		prod = prod * (2*load)/(2*load+1);
   	}
   	printf("prod: %lf\n", prod);
+
+  	wakeup->estcpu = wakeup->estcpu * prod;
+  	if(wakeup->estcpu < 50){
+  		wakeup->estcpu = 50;
+  	}
+  	if(prod > 1) {
+  		printf("FATAL ERROR: estcpu was increased after waking proc up\n");
+  		exitsim();
+  	}
   }
 
 
