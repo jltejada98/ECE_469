@@ -497,6 +497,7 @@ void ProcessWakeup (PCB *wakeup) {
 	if(wakeup->estcpu > 350 || wakeup->estcpu < 49)
 	{
 		printf("ERROR: Something went wrong with estcpu calculation\n");
+		exitsim();
 	}
 
   printf("TODO: Still need to recalculate decayed estcpu for proc being woken up\n");
