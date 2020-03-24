@@ -353,6 +353,7 @@ void ProcessSchedule () {
 		//decay estcpu value for every process in runQueues
 		decay_estcpus_runQueues();
 		last_estcpu_decay = ClkGetCurJiffies();
+		printf("10 Proc quanta passed\n");
 	}
 
 
