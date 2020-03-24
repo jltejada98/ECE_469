@@ -476,7 +476,7 @@ void ProcessSuspend (PCB *suspend) {
 //----------------------------------------------------------------------
 void ProcessWakeup (PCB *wakeup) {
 	int timeSlept;	//in jiffies
-	int num_windows_asleep;
+	int num_windows_asleep = 1;
 	double prod = 1;
 	double load = PROCESS_EST_CPU_DECAY_LOAD;
 	int i;
@@ -484,6 +484,12 @@ void ProcessWakeup (PCB *wakeup) {
   dbprintf ('p',"Waking up PID %d.\n", (int)(wakeup - pcbs));
 
   timeSlept = ClkGetCurJiffies() - wakeup->timeOfSleep;
+
+  if(timeSlept >= 100)
+  {
+  	num_windows_asleep = timeSlept / 100;
+  	printf("num_windows_asleep: %d\n", num_windows_asleep);
+  }
 
   printf("Time Slept %d\n", timeSlept);
 
