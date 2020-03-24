@@ -212,7 +212,10 @@ Queue* FindRunnableQueue () {
 	for(i = 0; i < PROCESS_NUM_PRIORITY_QUEUES; i++)
 	{
 		if(!AQueueEmpty(&runQueues[i]))
+		{
+			printf("Found item in queue %d\n", i);
 			return &runQueues[i];
+		}
 	}
 
 	printf("Could not find any runnable processes!\n");
