@@ -375,6 +375,7 @@ void ProcessSchedule () {
 		if(numProcsReady() > 1)
 		{
 			printf("FATAL ERROR: idle process was not last runnable process, %d proccesses ready to run!\n", numProcsReady());
+			printf("Idle proc priority: %d\n" getPriority(ildePCB));
 		}
 		if(!AQueueEmpty(&waitQueue))
 		{
