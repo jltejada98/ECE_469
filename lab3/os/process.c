@@ -368,7 +368,14 @@ void ProcessSchedule () {
 	if(pcb == idlePCB &&
 		 AQueueEmpty(&waitQueue))
 	{
-		printf("No runnable processes - exiting!\n");
+		if(!AQueueEmpty(&waitQueue))
+		{
+			printf("There may be processes that have not completed yet!\n");
+		}
+		else
+		{
+			printf("No runnable processes - exiting!\n");
+		}
 		exitsim();
 	}
 
