@@ -254,7 +254,9 @@ void decay_estcpu(PCB* pcb) {
 
 	estcpu = pcb->estcpu;
 
-	pcb->estcpu = (estcpu * (2*load)/(2*load + 1)) + pcb->pnice;
+	// We do not want to decay estcpu for the idle proc
+	if(pcb != idlePCB)
+		pcb->estcpu = (estcpu * (2*load)/(2*load + 1)) + pcb->pnice;
 }
 
 //----------------------------------------------------------------------
@@ -277,6 +279,7 @@ void decay_estcpus_runQueues() {
 			l = AQueueFirst(currQueue);
 			while(l != NULL)
 			{
+
 				decay_estcpu(l->object);
 				//ProcessMoveToBack(l->object);
 				l = AQueueNext(l);
@@ -325,7 +328,10 @@ void ProcessSchedule () {
 		if(currentPCB->yielding)
 			currentPCB->yielding = 0;
 		else
-			(currentPCB->estcpu)++;
+		{
+			if (currentPCB != idlePCB)
+				(currentPCB->estcpu)++;
+		}
 
 		//Move to back of correct queue
 		ProcessMoveToBack(currentPCB);
