@@ -368,7 +368,7 @@ void ProcessSchedule () {
 	pcb = (PCB *)AQueueObject(AQueueFirst(runQueue));
 
 	if(pcb == idlePCB &&
-		 AQueueEmpty(&waitQueue))
+		 AQueueEmpty(&sleepQueue))
 	{
 		if(!AQueueEmpty(&waitQueue))
 		{
