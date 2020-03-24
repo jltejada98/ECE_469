@@ -37,6 +37,8 @@ int main(int argc, char const *argv[])
     Exit();
   }
 
+  printf("Exiting proc with wait of %d\n", num);
+
 
   return 0;
 }
