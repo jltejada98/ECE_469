@@ -719,7 +719,7 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     currentPCB = pcb;
 
     // This is the first process, we must also create the idle process
-    //ProcessFork(&ProcessIdle, param, 0, 0, name, 0);
+    ProcessFork(&ProcessIdle, param, 0, 0, name, 0);
   }
 
   if(func == &ProcessIdle)
