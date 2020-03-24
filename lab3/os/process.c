@@ -491,11 +491,11 @@ void ProcessWakeup (PCB *wakeup) {
   	num_windows_asleep = timeSlept / 100;
   	printf("num_windows_asleep: %d\n", num_windows_asleep);
 
-  	for(i = 0; i < num_windows_asleep; i++)
+  	for(i = 0; i < 3; i++)
   	{
   		prod = prod * (2*load)/(2*load+1);
   	}
-  	printf("prod: %lf", prod);
+  	printf("prod: %lf\n", prod);
   }
 
 
