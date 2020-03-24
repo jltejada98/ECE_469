@@ -471,6 +471,7 @@ void ProcessWakeup (PCB *wakeup) {
 	int timeSlept;	//in jiffies
 	int num_windows_asleep;
 	int prod = 1;
+	double load = PROCESS_EST_CPU_DECAY_LOAD;
 	int i;
 
   dbprintf ('p',"Waking up PID %d.\n", (int)(wakeup - pcbs));
