@@ -103,8 +103,6 @@ void ProcessModuleInit () {
     pcbs[i].sleepTime = 0;
     pcbs[i].numJiffies = 0;
     pcbs[i].lastStartJiffies = 0;
-
-    pcbs[i].idle = 0;
   }
   last_estcpu_decay = 0;
   // There are no processes running at this point, so currentPCB=NULL
@@ -721,7 +719,15 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
     currentPCB = pcb;
 
     // This is the first process, we must also create the idle process
-    ProcessFork(&ProcessIdle, param, pnice, pinfo, name, 0);
+    ProcessFork(&ProcessIdle, param, 0, 0, name, 0);
+  }
+
+  if(func == &ProcessIdle)
+  {
+  	printf("Idle proc detetcted!\n");
+  	idlePCB = pcb;
+  	pcb->estcpu = 458;
+  	printf("Priority: %d\n", getPriority(pcb));
   }
 
   pcb->pnice = pnice;
@@ -1172,7 +1178,6 @@ void ProcessYield() {
 //-----------------------------------------------------
 void ProcessIdle() {
 	int i;
-	currentPCB->idle = 1;
 
 	while(1)
 	{

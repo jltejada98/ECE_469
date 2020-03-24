@@ -56,7 +56,6 @@ typedef struct PCB {
   int           numJiffies;     // Total runtime for runtime stats
   int           lastStartJiffies;// Used in runtime stats to calculate how long a proc ran in its window
 
-  int           idle;           //Current proc is idling
   int           yielding;          //Current proc just yielded
 } PCB;
 
