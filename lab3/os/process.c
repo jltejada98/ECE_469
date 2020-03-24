@@ -397,9 +397,9 @@ void ProcessSchedule () {
 	}
 
 	// Wake up sleeping processes that are ready
-	if(! AQueueEmpty(sleepQueue))
+	if(! AQueueEmpty(&sleepQueue))
 	{
-		for(l = AQueueFirst(sleepQueue); l != NULL; l = AQueueNext(l))
+		for(l = AQueueFirst(&sleepQueue); l != NULL; l = AQueueNext(l))
 		{
 			pcb = l->object;
 			if(ClkGetCurJiffies() - pcb->timeOfSleep >= pcb->timeToSleep){
