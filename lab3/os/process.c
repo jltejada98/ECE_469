@@ -333,7 +333,9 @@ void ProcessSchedule () {
 	if(currentPCB->flags & PROCESS_STATUS_RUNNABLE)
 	{
 		if(currentPCB->yielding)
+		{
 			currentPCB->yielding = 0;
+		}
 		else
 		{
 			if (currentPCB != idlePCB)

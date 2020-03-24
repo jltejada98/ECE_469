@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
   {
     sleep_time = dstrtol(argv[3 + i], NULL, 10);
     sleep(sleep_time);
-    //yield();
+    yield();
 
     Printf("Process %d slept %d time for %d seconds\n", getpid(), i+1, sleep_time);
   }
