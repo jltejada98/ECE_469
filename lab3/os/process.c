@@ -22,6 +22,9 @@
 // routines for context switches.
 PCB		*currentPCB;
 
+// Pointer to the idle kernel process
+PCB 	*idlePCB;
+
 // List of free PCBs.
 static Queue	freepcbs;
 
@@ -716,6 +719,11 @@ int ProcessFork (VoidFunc func, uint32 param, int pnice, int pinfo,char *name, i
   if (currentPCB == NULL) {
     dbprintf ('p', "Setting currentPCB=0x%x, stackframe=0x%x\n", (int)pcb, (int)(pcb->currentSavedFrame));
     currentPCB = pcb;
+
+    // This is the first process, we must also create the idle process
+    if(ProcessFork(func, param, pnice, pinfo, name, isUser) != GetCurrentPid())
+    	ProcessIdle();
+
   }
 
   pcb->pnice = pnice;
