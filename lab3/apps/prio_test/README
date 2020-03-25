@@ -11,3 +11,5 @@ switch processes in and out exactly the same way, resulting in the same sequence
 print messages.  The only difference in the two files should be the two lines printing
 the *real* execution time, since that will vary from one run to another.
 
+Rational for differences in expected output and our output:
+	Our output still has intended behavior. The larger the pnice value, the less aggressive a process is for using CPU time. A larger pnice value would lead to a process finishing later, which is exactly what happens with our implementation. Our implementation separates functions with different pnice values more than the expected output. In the expected output, process A and process B finish at almost the same time, even though they have different pnice values. In our implementation process A finishes much earlier than process B, still with process C still finishing last.
