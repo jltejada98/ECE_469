@@ -1,2 +1,2 @@
-work/react2.o: react2.c ../../../include/usertraps.h \
+work/wait_proc.o: wait_proc.c ../../../include/usertraps.h \
  ../../../include/misc.h ../include/utility.h
