@@ -138,7 +138,7 @@ uint32 MemoryTranslateUserToSystem (PCB *pcb, uint32 addr) {
 	uint32 page_offset;
 	uint32 physical_page_addr;
 
-	page_table_index = addr >> MEM_L1FIELD_FIRST_BITNUM;
+	page_table_index = (addr >> MEM_L1FIELD_FIRST_BITNUM);
 	page_offset = MEM_PAGE_OFFSET_MASK & addr;
 
 	if(page_table_index >= MEM_MAX_NUM_PTE)
