@@ -1259,6 +1259,44 @@ L65:
 	jr	r31
 	nop
 .endproc _MemoryFreePage
+	.align 2
+.proc _malloc
+.global _malloc
+_malloc:
+;  Function 'malloc'; 0 bytes of locals, 0 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#8	; alloc local storage
+	addi	r1,r0,#0
+	j	L66
+	nop	; delay slot nop
+L66:
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _malloc
+	.align 2
+.proc _mfree
+.global _mfree
+_mfree:
+;  Function 'mfree'; 0 bytes of locals, 0 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#8	; alloc local storage
+	addi	r1,r0,#-1
+	j	L67
+	nop	; delay slot nop
+L67:
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _mfree
 .data
 	.align 2
 _freemap:
