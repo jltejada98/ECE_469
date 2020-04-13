@@ -62,13 +62,16 @@ void MemoryModuleInit() {
 
   nfreepages = MEM_NUM_PAGES - (last_os_page + 1);
 
+  //Set entire freemap to not inuse
+  for(i = 0; i < (MEM_NUM_PAGES / 32) + 1; i++)
+  	freemap[i] = 0;
+
+  //Set memory used by OS in freemap to inuse
   i = 0;
   while(i < MEM_NUM_PAGES){
     bit = i % 32;
     if(i <= last_os_page)
     	freemapSet(i, 1);
-    else
-    	freemapSet(i, 0);
   }
 
 }
@@ -129,6 +132,38 @@ int freemapGet(int page) {
 //
 //----------------------------------------------------------------------
 uint32 MemoryTranslateUserToSystem (PCB *pcb, uint32 addr) {
+	int page_table_index;
+	uint32 page_table_entry;
+	uint32 page_offset;
+	uint32 pysical_page_addr;
+
+	page_table_index = addr >> MEM_L1FIELD_FIRST_BITNUM;
+	page_offset = MEM_PAGE_OFFSET_MASK & addr;
+
+	if(page_table_index >= MEM_MAX_NUM_PTE)
+	{
+		printf("Fatal Error: Attempting to translate virtual address that does not have a corresponding PTE\n");
+		exitsim();
+	}
+
+	page_table_entry = pcb->pagetable[page_table_index];
+
+	if(!(page_table_entry & MEM_PTE_VALID))
+	{
+		printf("Error: Reading Page Table Entry that is invalid!\n");
+		return MEM_FAIL;
+	}
+
+	pysical_page_addr = (page_table_entry & MEM_MASK_PTE_TO_PAGE) | page_offset;
+
+	if(physical_page_addr > MEM_MAX_SIZE)
+	{
+		printf("Error: in MemoryTranslateUserToSystem:\nAttempting to translate address that is greater than system physcal memory size!\n");
+		return MEM_FAIL;
+	}
+
+	return physical_page_addr;
+
 }
 
 

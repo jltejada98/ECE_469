@@ -47,6 +47,8 @@
 #define MEM_NUM_PAGES (MEM_MAX_SIZE / MEM_PAGESIZE)
 #define MEM_ADDR_OFFS_MASK (MEM_PAGESIZE - 1)
 
+#define MEM_MAX_NUM_PTE (MEM_MAX_VIRTUAL_ADDRESS >> MEM_L1FIELD_FIRST_BITNUM)
+
 
 
 #endif	// _memory_constants_h_
