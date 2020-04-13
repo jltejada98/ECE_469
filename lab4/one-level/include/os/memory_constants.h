@@ -41,7 +41,7 @@
 
 //Calculated values.
 #define MEM_PAGESIZE (0x1 << MEM_L1FIELD_FIRST_BITNUM) //Actual page size
-#define MEM_PAGE_OFFSET_MASK (MEM_PAGESIZE - 1) //Maximum offset within a page
+#define MEM_PAGE_OFFSET_MASK (MEM_PAGESIZE - 1) //Maximum offset within a page NOTE: Only works if MEM_PAGESIZE ends in all 0s
 #define MEM_L1PAGETABLE_SIZE ((MEM_MAX_VIRTUAL_ADDRESS + 1) >> MEM_L1FIELD_FIRST_BITNUM) //L1 pagetable size
 #define MEM_MASK_PTE_TO_PAGE (~(MEM_PTE_READONLY | MEM_PTE_DIRTY | MEM_PTE_VALID)) //A mask to convert from a PTE to a page address
 #define MEM_NUM_PAGES (MEM_MAX_SIZE / MEM_PAGESIZE)
