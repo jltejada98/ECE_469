@@ -58,11 +58,12 @@ int MemoryGetSize() {
 void MemoryModuleInit() {
   int i;
   int max_page = MemoryGetSize() / MEM_PAGESIZE;
+  uint32 ospages = ()
 
-
-  for(i=0; )
+  nfreepages = MEM_NUM_PAGES - ospages;
 
 }
+
 
 
 //----------------------------------------------------------------------
