@@ -1,3 +1,10 @@
+os:
+	cd os ; make clean; make; cd ..
+
+helloworld:
+	cd apps/example/helloworld; make clean; make; make run
 
 all:
-	cd os && make clean && make 
+	git reset --hard; git pull
+	cd os ; make clean; make; cd ..
+	cd apps/example/helloworld; make clean; make; make run
