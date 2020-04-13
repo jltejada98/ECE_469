@@ -142,7 +142,7 @@ void ProcessFreeResources (PCB *pcb) {
   //------------------------------------------------------------
   // STUDENT: TODO Free any memory resources on process death here.
   //------------------------------------------------------------
-
+  
 
   ProcessSetStatus (pcb, PROCESS_STATUS_FREE);
 }
