@@ -32,7 +32,7 @@ int freePte(uint32 pte);
 void MemoryFreePage(uint32 page);
 
 void* malloc(PCB* pcb, int memsize);
-int mfree(PCB* pcb, void* ptr);
+int mfree(PCB* pcb, void* plast_os_pagetr);
 
 
 #endif	// _memory_h_

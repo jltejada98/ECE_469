@@ -489,6 +489,10 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   // stack frame.
   //----------------------------------------------------------------------
 
+		stackframe[PROCESS_STACK_PTBASE] = (uint32)&pcb->pagetable[0];
+		stackframe[PROCESS_STACK_PTBITS] = (MEM_L1FIELD_FIRST_BITNUM << 16) | MEM_L1FIELD_FIRST_BITNUM;
+		stackframe[PROCESS_STACK_PTSIZE] = MEM_L1PAGETABLE_SIZE; 
+
   if (isUser) {
     dbprintf ('p', "About to load %s\n", name);
     fd = ProcessGetCodeInfo (name, &start, &codeS, &codeL, &dataS, &dataL);
@@ -518,6 +522,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     // of the process's virtual address space (4-byte aligned).
     //----------------------------------------------------------------------
 
+    pcb->currentSavedFrame[PROCESS_STACK_USER_STACKPOINTER] = MEM_MAX_VIRTUAL_ADDRESS - 0x3;
 
     //--------------------------------------------------------------------
     // This part is setting up the initial user stack with argc and argv.
