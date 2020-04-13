@@ -72,6 +72,7 @@ void MemoryModuleInit() {
     bit = i % 32;
     freemapSet(i, 1);
     i++;
+    printf("Initializing page %d/%d to be set\n", i, last_os_page);
   }
 
 }
