@@ -72,7 +72,6 @@ void MemoryModuleInit() {
     bit = i % 32;
     freemapSet(i, 1);
     i++;
-    printf("Initializing page %d/%d to be set\n", i, last_os_page);
   }
 
 }
@@ -145,6 +144,7 @@ uint32 MemoryTranslateUserToSystem (PCB *pcb, uint32 addr) {
 	if(page_table_index >= MEM_MAX_NUM_PTE)
 	{
 		printf("Fatal Error: Attempting to translate virtual address that does not have a corresponding PTE\n");
+		printf("Index: %d\n MEM_MAX_NUM_PTE: %d\n"page_table_index, MEM_MAX_NUM_PTE);
 		exitsim();
 	}
 
