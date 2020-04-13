@@ -154,7 +154,7 @@ uint32 MemoryTranslateUserToSystem (PCB *pcb, uint32 addr) {
 		return MEM_FAIL;
 	}
 
-	pysical_page_addr = (page_table_entry & MEM_MASK_PTE_TO_PAGE) | page_offset;
+	physical_page_addr = (page_table_entry & MEM_MASK_PTE_TO_PAGE) | page_offset;
 
 	if(physical_page_addr > MEM_MAX_SIZE)
 	{
