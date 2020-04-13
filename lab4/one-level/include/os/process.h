@@ -35,7 +35,9 @@ typedef	void (*VoidFunc)();
 // Process control block
 typedef struct PCB {
   uint32	*currentSavedFrame; // -> current saved frame.  MUST BE 1ST!
+  //sysStackPtr points to memory location where top of stack currently is
   uint32	*sysStackPtr;	// Current system stack pointer.  MUST BE 2ND!
+  //sysStackArea points to physical address of page where system stack resides
   uint32	sysStackArea;	// System stack area for this process
   unsigned int	flags;
   char		name[80];	// Process name
