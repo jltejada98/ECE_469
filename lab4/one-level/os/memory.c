@@ -63,7 +63,7 @@ void MemoryModuleInit() {
   pagestart = last_os_page + 1;
 
   //Set entire freemap to not inuse
-  for(i = 0; freemapmax; i++)
+  for(i = 0; i<freemapmax; i++)
   	freemap[i] = 0;
 
   //Set memory used by OS in freemap to inuse
