@@ -23,7 +23,7 @@ int MemoryPageFaultHandler(PCB *pcb);
 //---------------------------------------------------------
 // All function prototypes including the malloc and mfree functions go here
 
-void freemapSet(int page, int insue);
+void freemapSet(int page, int inuse);
 int freemapGet(int page);
 
 #endif	// _memory_h_

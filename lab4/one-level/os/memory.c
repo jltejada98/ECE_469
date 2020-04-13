@@ -11,10 +11,10 @@
 #include "memory.h"
 #include "queue.h"
 
-static uint32 freemap[(MEM_NUM_PAGES / 32) + 1];
-static uint32 pagestart;
+static int freemapmax = MEM_NUM_PAGES % 32 == 0? MEM_NUM_PAGES / 32 : MEM_NUM_PAGES / 32 + 1;
+static uint32 freemap[freemapmax];
+static uint32 pagestart;	//Start of non-OS pages?
 static int nfreepages;
-static int freemapmax;
 
 //----------------------------------------------------------------------
 //
@@ -56,11 +56,11 @@ int MemoryGetSize() {
 //----------------------------------------------------------------------
 void MemoryModuleInit() {
   int i, bit;
-  int max_page = MemoryGetSize() / MEM_PAGESIZE;
 
   uint32 last_os_page = lastosaddress / MEM_PAGESIZE;
 
   nfreepages = MEM_NUM_PAGES - (last_os_page + 1);
+  pagestart = last_os_page + 1;
 
   //Set entire freemap to not inuse
   for(i = 0; i < (MEM_NUM_PAGES / 32) + 1; i++)
@@ -68,10 +68,9 @@ void MemoryModuleInit() {
 
   //Set memory used by OS in freemap to inuse
   i = 0;
-  while(i < MEM_NUM_PAGES){
+  while(i <= last_os_page){
     bit = i % 32;
-    if(i <= last_os_page)
-    	freemapSet(i, 1);
+    freemapSet(i, 1);
   }
 
 }
@@ -84,18 +83,18 @@ void MemoryModuleInit() {
 //	the freemap
 //
 //----------------------------------------------------------------------
-void freemapSet(int page, int insue) {
+void freemapSet(int page, int inuse) {
 	int index = page / 32;
 	int bit = page % 32;
 
 	if(!(inuse == 0 || inuse == 1))
 	{
-		printf("Warning in freemapSet, insue=%d, should be 1 or 0", inuse);
+		printf("Warning in freemapSet, inuse=%d, should be 1 or 0", inuse);
 	}
-	
+
 	if(page >= MEM_NUM_PAGES)
 	{
-		printf("Fatal Error: Attempting to allocate a page that is out of bounds!\n")
+		printf("Fatal Error: Attempting to allocate a page that is out of bounds!\n");
 		printf("Attempted to allocate page %d (0 indexed) but there are only %d pages.", page, MEM_NUM_PAGES);
 		exitsim();
 	}
@@ -104,7 +103,7 @@ void freemapSet(int page, int insue) {
 		freemap[index] = freemap[index] | (0x1 << bit);
 	}
 	if(!inuse){
-		freemap[index] = freemap[indx] & invert(0x1 << bit);
+		freemap[index] = freemap[index] & invert(0x1 << bit);
 	}
 }
 
@@ -136,7 +135,7 @@ uint32 MemoryTranslateUserToSystem (PCB *pcb, uint32 addr) {
 	int page_table_index;
 	uint32 page_table_entry;
 	uint32 page_offset;
-	uint32 pysical_page_addr;
+	uint32 physical_page_addr;
 
 	page_table_index = addr >> MEM_L1FIELD_FIRST_BITNUM;
 	page_offset = MEM_PAGE_OFFSET_MASK & addr;
@@ -211,7 +210,7 @@ int MemoryMoveBetweenSpaces (PCB *pcb, unsigned char *system, unsigned char *use
     // address.  MEM_PAGESIZE should be the size (in bytes) of 1 page of memory.
     // MEM_ADDRESS_OFFSET_MASK should be the bit mask required to get just the
     // "offset" portion of an address.
-    bytesToCopy = MEM_PAGESIZE - ((uint32)curUser & MEM_ADDRESS_OFFSET_MASK);
+    bytesToCopy = MEM_PAGESIZE - ((uint32)curUser & MEM_PAGE_OFFSET_MASK);
     
     // Now find minimum of bytes in this page vs. total bytes left to copy
     if (bytesToCopy > n) {
