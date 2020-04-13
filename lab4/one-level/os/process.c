@@ -145,7 +145,7 @@ void ProcessFreeResources (PCB *pcb) {
   for(i = 0; i < MEM_MAX_NUM_PTE; i++)
   {
     if(pcb->pagetable[i] & MEM_PTE_VALID){
-      freePte(pcb->pagetable[i])
+      freePte(pcb->pagetable[i]);
     }
   }
 
@@ -446,7 +446,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   if(pcb->pagetable[MEM_MAX_NUM_PTE-1] == MEM_FAIL) 
   {
     printf("Fatal Error: Unable to allocate page for user stack\n");
-    exitsim;
+    exitsim();
   }
   (pcb->npages)++;
 
@@ -455,9 +455,9 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   if(pcb->sysStackArea == MEM_FAIL)
   {
     printf("Fatal Error: Unable to allocate page for system stack\n");
-    exitsim;
+    exitsim();
   }
-  stackFrame = pcb->sysStackArea + MEM_PAGESIZE - 4;
+  stackframe = pcb->sysStackArea + MEM_PAGESIZE - 4;
 
 
   // Now that the stack frame points at the bottom of the system stack memory area, we need to
