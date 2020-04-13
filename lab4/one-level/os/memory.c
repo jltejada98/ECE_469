@@ -321,7 +321,7 @@ int freePte(uint32 pte) {
 	}
 
 	phys_base_addr = pte & MEM_MASK_PTE_TO_PAGE;
-	pageIdx = base_addr / MEM_PAGESIZE;
+	pageIdx = phys_base_addr / MEM_PAGESIZE;
 
 	MemoryFreePage(pageIdx);
 
