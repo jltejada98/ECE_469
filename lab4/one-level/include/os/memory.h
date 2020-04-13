@@ -31,4 +31,8 @@ uint32 MemoryGetPte (uint32 flags);
 int freePte(uint32 pte);
 void MemoryFreePage(uint32 page);
 
+void* malloc(PCB* pcb, int memsize);
+int mfree(PCB* pcb, void* ptr);
+
+
 #endif	// _memory_h_

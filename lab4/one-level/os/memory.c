@@ -372,3 +372,10 @@ void MemoryFreePage(uint32 pageIdx) {
 	nfreepages++;
 }
 
+void* malloc(PCB* pcb, int memsize) {
+  return NULL;
+}
+
+int mfree(PCB* pcb, void* ptr) {
+  return -1;
+}
