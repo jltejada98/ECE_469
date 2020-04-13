@@ -56,6 +56,12 @@ int MemoryGetSize() {
 //
 //----------------------------------------------------------------------
 void MemoryModuleInit() {
+  int i;
+  int max_page = MemoryGetSize() / MEM_PAGESIZE;
+
+
+  for(i=0; )
+
 }
 
 
