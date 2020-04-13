@@ -11,8 +11,7 @@
 #include "memory.h"
 #include "queue.h"
 
-// num_pages = size_of_memory / size_of_one_page
-static uint32 freemap[/*size*/];
+static uint32 freemap[(MEM_NUM_PAGES / 32) + 1];
 static uint32 pagestart;
 static int nfreepages;
 static int freemapmax;
@@ -56,14 +55,69 @@ int MemoryGetSize() {
 //
 //----------------------------------------------------------------------
 void MemoryModuleInit() {
-  int i;
+  int i, bit;
   int max_page = MemoryGetSize() / MEM_PAGESIZE;
-  uint32 ospages = ()
 
-  nfreepages = MEM_NUM_PAGES - ospages;
+  uint32 last_os_page = lastosaddress / MEM_PAGESIZE;
+
+  nfreepages = MEM_NUM_PAGES - (last_os_page + 1);
+
+  i = 0;
+  while(i < MEM_NUM_PAGES){
+    bit = i % 32;
+    if(i <= last_os_page)
+    	freemapSet(i, 1);
+    else
+    	freemapSet(i, 0);
+  }
 
 }
 
+//----------------------------------------------------------------------
+//
+//  freemapSet
+//
+//  This function sets a page as inuse or not inuse in
+//	the freemap
+//
+//----------------------------------------------------------------------
+void freemapSet(int page, int insue) {
+	int index = page / 32;
+	int bit = page % 32;
+
+	if(!(inuse == 0 || inuse == 1))
+	{
+		printf("Warning in freemapSet, insue=%d, should be 1 or 0", inuse);
+	}
+	if(page >= MEM_NUM_PAGES)
+	{
+		printf("Fatal Error: Attempting to allocate a page that is out of bounds!\n")
+		printf("Attempted to allocate page %d (0 indexed) but there are only %d pages.", page, MEM_NUM_PAGES);
+		exitsim();
+	}
+
+	if(inuse){
+		freemap[index] = freemap[index] | (0x1 << bit);
+	}
+	if(!inuse){
+		freemap[index] = freemap[indx] & invert(0x1 << bit);
+	}
+}
+
+//----------------------------------------------------------------------
+//
+//  freemapGet
+//
+//  This function sets a page as inuse or not inuse in
+//	the freemap
+//
+//----------------------------------------------------------------------
+int freemapGet(int page) {
+	int index = page / 32;
+	int bit = page % 32;
+
+	return (freemap[index] >> bit) & 0x1;
+}
 
 
 //----------------------------------------------------------------------
