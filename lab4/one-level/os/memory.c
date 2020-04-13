@@ -273,16 +273,65 @@ int MemoryPageFaultHandler(PCB *pcb) {
 // Feel free to edit/remove them
 //---------------------------------------------------------------------
 
-int MemoryAllocPage(void) {
-  return -1;
+uint32 MemoryAllocPage(void) {
+  int i;
+
+  if(nfreepages <= 0)
+  {
+  	return MEM_FAIL;
+  }
+
+  for(i = 0; i < MEM_NUM_PAGES; i++)
+  {
+  	if(freemapGet(i) == 0)
+  	{
+  		freemapSet(i, 1);
+  		nfreepages--;
+  		return i * MEM_PAGESIZE;
+   	}
+  }
+
+  printf("Fatal Error: System could not find free page although nfreepages > 0!\n");
+  exitsim();	//Does not reutrn, but need return for compiler
+  return MEM_FAIL;
 }
 
 
-uint32 MemorySetupPte (uint32 page) {
-  return -1;
+uint32 MemoryGetPte (uint32 flags) {
+	uint32 page;
+	page = MemoryAllocPage();
+
+	if(page == MEM_FAIL)
+		return MEM_FAIL;
+
+	return page | flags;
+}
+
+
+// Takes a pte (the base address) and frees the page
+// that corresponds to the pte
+int freePte(uint32 pte) {
+	uint32 phys_base_addr;
+	uint32 pageIdx;
+
+	if(!(pte & MEM_PTE_VALID))
+	{
+		printf("Error: Attempting to free page that was not allocated!\n");
+		return MEM_FAIL;
+	}
+
+	phys_base_addr = pte & MEM_MASK_PTE_TO_PAGE;
+	pageIdx = base_addr / MEM_PAGESIZE;
+
+	MemoryFreePage(pageIdx);
+
+	return MEM_SUCCESS;
+
 }
 
 
 void MemoryFreePage(uint32 page) {
+	freemapSet(page, 0);
+	nfreepages++;
 }
 
