@@ -92,6 +92,7 @@ void freemapSet(int page, int insue) {
 	{
 		printf("Warning in freemapSet, insue=%d, should be 1 or 0", inuse);
 	}
+	
 	if(page >= MEM_NUM_PAGES)
 	{
 		printf("Fatal Error: Attempting to allocate a page that is out of bounds!\n")
