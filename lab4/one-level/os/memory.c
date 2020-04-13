@@ -11,8 +11,8 @@
 #include "memory.h"
 #include "queue.h"
 
-static int freemapmax = MEM_NUM_PAGES % 32 == 0? MEM_NUM_PAGES / 32 : MEM_NUM_PAGES / 32 + 1;
-static uint32 freemap[freemapmax];
+static int freemapmax = MEM_NUM_PAGES % 32 == 0 ? MEM_NUM_PAGES / 32 : MEM_NUM_PAGES / 32 + 1;
+static uint32 freemap[MEM_NUM_PAGES % 32 == 0 ? MEM_NUM_PAGES / 32 : MEM_NUM_PAGES / 32 + 1];
 static uint32 pagestart;	//Start of non-OS pages?
 static int nfreepages;
 
