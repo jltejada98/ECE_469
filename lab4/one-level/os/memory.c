@@ -71,6 +71,7 @@ void MemoryModuleInit() {
   while(i <= last_os_page){
     bit = i % 32;
     freemapSet(i, 1);
+    i++;
   }
 
 }
