@@ -143,7 +143,7 @@ uint32 MemoryTranslateUserToSystem (PCB *pcb, uint32 addr) {
 
 	if(page_table_index >= MEM_MAX_NUM_PTE)
 	{
-		printf("Fatal Error: Attempting to translate virtual address that does not have a corresponding PTE\n");
+		printf("Fatal Error: Attempting to translate virtual address that does not have a corresponding PTE for proccess %d\n", GetPidFromAddress(pcb));
 		printf("addr: %x\n Index: %d\n MEM_MAX_NUM_PTE: %d\n", addr, page_table_index, MEM_MAX_NUM_PTE);
 		exitsim();
 	}
