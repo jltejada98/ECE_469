@@ -264,7 +264,44 @@ int MemoryCopyUserToSystem (PCB *pcb, unsigned char *from,unsigned char *to, int
 // Feel free to edit.
 //---------------------------------------------------------------------
 int MemoryPageFaultHandler(PCB *pcb) {
-  return MEM_FAIL;
+
+	//User stack pointer virtual address
+	uint32 user_stack_ptr = pcb->currentSavedFrame[PROCESS_STACK_USER_STACKPOINTER];
+  
+	//Pointer to attempted address access
+  uint32 fault_addr = pcb->currentSavedFrame[PROCESS_STACK_FAULT];
+
+	//Index in pagetable where user stack currently ends
+	uint32 user_stack_idx = user_stack_ptr & (~MEM_ADDR_OFFSET_MASK);
+
+	if(fault_addr >= user_stack_ptr)
+	{
+		//If new page is already being used by heap
+		if(pcb->pagetable[user_stack_idx - 1] & MEM_PTE_VALID)
+		{
+			//Cannot create new pagetable entry, out of virtual memory space
+			printf("Process %d ran out of memory\n", GetPidFromAddress(pcb));
+			ProcessKill();
+		}
+		pcb->pagetable[user_stack_idx - 1] = MemoryGetPte(MEM_PTE_VALID);
+
+		if(pcb->pagetable[user_stack_idx - 1] == MEM_FAIL)
+		{
+			printf("Unable to allocate new page to stack for Process %d\n", GetPidFromAddress(pcb));
+			ProcessKill();
+		}
+
+		(pcb->npages)++;
+	}
+	else 
+	{
+		//its a segFault so kill the process
+		printf("Fatal Error: Segmentation Fault\n");
+		ProcessKill();
+	}
+
+	//Control should not reach this point
+	return MEM_FAIL;
 }
 
 
@@ -329,9 +366,9 @@ int freePte(uint32 pte) {
 
 }
 
-
-void MemoryFreePage(uint32 page) {
-	freemapSet(page, 0);
+//Takes in the pages index and frees that page
+void MemoryFreePage(uint32 pageIdx) {
+	freemapSet(pageIdx, 0);
 	nfreepages++;
 }
 

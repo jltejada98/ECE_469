@@ -142,7 +142,14 @@ void ProcessFreeResources (PCB *pcb) {
   //------------------------------------------------------------
   // STUDENT: TODO Free any memory resources on process death here.
   //------------------------------------------------------------
+  for(i = 0; i < MEM_MAX_NUM_PTE; i++)
+  {
+    if(pcb->pagetable[i] & MEM_PTE_VALID){
+      freePte(pcb->pagetable[i])
+    }
+  }
 
+  MemoryFreePage(pcb->sysStackArea / MEM_PAGESIZE);
 
   ProcessSetStatus (pcb, PROCESS_STATUS_FREE);
 }
@@ -422,6 +429,35 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   // for the system stack.
   //---------------------------------------------------------
 
+  //Allocate the 4 blocks for code/data
+  for(i = 0; i < 4; i++)
+  {
+    pcb->pagetable[i] = MemoryGetPte(MEM_PTE_VALID);
+    if (pcb->pagetable[i] == MEM_FAIL)
+    {
+      printf("Fatal Error: Unable to allocate pages for code/data of new process\n");
+      exitsim();
+    }
+    (pcb->npages)++;
+  }
+
+  // Allocate User Stack
+  pcb->pagetable[MEM_MAX_NUM_PTE-1] = MemoryGetPte(MEM_PTE_VALID);
+  if(pcb->pagetable[MEM_MAX_NUM_PTE-1] == MEM_FAIL) 
+  {
+    printf("Fatal Error: Unable to allocate page for user stack\n");
+    exitsim;
+  }
+  (pcb->npages)++;
+
+  // Allocate System Stack
+  pcb->sysStackArea = MemoryAllocPage();
+  if(pcb->sysStackArea == MEM_FAIL)
+  {
+    printf("Fatal Error: Unable to allocate page for system stack\n");
+    exitsim;
+  }
+  stackFrame = pcb->sysStackArea + MEM_PAGESIZE - 4;
 
 
   // Now that the stack frame points at the bottom of the system stack memory area, we need to
