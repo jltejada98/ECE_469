@@ -87,7 +87,7 @@ void ProcessModuleInit () {
     //-------------------------------------------------------
     // STUDENT: Initialize the PCB's page table here.
     //-------------------------------------------------------
-    for(j = 0; j < MEM_MAX_NUM_PTE){   
+    for(j = 0; j < MEM_MAX_NUM_PTE; j++){   
       pcbs[i].pagetable[j] = 0x0;
     }
     pcbs[i].npages = 0;
@@ -142,7 +142,7 @@ void ProcessFreeResources (PCB *pcb) {
   //------------------------------------------------------------
   // STUDENT: TODO Free any memory resources on process death here.
   //------------------------------------------------------------
-  
+
 
   ProcessSetStatus (pcb, PROCESS_STATUS_FREE);
 }
