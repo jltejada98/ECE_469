@@ -285,13 +285,16 @@ int MemoryPageFaultHandler(PCB *pcb) {
 			printf("Process %d ran out of memory\n", GetPidFromAddress(pcb));
 			ProcessKill();
 		}
+		printf("1\n");
 		pcb->pagetable[user_stack_idx - 1] = MemoryGetPte(MEM_PTE_VALID);
+		printf("2\n");
 
 		if(pcb->pagetable[user_stack_idx - 1] == MEM_FAIL)
 		{
 			printf("Unable to allocate new page to stack for Process %d\n", GetPidFromAddress(pcb));
 			ProcessKill();
 		}
+		printf("3\n");
 
 		(pcb->npages)++;
 
