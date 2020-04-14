@@ -3,6 +3,7 @@
 
 int stack(int x){
   int y = x;
+  Printf("Local Var Location: %d\n", &y);
 	if(&y < 0xFE000){
 		return 0;
 	}
