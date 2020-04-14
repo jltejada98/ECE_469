@@ -10,6 +10,7 @@ int HeapInitialize(heapNode* heap, int len)
 		HeapInitializeNode(&heap[i], i, heap, len);
 		heap[i].index = i;
 		heap[i].heapArr = heap;
+		printf("initialized heapnode %d\n", i);
 	}
 
 	//Initialize the root node
