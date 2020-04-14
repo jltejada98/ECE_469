@@ -109,8 +109,6 @@ int joinHeapNode(heapNode* parent){
 
 
 heapNode* findNodeOrder(heapNode* root, int order){
-	heapNode *left;
-	heapNode *right;
 	heapNode *find;
 
 	if (root == NULL || root->allocated || !root->inuse)
