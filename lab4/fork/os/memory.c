@@ -401,7 +401,37 @@ void MemorySharePage(uint32 pte){
 	num_refs[pageIdx]++;
 }
 
+void MemoryRopHandler(PCB* pcb){
+	//Virtual memory address where ROP access fault occurred
+	uint32 fault_address = pcb->currentSavedFrame[PROCESS_STACK_FAULT];
+	int pteIdx = fault_address >> MEM_L1FIELD_FIRST_BITNUM;
+	uint32 pageIdx = pcb->pagetable[pteIdx] / MEM_PAGESIZE;
 
+	uint21 newPage;
+
+	if(num_refs[pageIdx] > 1)
+	{
+		//Allocate new page, NOTE: Page will only be marked as valid, and not Read only
+		newPage = MemoryGetPte(MEM_PTE_VALID);
+		if(newPage == MEM_FAIL){
+			printf("Error: Unable to get new page in ROP Access Fault Handler\n");
+			ProcessKill();
+		}
+
+		//Copy page
+		bcopy((char *)pcb->pagetable[pteIdx], (char *)newPage, MEM_PAGESIZE);
+
+		//Mark page as not read only
+		num_refs[pageIdx]--;
+	}
+	else
+	{
+		//Its ok to reference this address because it is the only process that has access to this page
+		//This page does not need to be read only
+		pcb->pagetable[pteIdx] &= invert(MEM_PTE_READONLY);
+	}
+	
+}
 
 
 void* malloc(PCB* pcb, int memsize) {

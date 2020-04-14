@@ -33,6 +33,8 @@ uint32 MemoryGetPte (uint32 flags);
 int freePte(uint32 pte);
 void MemoryFreePage(uint32 page);
 
+void MemoryRopHandler(PCB* pcb);
+
 void* malloc(PCB* pcb, int memsize);
 int mfree(PCB* pcb, void* plast_os_pagetr);
 
