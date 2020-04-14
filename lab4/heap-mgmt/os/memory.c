@@ -378,7 +378,7 @@ void MemoryFreePage(uint32 pageIdx) {
 // Malloc and mfree
 //---------------------------------------------------------------------
 void* malloc(PCB* pcb, int memsize) {
-	heapNode* root = pcb->heap[0];
+	heapNode* root = &(pcb->heap[0]);
 	heapNode* node;
 	int desOrder;
 	void* mem_addr;
@@ -408,7 +408,7 @@ void* malloc(PCB* pcb, int memsize) {
 		//Could not find node of correct order, must create one
 		printf("Could not find node of correct order, creating one...\n");
 
-		node = createOrder(createOrder, desOrder);
+		node = createOrder(root, desOrder);
 
 		if(node == NULL)
 		{
