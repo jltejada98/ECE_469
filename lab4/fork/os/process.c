@@ -410,6 +410,7 @@ int ProcessRealFork(PCB* parent) {
   stackframe = (uint32 *) (child->sysStackArea + (MEM_PAGESIZE - 4));
   printf("Top of stackframe: %x\n", stackframe);
   stackframe -= (uint32 *)PROCESS_STACK_FRAME_SIZE;
+  printf("Start of stackframe: %x\n", stackframe);
 
   child->sysStackPtr = stackframe;
   child->currentSavedFrame = stackframe;
