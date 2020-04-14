@@ -21,7 +21,7 @@ void main (int argc, char *argv[])
     Exit();
   }
   address = (MEM_MAX_VIRTUAL_ADDRESS + 1);
-  Printf("part2 : address to be accessed: %x\n", address);
-  Printf("part2 : accessing virtual memory location: %x \n", *address);
+  Printf("part2 : address to be accessed: %d\n", address);
+  Printf("part2 : accessing virtual memory location: %d \n", *address);
   Printf("part2 : done!\n");
 }
