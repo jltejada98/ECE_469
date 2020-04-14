@@ -361,6 +361,8 @@ int ProcessRealFork(PCB* parent) {
 
   intrs = DisableIntrs();
 
+  printf("In ProcessRealFork\n");
+
   //Check if there are available PCBs
   if(AQueueEmpty(&freepcbs)){
     printf("Fatal Error: No free pcbs to create new process in ProcessRealFork\n");
@@ -380,6 +382,7 @@ int ProcessRealFork(PCB* parent) {
   //memory once we know that data needs to be accessed
 
   //Mark the parents pcb table used entries as read only
+  printf("Marking parent pagetable as readonly\n");
   for(i = 0; i < MEM_MAX_NUM_PTE; i++){
     if(parent->pagetable[i] & MEM_PTE_VALID)
     {
@@ -388,8 +391,12 @@ int ProcessRealFork(PCB* parent) {
     }
   }
 
+
   //Copy parent to child
+  printf("Copying parent pcb to child pcb\n");
   bcopy((char*) parent, (char*) child, sizeof(PCB));
+
+  RestoreIntrs(intrs);
 
   //Now grab a page for the childs systemStack
   child->sysStackArea = MemoryGetPte(MEM_PTE_VALID);
@@ -400,9 +407,11 @@ int ProcessRealFork(PCB* parent) {
     return PROCESS_FAIL;
   }
 
+  printf("Copying parent systemStackArea to Child systemStackArea");
   //Copy the parents systemStack to the child's system stack
   bcopy((char*) parent->sysStackArea, (char*) child->sysStackArea, MEM_PAGESIZE);
 
+  printf("Editing stackframe\n");
 
   stackframe = (uint32 *)(child->sysStackArea + MEM_PAGESIZE - 4);
   stackframe -= PROCESS_STACK_FRAME_SIZE;
@@ -412,6 +421,8 @@ int ProcessRealFork(PCB* parent) {
 
   stackframe[PROCESS_STACK_PTBASE] = (uint32) &child->pagetable[0];
 
+  intrs = DisableIntrs();
+  printf("Inserting child into runQueue\n");
   //Insert child into runQueue
   child->l = AQueueAllocLink(child);
 
@@ -424,6 +435,8 @@ int ProcessRealFork(PCB* parent) {
     printf("Fatal Error: Child process could not be inserted into runQueue.\n");
     exitsim();
   }
+
+  printf("Editing return result\n");
 
   ProcessSetResult(child, 0);
   ProcessSetResult(parent, GetPidFromAddress(child));
