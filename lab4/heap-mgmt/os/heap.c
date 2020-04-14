@@ -34,6 +34,8 @@ void initializeAddrOffsets(heapNode* node)
 	if(isAlwaysLeaf(node))
 		return;
 
+	printf("Initializing children of node %d\n", node->index);
+
 	getLeft(node)->addrOffset = node->addrOffset;
 
 	getRight(node)->addrOffset = (orderToMemsize(node->order) / 2) + node->addrOffset;
