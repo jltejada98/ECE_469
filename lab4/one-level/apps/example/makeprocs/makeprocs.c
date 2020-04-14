@@ -16,6 +16,7 @@ void main (int argc, char *argv[])
   int num_proccess = 0;
   sem_t s_procs_completed;             // Semaphore used to wait until all spawned processes have completed
   char s_procs_completed_str[10];      // Used as command-line argument to pass page_mapped handle to new processes
+  int num_hello_world = 5;
 
   if (argc != 2) {
     Printf("Usage: %s <number of hello world processes to create>\n", argv[0]);
