@@ -447,7 +447,7 @@ int ProcessRealFork(PCB* parent) {
 void printPtes(PCB* proc1, PCB* proc2){
   int i;
 
-  printf(" PT Idx |   proc1   |   proc2   |\n");
+  printf(" PT Idx |  proc1  |  proc2  |\n");
   for(i = MEM_MAX_NUM_PTE; i >= 0; i--)
   {
     if((proc1->pagetable[i] & MEM_PTE_VALID) || (proc2->pagetable[i] & MEM_PTE_VALID))
@@ -457,15 +457,15 @@ void printPtes(PCB* proc1, PCB* proc2){
 
       //Col1
       if(proc1->pagetable[i] & MEM_PTE_VALID)
-        printf(" %9x |", proc1->pagetable[i]);
+        printf(" %7x |", proc1->pagetable[i]);
       else
-        printf("    ---    |");
+        printf("   ---   |");
 
       //Col2
       if(proc2->pagetable[i] & MEM_PTE_VALID)
-        printf(" %9x |\n", proc2->pagetable[i]);
+        printf(" %7x |\n", proc2->pagetable[i]);
       else
-        printf("    ---    |\n");
+        printf("   ---   |\n");
     }
   }
 }
