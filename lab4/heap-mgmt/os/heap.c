@@ -66,6 +66,12 @@ int joinHeapNode(heapNode* parent){
 	heapNode* left;
 	heapNode* right;
 
+	if(isAlwaysLeaf(parent))
+	{
+		printf("Tried joining heap node that was always a leafnode, it cannot have children\n");
+		return HEAP_FAIL;
+	}
+
 	left = getLeft(parent);
 	right = getRight(parent);
 
@@ -83,34 +89,149 @@ int joinHeapNode(heapNode* parent){
 }
 
 
+
+
+
+heapNode* findNodeOrder(heapNode* root, int order){
+	heapNode *left;
+	heapNode *right;
+	heapNode *find;
+
+	if (root == NULL || root->allocated || !root->inuse)
+	{
+		return NULL;
+	}
+
+	if(root->order < order)
+	{
+		return NULL;
+	}
+
+	if (root->order == order && root->inuse && !root->allocated && !root->split)
+	{
+		return root;
+	}
+	
+	find = findNodeOrder(getLeft(root), order);
+
+	if(find == NULL){
+		find = findNodeOrder(getRight(root), order);
+	}
+
+	return find;
+}
+
+heapNode* createOrder(heapNode* root, int order){
+	int lowest_order;
+	int i;
+	heapNode* node;
+
+	for(lowest_order = order+1; lowest_order < root->order; lowest_order++)
+	{
+		node = findNodeOrder(root, lowest_order);
+
+		if(node != NULL)
+			break;
+	}
+
+	if(node == NULL)
+	{
+		return NULL;
+	}
+
+	for(i = lowest_order; i > order; i--)
+	{
+		if(splitHeapNode(node) == HEAP_FAIL)
+		{
+			return NULL;
+		}
+		node = getLeft(node);
+	}
+
+	return node;
+}
+
+int deallocNode(heapNode* node){
+	heapNode* parent;
+	heapNode* sibling;
+
+	//We do not want to join a node if its split, this should never happen
+	if(node->isSplit)
+	{
+		printf("Error: Attempted deallocating a split node\n");
+		return HEAP_FAIL;
+	}
+
+	//Cannot join root node, so just dealloc and return
+	if(node->index == 0)
+	{
+		node->addr = NULL;
+		node->allocated = 0;
+		return HEAP_SUCCESS;
+	}
+
+	parent = getParent(node);
+
+	if(getLeft(parent) == node)
+	{
+		sibling = getRight(parent)
+	} 
+	else if(getRight(parent) == node)
+	{
+		sibling = getLeft(parent);
+	}
+	else
+	{
+		printf("Error: could not find sibling correctly\n");
+		return HEAP_FAIL;
+	}
+
+	node->addr = NULL;
+	node->allocated = 0;
+
+	if(sibling->allocated)
+	{
+		//Sibling is allocated, so do not join
+		return HEAP_SUCCESS;
+	}
+	else
+	{
+		//Sibling is not allocated, so join them
+		return joinHeapNode(parent);
+	}
+
+
+}
+
+int isAlwaysLeaf(heapNode* n){
+	if( (n->index * 2) + 1 > n->heapSize ){
+		return 1;
+	}
+	return 0;
+}
+
 heapNode* getParent(heapNode* n) {
 	int parentIdx = (n->index - 1)/2;
 	if(parentIdx < 0){
-		return HEAP_FAIL;	//Requested parent of root node, no parent so return HEAP_FAIL
+		return NULL;	//Requested parent of root node, no parent so return HEAP_FAIL
 	}
 	
 	return &(n->heapArr[parentIdx]);
 }
 
-heapNode* getLeft(heapNode* n) {return &n->heapArr[(n->index*2)+1];}
-heapNode* getRight(heapNode* n) {return &n->heapArr[(n->index*2)+2];}
+heapNode* getLeft(heapNode* n) {
+	int leftIdx = (n->index*2)+1;
 
+	if( isAlwaysLeaf(n) )
+		return NULL;
 
-heapNode* searchNode(heapNode * node, int mem_size){
-	heapNode *left;
-	heapNode *right;
+	return &n->heapArr[leftIdx];
+}
+heapNode* getRight(heapNode* n) {
+	int rightIdx = (n->index*2)+2;
 
-	if (node == NULL)
-	{
-		return HEAP_FAIL;
-	}
+	if( isAlwaysLeaf(n) )
+		return NULL;
 
-	//Check if left is in use
-	left = getLeft(node);
-	if (left->inuse == 0)
-	{
-		/* code */
-	}
-
-
+	return &n->heapArr[rightIdx];
 }
