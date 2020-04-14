@@ -433,5 +433,33 @@ void* malloc(PCB* pcb, int memsize) {
 }
 
 int mfree(PCB* pcb, void* ptr) {
+	uint32 mem_offset;
+	uint32 page_addr;
+	heapNode* node;
+	int i;
 
+	page_addr = pcb->pagetable[pcb->heapPteIdx] & MEM_MASK_PTE_TO_PAGE;
+
+	mem_offset = ((uint32) ptr) - page_addr;
+
+	for(i = 0; i < MEM_MAX_HEAP_NODES; i++)
+	{
+		node = &pcb->heap[i];
+		if(node->allocated && node->addrOffset == mem_offset)
+		{
+			break;
+		}
+	}
+
+	if(deallocNode(node) == HEAP_FAIL)
+	{
+		return MEM_FAIL;
+	}
+	if(i >= MEM_MAX_HEAP_NODES)
+	{
+		printf("Could not find a heap node that matches the mem_offset\n");
+		return MEM_FAIL;
+	}
+
+	return MEM_SUCCESS;
 }
