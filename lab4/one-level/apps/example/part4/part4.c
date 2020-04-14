@@ -11,7 +11,7 @@ int stack(int x){
 void main (int argc, char *argv[])
 {
   sem_t s_procs_completed; // Semaphore to signal the original process that we're done
-  int num_recursive_calls = 2000;
+  int num_recursive_calls = 100;
   int last_call;
 
   if (argc != 2) { 
