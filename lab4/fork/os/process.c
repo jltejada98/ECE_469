@@ -360,7 +360,6 @@ int ProcessRealFork(PCB* parent) {
   int intrs;
   uint32* stackframe;
 
-  printf("parent iar: 0x%x isr: 0x%x\n", parent->sysStackPtr[PROCESS_STACK_IAR],parent->sysStackPtr[PROCESS_STACK_ISR]);
 
 
   intrs = DisableIntrs();
@@ -408,7 +407,7 @@ int ProcessRealFork(PCB* parent) {
   }
 
   //Copy the parents systemStack to the child's system stack
-  bcopy((char*) (currentPCB->sysStackArea), (char*) (child->sysStackArea), MEM_PAGESIZE);
+  bcopy((char*) (parent->sysStackArea), (char*) (child->sysStackArea), MEM_PAGESIZE);
 
   printf("Child->sysStackArea: 0x%x\nMEM_PAGESIZE-4: 0x%x\nPROCESS_STACK_FRAME_SIZE: 0x%x\n", child->sysStackArea, MEM_PAGESIZE-4, PROCESS_STACK_FRAME_SIZE);
   stackframe = (uint32 *) (child->sysStackArea + (MEM_PAGESIZE - 4));
@@ -423,9 +422,9 @@ int ProcessRealFork(PCB* parent) {
   stackframe[PROCESS_STACK_PTBASE] = (uint32) &(child->pagetable[0]);
   printf("Attempting to instert child into queue\n");
 
-  printf("Child iar: 0x%x isr: 0x%x\n", child->sysStackPtr[PROCESS_STACK_IAR],child->sysStackPtr[PROCESS_STACK_ISR]);
-  printf("parent iar: 0x%x isr: 0x%x\n", parent->sysStackPtr[PROCESS_STACK_IAR],parent->sysStackPtr[PROCESS_STACK_ISR]);
-  printf("currentPCB iar: 0x%x isr: 0x%x\n", currentPCB->sysStackPtr[PROCESS_STACK_IAR],currentPCB->sysStackPtr[PROCESS_STACK_ISR]);
+  printf("Child iar:      0x%x isr: 0x%x pt addr: 0x%x\n", child->sysStackPtr[PROCESS_STACK_IAR],child->sysStackPtr[PROCESS_STACK_ISR],child->sysStackPtr[PROCESS_STACK_PTBASE]);
+  printf("parent iar:     0x%x isr: 0x%x pt addr: 0x%x\n", parent->sysStackPtr[PROCESS_STACK_IAR],parent->sysStackPtr[PROCESS_STACK_ISR],parent->sysStackPtr[PROCESS_STACK_PTBASE]);
+  printf("currentPCB iar: 0x%x isr: 0x%x pt addr: 0x%x\n", currentPCB->sysStackPtr[PROCESS_STACK_IAR],currentPCB->sysStackPtr[PROCESS_STACK_ISR],currentPCB->sysStackPtr[PROCESS_STACK_PTBASE]);
 
   intrs = DisableIntrs();
   //Insert child into runQueue
