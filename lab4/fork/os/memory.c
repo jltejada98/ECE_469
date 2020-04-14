@@ -386,7 +386,7 @@ void MemoryFreePage(uint32 pageIdx) {
 	}
 	if(num_refs[pageIdx] < 0)
 	{
-		printf("Fatal Error: number of references for page %d is negative (%d)\n", pageIdx, num_refs[pageIdx])
+		printf("Fatal Error: number of references for page %d is negative (%d)\n", pageIdx, num_refs[pageIdx]);
 		exitsim();
 	}
 }
