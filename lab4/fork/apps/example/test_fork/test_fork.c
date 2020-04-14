@@ -16,23 +16,19 @@ void main (int argc, char *argv[])
 
   Printf("PID: %d, child_proc: %d\n", getpid());
 
-  //child_proc+=1;
 
-  /*
   if (child_proc == 0) //Child Process
   {
-  	Printf("child_proc with pid:", getpid());
-  	Printf("Generating ROP exception.. Original Value: %d, New Value", val, val+2);
+  	Printf("This is the child (%d), child_proc=%d\n", getpid(), child_proc);
   	val += 2;
-  	Printf("Finished ROP exception, Val: %d, PID:", val, getpid());
+  	Printf("Val: %d, PID:\n", val, getpid());
   }
   else{ //Parent Process
-  	Printf("parent_proc with pid:", getpid());
-  	Printf("Generating ROP exception.. Original Value: %d, New Value", val, val+1);
-  	++val;
-  	Printf("Finished ROP exception, Val: %d, PID:", val, getpid());
+    Printf("This is the parent (%d), child_proc=%d\n", getpid(), child_proc);
+    val += 2;
+    Printf("Val: %d, PID:\n", val, getpid());
   }
-  */
+
 
   Printf("Success!\n");
 }
