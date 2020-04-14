@@ -4,6 +4,7 @@
 int stack(int x){
   int y = x;
   Printf("Local Var Location: %d\n", &y);
+  //Note 0xFE000 = 1040384
 	if(&y < 0xFE000){
 		return 0;
 	}
