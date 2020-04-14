@@ -414,7 +414,7 @@ void MemoryRopHandler(PCB* pcb){
 	if(num_refs[pageIdx] > 1)
 	{
 		//Allocate new page, NOTE: Page will only be marked as valid, and not Read only
-		newPage = MemoryGetPte(MEM_PTE_VALID);
+		newPage = MemoryAllocPage();
 		if(newPage == MEM_FAIL){
 			printf("Error: Unable to get new page in ROP Access Fault Handler\n");
 			ProcessKill();
@@ -422,6 +422,9 @@ void MemoryRopHandler(PCB* pcb){
 
 		//Copy page
 		bcopy((char *)pcb->pagetable[pteIdx], (char *)newPage, MEM_PAGESIZE);
+
+		//Update PTE
+		pcb->pagetable[pteIdx] = newPage | MEM_PTE_VALID;
 
 		//Mark page as not read only
 		num_refs[pageIdx]--;
