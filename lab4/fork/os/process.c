@@ -412,7 +412,9 @@ int ProcessRealFork(PCB* parent) {
   child->sysStackPtr = stackframe;
   child->currentSavedFrame = stackframe;
 
+  printf("setting register in stack frame\n");
   stackframe[PROCESS_STACK_PTBASE] = (uint32) &(child->pagetable[0]);
+  printf("Attempting to instert child into queue\n");
 
   intrs = DisableIntrs();
   //Insert child into runQueue
