@@ -433,6 +433,8 @@ int ProcessRealFork(PCB* parent) {
   printf("Printing Pagetable for parent and child procs\n");
   printPtes(parent, child);
 
+  return PROCESS_SUCCESS;
+
 }
 
 void printPtes(PCB* proc1, PCB* proc2){
