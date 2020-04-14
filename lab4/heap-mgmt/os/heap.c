@@ -12,19 +12,13 @@ int HeapInitialize(heapNode* heap, int len)
 		heap[i].heapArr = heap;
 	}
 
-	printf("initializing root node\n");
-
 	//Initialize the root node
 	heap[0].inuse = 1;
 	heap[0].allocated = 0;
 	heap[0].isSplit = 0;
 
-	printf("initializing addrOffsets\n");
-
 	//Initialize the address offsets
 	initializeAddrOffsets(&heap[0]);
-
-	printf("Heap Initialized\n");
 
 	return HEAP_SUCCESS;
 }
