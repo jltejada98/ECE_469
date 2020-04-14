@@ -503,11 +503,11 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   intrs = DisableIntrs ();
   dbprintf ('I', "Old interrupt value was 0x%x.\n", intrs);
   dbprintf ('p', "Entering ProcessFork args=0x%x 0x%x %s %d\n", (int)func,
-	    param, name, isUser);
+      param, name, isUser);
   // Get a free PCB for the new process
   if (AQueueEmpty(&freepcbs)) {
     printf ("FATAL error: no free processes!\n");
-    exitsim ();	// NEVER RETURNS!
+    exitsim (); // NEVER RETURNS!
   }
   pcb = (PCB *)AQueueObject(AQueueFirst (&freepcbs));
   dbprintf ('p', "Got a link @ 0x%x\n", (int)(pcb->l));
@@ -561,7 +561,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   (pcb->npages)++;
 
   // Allocate System Stack
-  pcb->sysStackArea = MemoryGetPte(MEM_PTE_VALID);
+  pcb->sysStackArea = MemoryAllocPage();
   if(pcb->sysStackArea == MEM_FAIL)
   {
     printf("Fatal Error: Unable to allocate page for system stack\n");
@@ -599,9 +599,9 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   // stack frame.
   //----------------------------------------------------------------------
 
-		stackframe[PROCESS_STACK_PTBASE] = (uint32)&pcb->pagetable[0];
-		stackframe[PROCESS_STACK_PTBITS] = (MEM_L1FIELD_FIRST_BITNUM << 16) | MEM_L1FIELD_FIRST_BITNUM;
-		stackframe[PROCESS_STACK_PTSIZE] = MEM_L1PAGETABLE_SIZE; 
+    stackframe[PROCESS_STACK_PTBASE] = (uint32)&pcb->pagetable[0];
+    stackframe[PROCESS_STACK_PTBITS] = (MEM_L1FIELD_FIRST_BITNUM << 16) | MEM_L1FIELD_FIRST_BITNUM;
+    stackframe[PROCESS_STACK_PTSIZE] = MEM_L1PAGETABLE_SIZE; 
 
   if (isUser) {
     dbprintf ('p', "About to load %s\n", name);
@@ -614,9 +614,9 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
 
     dbprintf ('p', "File %s -> start=0x%08x\n", name, start);
     dbprintf ('p', "File %s -> code @ 0x%08x (size=0x%08x)\n", name, codeS,
-	      codeL);
+        codeL);
     dbprintf ('p', "File %s -> data @ 0x%08x (size=0x%08x)\n", name, dataS,
-	      dataL);
+        dataL);
 
     while ((n = ProcessGetFromFile (fd, buf, &addr, sizeof (buf))) > 0) {
       dbprintf ('p', "Placing %d bytes at vaddr %08x.\n", n, addr - n);
@@ -736,7 +736,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   // If this is the first process, make it the current one
   if (currentPCB == NULL) {
     dbprintf ('p', "Setting currentPCB=0x%x, stackframe=0x%x\n",
-	      (int)pcb, (int)(pcb->currentSavedFrame));
+        (int)pcb, (int)(pcb->currentSavedFrame));
     currentPCB = pcb;
   }
 
