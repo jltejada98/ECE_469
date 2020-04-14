@@ -1,5 +1,6 @@
 #include "usertraps.h"
 #include "misc.h"
+#include "os/memory_constants.h"
 
 void main (int argc, char *argv[])
 {
@@ -23,7 +24,7 @@ void main (int argc, char *argv[])
 
   //Attempt to free memory.
   Printf("Heaptest: Attempting to free %d bytes.\n", num_alloc * sizeof(int));
-  if(free(array) == MEM_FAIL)
+  if(mfree(array) == MEM_FAIL)
   {
     Printf("Heaptest: could not free heap. Exiting");
     return; //Exit ??
