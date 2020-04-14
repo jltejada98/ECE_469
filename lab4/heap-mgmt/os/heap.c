@@ -38,6 +38,7 @@ void initializeAddrOffsets(heapNode* node)
 		return;
 	}
 
+	printf("Editing chldren of node %d\n", node->index);
 
 	getLeft(node)->addrOffset = node->addrOffset;
 
