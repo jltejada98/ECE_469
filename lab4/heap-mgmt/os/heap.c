@@ -43,9 +43,9 @@ void initializeAddrOffsets(heapNode* node)
 
 	getRight(node)->addrOffset = (orderToMemsize(node->order) / 2) + node->addrOffset;
 
-	printf("Initializing left of node %d\n", node->index);
+	printf("Moving to left of node %d\n", node->index);
 	initializeAddrOffsets(getLeft(node));
-	printf("Initializing right of node %d\n", node->index);
+	printf("Moving to right of node %d\n", node->index);
 	initializeAddrOffsets(getRight(node));
 }
 
