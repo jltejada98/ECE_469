@@ -271,12 +271,12 @@ int MemoryPageFaultHandler(PCB *pcb) {
 	uint32 user_stack_ptr = pcb->currentSavedFrame[PROCESS_STACK_USER_STACKPOINTER];
   
 	//Pointer to attempted address access
-  uint32 fault_addr = pcb->currentSavedFrame[PROCESS_STACK_FAULT];
+  	uint32 fault_addr = pcb->currentSavedFrame[PROCESS_STACK_FAULT];
 
 	//Index in pagetable where user stack currently ends
 	uint32 user_stack_idx = user_stack_ptr & (~MEM_ADDR_OFFSET_MASK);
 
-	if(fault_addr >= user_stack_ptr)
+	if(fault_addr >= user_stack_ptr & 0x1FF000)
 	{
 		//If new page is already being used by heap
 		if(pcb->pagetable[user_stack_idx - 1] & MEM_PTE_VALID)
