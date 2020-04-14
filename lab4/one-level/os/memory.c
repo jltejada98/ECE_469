@@ -295,6 +295,8 @@ int MemoryPageFaultHandler(PCB *pcb) {
 
 		(pcb->npages)++;
 
+		printf("Succesfully allocated new page!");
+
 		return MEM_SUCCESS;
 	}
 	else 
