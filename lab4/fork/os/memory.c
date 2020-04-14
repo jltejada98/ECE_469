@@ -409,7 +409,7 @@ void MemoryRopHandler(PCB* pcb){
 
 	uint32 newPage;
 
-	printf("In ROPHandler\n");
+	printf("In ROPHandler (pid %d)\nfault_address: 0x%x\n", GetPidFromAddress(pcb), fault_address);
 
 	if(num_refs[pageIdx] > 1)
 	{

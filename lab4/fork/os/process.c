@@ -409,7 +409,7 @@ int ProcessRealFork(PCB* parent) {
   printf("Child->sysStackArea: 0x%x\nMEM_PAGESIZE-4: 0x%x\nPROCESS_STACK_FRAME_SIZE: 0x%x\n", child->sysStackArea, MEM_PAGESIZE-4, PROCESS_STACK_FRAME_SIZE);
   stackframe = (uint32 *) (child->sysStackArea + (MEM_PAGESIZE - 4));
   printf("Top of stackframe: 0x%x\n", stackframe);
-  stackframe -= (char *) PROCESS_STACK_FRAME_SIZE;
+  stackframe -= PROCESS_STACK_FRAME_SIZE;
   printf("Start of stackframe: 0x%x\n", stackframe);
 
   child->sysStackPtr = stackframe;
@@ -460,13 +460,13 @@ void printPtes(PCB* proc1, PCB* proc2){
 
       //Col1
       if(proc1->pagetable[i] & MEM_PTE_VALID)
-        printf(" %7d |", proc1->pagetable[i]);
+        printf(" %7x |", proc1->pagetable[i]);
       else
         printf("   ---   |");
 
       //Col2
       if(proc2->pagetable[i] & MEM_PTE_VALID)
-        printf(" %7d |\n", proc2->pagetable[i]);
+        printf(" %7x |\n", proc2->pagetable[i]);
       else
         printf("   ---   |\n");
     }
