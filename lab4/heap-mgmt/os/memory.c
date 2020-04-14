@@ -384,11 +384,8 @@ void* malloc(PCB* pcb, int memsize) {
 	{
 		return NULL;
 	}
-
-	//Search for suitable existing node:
-	heap_node = 
-
   
+  	return NULL;
 }
 
 int mfree(PCB* pcb, void* ptr) {
