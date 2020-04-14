@@ -13,7 +13,7 @@ void main (int argc, char *argv[])
 {
   int part_num = 0;             // Used to store number of processes to create
   int i;                               // Loop index variable
-  int num_proccess;
+  int num_proccess = 0;
   sem_t s_procs_completed;             // Semaphore used to wait until all spawned processes have completed
   char s_procs_completed_str[10];      // Used as command-line argument to pass page_mapped handle to new processes
 
