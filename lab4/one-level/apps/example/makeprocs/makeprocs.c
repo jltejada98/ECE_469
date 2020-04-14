@@ -88,7 +88,11 @@ void main (int argc, char *argv[])
 			Exit();
 		}
   }
-	if(part_num == 2 || part_num == 0) {
+  if(part_num == 0) {
+		Printf("-------------------------------------------------------------------------------------\n");
+		Printf("Cannot run part 2 with all other parts because this causes a memory access error which invokes interrupt handler and calls exitsim()\n");
+  }
+	if(part_num == 2) {
 		Printf("-------------------------------------------------------------------------------------\n");
 		Printf("makeprocs (%d): part %d\n", getpid(), part_num);
 		process_create(part2, s_procs_completed_str, NULL);
@@ -98,7 +102,11 @@ void main (int argc, char *argv[])
 			Exit();
 		}
 	} 
-  if(part_num == 3 || part_num == 0) {
+  if(part_num == 0) {
+		Printf("-------------------------------------------------------------------------------------\n");
+		Printf("Cannot run part 3 with all other parts because this causes a memory access error which invokes interrupt handler and calls exitsim()\n");
+  }
+  if(part_num == 3) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     process_create(part3, s_procs_completed_str, NULL);
