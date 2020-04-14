@@ -20,6 +20,8 @@ int HeapInitialize(heapNode* heap, int len)
 	//Initialize the address offsets
 	initializeAddrOffsets(&heap[0]);
 
+	printf("Heap Initialized\n");
+
 	return HEAP_SUCCESS;
 }
 
