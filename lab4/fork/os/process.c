@@ -241,6 +241,7 @@ void ProcessSchedule () {
     }
     ProcessFreeResources(pcb);
   }
+  printf("Context Switch, now running proc %d", GetPidFromAddress(currentPCB));
 
   RestoreIntrs(intrvals);
 }

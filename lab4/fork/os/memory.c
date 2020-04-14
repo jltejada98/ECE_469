@@ -436,7 +436,7 @@ void MemoryRopHandler(PCB* pcb){
 		pcb->pagetable[pteIdx] &= invert(MEM_PTE_READONLY);
 	}
 
-	printf("Proc %d Leaving ROP handler", GetPidFromAddress(pcb));
+	printf("Proc %d Leaving ROP handler\n", GetPidFromAddress(pcb));
 
 }
 
