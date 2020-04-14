@@ -384,6 +384,8 @@ void* malloc(PCB* pcb, int memsize) {
 	void* mem_addr;
 	uint32 mem_offset;
 
+	printf("Entering malloc\n");
+
 	if ((memsize <= 0) || (memsize > MEM_PAGESIZE))
 	{
 		return NULL;
@@ -437,6 +439,9 @@ int mfree(PCB* pcb, void* ptr) {
 	uint32 page_addr;
 	heapNode* node;
 	int i;
+
+	printf("Entering mfree\n");
+
 
 	page_addr = pcb->pagetable[pcb->heapPteIdx] & MEM_MASK_PTE_TO_PAGE;
 
