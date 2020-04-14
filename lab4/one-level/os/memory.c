@@ -297,7 +297,7 @@ int MemoryPageFaultHandler(PCB *pcb) {
 	else 
 	{
 		//its a segFault so kill the process
-		printf("Fatal Error: Segmentation Fault. Fautlt address: 0x%x with User Stack Pointer: 0x%x\n", fault_addr, user_stack_ptr);
+		printf("Fatal Error: Segmentation Fault. Fautlt address: 0x%x with User Stack Pointer: 0x%x\n", fault_addr, user_stack_ptr & 0x1FF000);
 		ProcessKill();
 	}
 
