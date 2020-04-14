@@ -121,7 +121,7 @@ heapNode* findNodeOrder(heapNode* root, int order){
 		return NULL;
 	}
 
-	if (root->order == order && root->inuse && !root->allocated && !root->split)
+	if (root->order == order && root->inuse && !root->allocated && !root->isSplit)
 	{
 		return root;
 	}
