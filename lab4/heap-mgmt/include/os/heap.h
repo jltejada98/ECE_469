@@ -9,14 +9,14 @@
 #define HEAP_FAIL -1
 #define HEAL_SUCCESS 1
 
-struct heapNode {
+typedef struct heapNode {
 	//Points back to array containing tree
 	struct heapNode* heapArr;
 	int heapSize;
 
 	int index; //Nodes index in arra
 	int order; //Power of 2 of size
-	// uint32 addr;  //Address of memory
+	uint32 addr;  //Address of memory
 
 	int inuse;		//the node is part of the tree
 	int allocated;	//memory address has been assigned to node
