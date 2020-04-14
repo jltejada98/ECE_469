@@ -241,7 +241,7 @@ void ProcessSchedule () {
     }
     ProcessFreeResources(pcb);
   }
-  printf("Context Switch, now running proc %d", GetPidFromAddress(currentPCB));
+  printf("Context Switch, now running proc %d\n", GetPidFromAddress(currentPCB));
 
   RestoreIntrs(intrvals);
 }
@@ -419,6 +419,9 @@ int ProcessRealFork(PCB* parent) {
   printf("setting register in stack frame\n");
   stackframe[PROCESS_STACK_PTBASE] = (uint32) &(child->pagetable[0]);
   printf("Attempting to instert child into queue\n");
+
+  printf("Child iar: 0x%x isr: 0x%x", child->sysStackPtr[PROCESS_STACK_IAR],child->sysStackPtr[PROCESS_STACK_ISR])
+  printf("parent iar: 0x%x isr: 0x%x", parent->sysStackPtr[PROCESS_STACK_IAR],parent->sysStackPtr[PROCESS_STACK_ISR])
 
   intrs = DisableIntrs();
   //Insert child into runQueue
