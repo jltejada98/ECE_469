@@ -35,7 +35,7 @@ void main (int argc, char *argv[])
     case 2: num_proccess = 1;    break;
     case 3: num_proccess = 1;    break;
     case 4: num_proccess = 1;    break;
-    case 5: num_proccess = 100;  break;
+    case 5: num_proccess = 1;  break;
     case 6: num_proccess = 30;   break;
   }
 
@@ -89,6 +89,12 @@ void main (int argc, char *argv[])
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     for(i = 0; i < 100; i++) {
       process_create(part5, s_procs_completed_str, NULL);
+
+      if (sem_wait(s_procs_completed) != SYNC_SUCCESS)
+      {
+				Printf("Bad semaphore s_procs_completed (%d) in %s\n", s_procs_completed, argv[0]);
+				Exit();
+			}
     }
   } 
   if(part_num == 6) {
