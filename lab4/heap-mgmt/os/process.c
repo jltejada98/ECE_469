@@ -395,7 +395,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
 
 
   intrs = DisableIntrs ();
-  printf("Entering ProcessFork");
+  printf("Entering ProcessFork\n");
   dbprintf ('I', "Old interrupt value was 0x%x.\n", intrs);
   dbprintf ('p', "Entering ProcessFork args=0x%x 0x%x %s %d\n", (int)func,
 	    param, name, isUser);
@@ -456,7 +456,6 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   }
   (pcb->npages)++;
 
-  printf("test1\n");
   // Allocate System Stack
   pcb->sysStackArea = MemoryAllocPage();
   if(pcb->sysStackArea == MEM_FAIL)
@@ -617,6 +616,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     // Mark this as a system process.
     pcb->flags |= PROCESS_TYPE_SYSTEM;
   }
+  printf("test1\n");
 
   // Place the PCB onto the run queue.
   intrs = DisableIntrs ();
