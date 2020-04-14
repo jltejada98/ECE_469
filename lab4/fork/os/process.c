@@ -577,9 +577,6 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   }
   (pcb->npages)++;
 
-  printf("Printing ptes right aftter allocation\n");
-  printPtes(pcb, pcb);
-
   // Allocate System Stack
   pcb->sysStackArea = MemoryAllocPage();
   if(pcb->sysStackArea == MEM_FAIL)
