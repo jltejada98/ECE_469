@@ -447,13 +447,13 @@ void printPtes(PCB* proc1, PCB* proc2){
       printf("      %d |", i);
 
       //Col1
-      if(proc1[i] & MEM_PTE_VALID)
+      if(proc1->pagetable[i] & MEM_PTE_VALID)
         printf(" %9d |", proc1[i]);
       else
         printf("    ---    |");
 
       //Col2
-      if(proc2[i] & MEM_PTE_VALID)
+      if(proc2->pagetable[i] & MEM_PTE_VALID)
         printf(" %9d |", proc2[i]);
       else
         printf("    ---    |");
