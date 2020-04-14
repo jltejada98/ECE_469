@@ -407,7 +407,7 @@ void MemoryRopHandler(PCB* pcb){
 	int pteIdx = fault_address >> MEM_L1FIELD_FIRST_BITNUM;
 	uint32 pageIdx = pcb->pagetable[pteIdx] / MEM_PAGESIZE;
 
-	uint21 newPage;
+	uint32 newPage;
 
 	if(num_refs[pageIdx] > 1)
 	{
@@ -430,7 +430,7 @@ void MemoryRopHandler(PCB* pcb){
 		//This page does not need to be read only
 		pcb->pagetable[pteIdx] &= invert(MEM_PTE_READONLY);
 	}
-	
+
 }
 
 
