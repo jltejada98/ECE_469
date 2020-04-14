@@ -534,6 +534,7 @@ dointerrupt (unsigned int cause, unsigned int iar, unsigned int isr,
       MemoryPageFaultHandler(currentPCB);
       break;
     case TRAP_ROP_ACCESS:
+      printf("Read only page handler called\n");
       MemoryRopHandler(currentPCB);
       break;
     default:
