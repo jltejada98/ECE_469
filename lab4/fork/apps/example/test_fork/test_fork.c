@@ -14,6 +14,8 @@ void main (int argc, char *argv[])
 
   child_proc = fork();
 
+  Printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+  
   if (child_proc == 0) //Child Process
   {
   	Printf("This is the child (%d), child_proc=%d\n", getpid(), child_proc);
