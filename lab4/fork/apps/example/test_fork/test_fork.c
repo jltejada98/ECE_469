@@ -20,13 +20,15 @@ void main (int argc, char *argv[])
   	Printf("This is the child (%d), child_proc=%d\n", getpid(), child_proc);
   	val += 2;
   	Printf("Val: %d, PID: %d\n", val, getpid());
+    Printf(">>>>>Success Child!<<<<<\n");
   }
   else{ //Parent Process
     Printf("This is the parent (%d), child_proc=%d\n", getpid(), child_proc);
     val += 5;
     Printf("Val: %d, PID: %d\n", val, getpid());
+    Printf(">>>>>>Success Parent!<<<<<\n");
+
   }
 
 
-  Printf("Success!\n");
 }
