@@ -92,6 +92,9 @@ void ProcessModuleInit () {
     }
     pcbs[i].npages = 0;
 
+    // Initialize the heap for heap memory
+    HeapInitialize(pcbs[i].heap, MEM_MAX_HEAP_NODES);
+
     // Finally, insert the link into the queue
     if (AQueueInsertFirst(&freepcbs, pcbs[i].l) != QUEUE_SUCCESS) {
       printf("FATAL ERROR: could not insert PCB link into queue in ProcessModuleInit!\n");

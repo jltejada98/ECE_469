@@ -12,6 +12,7 @@
 #include "dlxos.h"
 #include "queue.h"
 #include "memory_constants.h"
+#include "heap.h"
 
 #define PROCESS_FAIL 0
 #define PROCESS_SUCCESS 1
@@ -44,6 +45,7 @@ typedef struct PCB {
   uint32	pagetable[MEM_MAX_NUM_PTE]; // Statically allocated page table
   int		npages;		// Number of pages allocated to this process
   Link		*l;		// Used for keeping PCB in queues
+  heapNode  heap[MEM_MAX_HEAP_NODES];
 } PCB;
 
 extern PCB	*currentPCB;
