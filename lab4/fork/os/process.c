@@ -584,7 +584,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     printf("Fatal Error: Unable to allocate page for system stack\n");
     exitsim();
   }
-  stackframe = (uint32 *) pcb->sysStackArea + MEM_PAGESIZE - 4;
+  stackframe = (uint32 *) (pcb->sysStackArea + MEM_PAGESIZE - 4);
 
 
   // Now that the stack frame points at the bottom of the system stack memory area, we need to
@@ -592,6 +592,8 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   // initial stack frame that will be loaded for this PCB when it gets switched in by 
   // ProcessSchedule the first time.
   stackframe -= PROCESS_STACK_FRAME_SIZE;
+
+  printf("Bottom of stackframe in processFork: %x\n", stackframe);
 
   // The system stack pointer is set to the base of the current interrupt stack frame.
   pcb->sysStackPtr = stackframe;
