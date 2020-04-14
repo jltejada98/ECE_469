@@ -456,6 +456,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   }
   (pcb->npages)++;
 
+  printf("test1\n");
   // Allocate System Stack
   pcb->sysStackArea = MemoryAllocPage();
   if(pcb->sysStackArea == MEM_FAIL)
@@ -635,7 +636,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
 	      (int)pcb, (int)(pcb->currentSavedFrame));
     currentPCB = pcb;
   }
-  
+
   printf("Leave processFork");
   dbprintf ('p', "Leaving ProcessFork (%s)\n", name);
   // Return the process number (found by subtracting the PCB number
