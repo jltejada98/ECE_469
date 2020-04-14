@@ -32,8 +32,8 @@ void initializeAddrOffsets(heapNode* node)
 
 	getRight(node)->addrOffset = (orderToMemsize(node->order) / 2) + node->addrOffset;
 
-	initalizeAddrOffsets(getLeft(node));
-	initalizeAddrOffsets(getRight(node));
+	initializeAddrOffsets(getLeft(node));
+	initializeAddrOffsets(getRight(node));
 }
 
 int HeapInitializeNode(heapNode* node, int index, heapNode* heapArr, int heapSize){
@@ -188,7 +188,7 @@ int deallocNode(heapNode* node){
 
 	if(getLeft(parent) == node)
 	{
-		sibling = getRight(parent)
+		sibling = getRight(parent);
 	} 
 	else if(getRight(parent) == node)
 	{
