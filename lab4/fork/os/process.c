@@ -441,7 +441,7 @@ void printPtes(PCB* proc1, PCB* proc2){
   printf(" PT Idx |   proc1   |   proc2   |");
   for(i = MEM_MAX_NUM_PTE; i >= 0; i--)
   {
-    if(proc1[i] & MEM_PTE_VALID || proc2[i] & MEM_PTE_VALID)
+    if((proc1->pagetable[i] & MEM_PTE_VALID) || (proc2->pagetable[i] & MEM_PTE_VALID))
     {
       //Col0
       printf("      %d |", i);
