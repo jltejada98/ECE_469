@@ -4,10 +4,12 @@
 
 void main (int argc, char *argv[])
 {
-  int child_proc = 0;
-  int val = 0;
+  int child_proc;
+  int val;
 
   Printf("Starting test_fork\n");
+
+  val = 0;
 
   child_proc = fork();
 
