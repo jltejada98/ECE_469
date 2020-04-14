@@ -428,6 +428,8 @@ int ProcessRealFork(PCB* parent) {
     exitsim();
   }
 
+  printf("Child Pid: %d\n Parent Pid: %d\n", GetPidFromAddress(child), GetPidFromAddress(parent));
+
   ProcessSetResult(child, 0);
   ProcessSetResult(parent, GetPidFromAddress(child));
 
