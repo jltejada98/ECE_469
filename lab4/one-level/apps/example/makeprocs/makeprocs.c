@@ -69,7 +69,35 @@ void main (int argc, char *argv[])
 		Printf("makeprocs (%d): part %d\n", getpid(), part_num);
 		process_create(part1, s_procs_completed_str, NULL);
   }
-
+	if(part_num == 2) {
+		Printf("-------------------------------------------------------------------------------------\n");
+		Printf("makeprocs (%d): part %d\n", getpid(), part_num);
+		process_create(part2, s_procs_completed_str, NULL);
+	} 
+  if(part_num == 3) {
+    Printf("-------------------------------------------------------------------------------------\n");
+    Printf("makeprocs (%d): part %d\n", getpid(), part_num);
+    process_create(part3, s_procs_completed_str, NULL);
+  } 
+  if(part_num == 4) {
+    Printf("-------------------------------------------------------------------------------------\n");
+    Printf("makeprocs (%d): part %d\n", getpid(), part_num);
+    process_create(part4, s_procs_completed_str, NULL);
+  } 
+  if(part_num == 5) {
+    Printf("-------------------------------------------------------------------------------------\n");
+    Printf("makeprocs (%d): part %d\n", getpid(), part_num);
+    for(i = 0; i < 100; i++) {
+      process_create(part5, s_procs_completed_str, NULL);
+    }
+  } 
+  if(part_num == 6) {
+    Printf("-------------------------------------------------------------------------------------\n");
+    Printf("makeprocs (%d): part %d\n", getpid(), part_num);
+    for(i = 0; i < 30; i++) {
+      process_create(part6, s_procs_completed_str, NULL);
+    }
+  }
 	Printf("makeprocs (%d): All other processes completed, exiting main process.\n", getpid());
 
 }
