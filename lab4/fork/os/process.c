@@ -406,7 +406,7 @@ int ProcessRealFork(PCB* parent) {
   //Copy the parents systemStack to the child's system stack
   bcopy((char*) (parent->sysStackArea), (char*) (child->sysStackArea), MEM_PAGESIZE);
 
-  stackframe = ((uint32 *) child->sysStackArea) + ((uint32 *)MEM_PAGESIZE) - ((uint32 *)4);
+  stackframe = (uint32 *) (child->sysStackArea + MEM_PAGESIZE - 4);
   stackframe -= (uint32 *)PROCESS_STACK_FRAME_SIZE;
 
   child->sysStackPtr = stackframe;
