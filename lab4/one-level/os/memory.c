@@ -275,11 +275,8 @@ int MemoryPageFaultHandler(PCB *pcb) {
 	//Index in pagetable where user stack currently ends
 	uint32 user_stack_idx = user_stack_ptr >> MEM_L1FIELD_FIRST_BITNUM;
 
-	printf("In memory page fault handler\n");
-
 	if(fault_addr >= (user_stack_ptr & 0x1FF000))
 	{
-		printf("Allocating new page in pte %x\n", user_stack_idx);
 		//If new page is already being used
 		if(pcb->pagetable[user_stack_idx] & MEM_PTE_VALID)
 		{
@@ -287,20 +284,14 @@ int MemoryPageFaultHandler(PCB *pcb) {
 			printf("Process %d ran out of memory\n", GetPidFromAddress(pcb));
 			ProcessKill();
 		}
-		printf("1\n");
 		pcb->pagetable[user_stack_idx] = MemoryGetPte(MEM_PTE_VALID);
-		printf("2\n");
 
 		if(pcb->pagetable[user_stack_idx] == MEM_FAIL)
 		{
 			printf("Unable to allocate new page to stack for Process %d\n", GetPidFromAddress(pcb));
 			ProcessKill();
 		}
-		printf("3\n");
-
 		(pcb->npages)++;
-
-		printf("Succesfully allocated new page!\n");
 
 		return MEM_SUCCESS;
 	}
