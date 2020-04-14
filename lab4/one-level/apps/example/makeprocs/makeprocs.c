@@ -22,9 +22,7 @@ void main (int argc, char *argv[])
     Printf("Usage: %s <number of hello world processes to create>\n", argv[0]);
     Exit();
   }
-
-  Printf("Makeprocs started!\n");
-
+  
   // Convert string from ascii command line argument to integer number
   part_num = dstrtol(argv[1], NULL, 10); // the "10" means base 10
   Printf("makeprocs running part %d\n", part_num);
