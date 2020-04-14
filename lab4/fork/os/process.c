@@ -413,7 +413,7 @@ int ProcessRealFork(PCB* parent) {
   printf("Child->sysStackArea: 0x%x\nMEM_PAGESIZE-4: 0x%x\nPROCESS_STACK_FRAME_SIZE: 0x%x\n", child->sysStackArea, MEM_PAGESIZE-4, PROCESS_STACK_FRAME_SIZE);
   stackframe = (uint32 *) (child->sysStackArea + (MEM_PAGESIZE - 4));
   printf("Top of stackframe: 0x%x\n", stackframe);
-  stackframe -= (uint32) PROCESS_STACK_FRAME_SIZE;
+  stackframe = (uint32 *) (child->sysStackArea + (MEM_PAGESIZE - 4) - PROCESS_STACK_FRAME_SIZE);
   printf("Start of stackframe: 0x%x\n", stackframe);
 
   child->sysStackPtr = stackframe;
@@ -594,7 +594,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   // move it up (decrement it) by one stack frame size because we're about to fill in the
   // initial stack frame that will be loaded for this PCB when it gets switched in by 
   // ProcessSchedule the first time.
-  stackframe -= (uint32) PROCESS_STACK_FRAME_SIZE;
+  stackframe -= (PROCESS_STACK_FRAME_SIZE;
 
   // The system stack pointer is set to the base of the current interrupt stack frame.
   pcb->sysStackPtr = stackframe;
