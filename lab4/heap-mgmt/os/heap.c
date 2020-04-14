@@ -31,16 +31,21 @@ int HeapInitialize(heapNode* heap, int len)
 
 void initializeAddrOffsets(heapNode* node)
 {
-	if(isAlwaysLeaf(node))
-		return;
 
-	printf("Initializing children of node %d\n", node->index);
+	if(isAlwaysLeaf(node))
+	{
+		printf("Node %d does not have any children\n", node->index);
+		return;
+	}
+
 
 	getLeft(node)->addrOffset = node->addrOffset;
 
 	getRight(node)->addrOffset = (orderToMemsize(node->order) / 2) + node->addrOffset;
 
+	printf("Initializing left of node %d\n", node->index);
 	initializeAddrOffsets(getLeft(node));
+	printf("Initializing right of node %d\n", node->index);
 	initializeAddrOffsets(getRight(node));
 }
 
