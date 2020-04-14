@@ -2,16 +2,17 @@
 #include "misc.h"
 
 int stack(int x){
-	if(x == 0){
+  int y = x;
+	if(&y < 0xFE000){
 		return 0;
 	}
-	return (stack(x-1) + 1);
+	return (stack(x));
 }
 
 void main (int argc, char *argv[])
 {
   sem_t s_procs_completed; // Semaphore to signal the original process that we're done
-  int num_recursive_calls = 100;
+  int rand_var = 100;
   int last_call;
 
   if (argc != 2) { 
@@ -24,7 +25,7 @@ void main (int argc, char *argv[])
  
   Printf("part4 : testing user function call stack to grow larger than 1 page\n");
 
-  last_call = stack(num_recursive_calls);
+  last_call = stack(rand_var);
 
   if(sem_signal(s_procs_completed) != SYNC_SUCCESS) {
     Printf("part4 : Bad semaphore s_procs_completed !\n", s_procs_completed);
