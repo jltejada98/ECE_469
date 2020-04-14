@@ -28,19 +28,15 @@ void initializeAddrOffsets(heapNode* node)
 
 	if(isAlwaysLeaf(node))
 	{
-		printf("Node %d does not have any children\n", node->index);
 		return;
 	}
 
-	printf("Editing chldren of node %d\n", node->index);
 
 	getLeft(node)->addrOffset = node->addrOffset;
 
 	getRight(node)->addrOffset = (orderToMemsize(node->order) / 2) + node->addrOffset;
 
-	printf("Moving to left from %d to %d\n", node->index, getLeft(node)->index);
 	initializeAddrOffsets(getLeft(node));
-	printf("Moving to right from %d to %d\n", node->index, getRight(node)->index);
 	initializeAddrOffsets(getRight(node));
 }
 

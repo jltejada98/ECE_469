@@ -103,6 +103,7 @@ void ProcessModuleInit () {
   }
   // There are no processes running at this point, so currentPCB=NULL
   currentPCB = NULL;
+  printf("Leaving ProcessModuleInit\n");
   dbprintf ('p', "Leaving ProcessModuleInit\n");
 }
 
