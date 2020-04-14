@@ -594,7 +594,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   // move it up (decrement it) by one stack frame size because we're about to fill in the
   // initial stack frame that will be loaded for this PCB when it gets switched in by 
   // ProcessSchedule the first time.
-  stackframe -= PROCESS_STACK_FRAME_SIZE;
+  stackframe -= (uint32) PROCESS_STACK_FRAME_SIZE;
 
   // The system stack pointer is set to the base of the current interrupt stack frame.
   pcb->sysStackPtr = stackframe;
