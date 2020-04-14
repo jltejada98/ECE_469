@@ -266,7 +266,6 @@ int MemoryCopyUserToSystem (PCB *pcb, unsigned char *from,unsigned char *to, int
 // Feel free to edit.
 //---------------------------------------------------------------------
 int MemoryPageFaultHandler(PCB *pcb) {
-
 	//User stack pointer virtual address
 	uint32 user_stack_ptr = pcb->currentSavedFrame[PROCESS_STACK_USER_STACKPOINTER];
   
@@ -276,7 +275,7 @@ int MemoryPageFaultHandler(PCB *pcb) {
 	//Index in pagetable where user stack currently ends
 	uint32 user_stack_idx = user_stack_ptr & (~MEM_ADDR_OFFSET_MASK);
 
-	if(fault_addr >= user_stack_ptr & 0x1FF000)
+	if(fault_addr >= (user_stack_ptr & 0x1FF000))
 	{
 		//If new page is already being used by heap
 		if(pcb->pagetable[user_stack_idx - 1] & MEM_PTE_VALID)
