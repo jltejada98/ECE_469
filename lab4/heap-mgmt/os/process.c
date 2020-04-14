@@ -498,6 +498,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
 		stackframe[PROCESS_STACK_PTBASE] = (uint32)&pcb->pagetable[0];
 		stackframe[PROCESS_STACK_PTBITS] = (MEM_L1FIELD_FIRST_BITNUM << 16) | MEM_L1FIELD_FIRST_BITNUM;
 		stackframe[PROCESS_STACK_PTSIZE] = MEM_L1PAGETABLE_SIZE; 
+   printf("test1\n");
 
   if (isUser) {
     dbprintf ('p', "About to load %s\n", name);
@@ -519,8 +520,6 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
       // Copy the data to user memory.  Note that the user memory needs to
       // have enough space so that this copy will succeed!
       MemoryCopySystemToUser (pcb, buf, (char *)(addr - n), n);
-      printf("test1\n");
-
     }
     FsClose (fd);
     stackframe[PROCESS_STACK_ISR] = PROCESS_INIT_ISR_USER;
