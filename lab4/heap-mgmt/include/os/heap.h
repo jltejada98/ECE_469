@@ -7,14 +7,14 @@
 
 #define HEAP_NONE 0
 #define HEAP_FAIL -1
-#define HEAL_SUCCESS 1
+#define HEAP_SUCCESS 1
 
 typedef struct heapNode {
 	//Points back to array containing tree
 	struct heapNode* heapArr;
 	int heapSize;
 
-	int index; //Nodes index in arra
+	int index; //Nodes index in array
 	int order; //Power of 2 of size
 	uint32 addr;  //Address of memory
 

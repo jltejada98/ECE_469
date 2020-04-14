@@ -7,7 +7,7 @@ int HeapInitialize(heapNode* heap, int len)
 	//Initialize all the values in the heap array
 	for(i = 0; i < len; i++)
 	{
-		HeapInitializeNode(&heap[i], i, heapArr, len);
+		HeapInitializeNode(&heap[i], i, &heap[i].heapArr, len);
 		heap[i].index = i;
 		heap[i].heapArr = heap;
 	}
@@ -77,18 +77,20 @@ int joinHeapNode(heapNode* parent){
 
 	left->inuse = 0;
 	right->inuse = 0;
-
 	parent->isSplit = 0;
+
+	return HEAP_SUCCESS;
 }
 
 
 heapNode* getParent(heapNode* n) {
 	int parentIdx = (n->index - 1)/2;
-
-	if(parentIdx < 0)
+	if(parentIdx < 0){
 		return HEAP_FAIL;	//Requested parent of root node, no parent so return HEAP_FAIL
-	else
-		return &(n->heapArr[parentIdx]);
+	}
+	
+	return &(n->heapArr[parentIdx]);
 }
+
 heapNode* getLeft(heapNode* n) {return &n->heapArr[(n->index*2)+1];}
 heapNode* getRight(heapNode* n) {return &n->heapArr[(n->index*2)+2];}
