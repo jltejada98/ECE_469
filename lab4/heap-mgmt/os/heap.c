@@ -241,7 +241,7 @@ uint32 allocNode(heapNode* node)
 }
 
 int isAlwaysLeaf(heapNode* n){
-	if( (n->index * 2) + 1 > n->heapSize ){
+	if( (n->index * 2) + 1 > (n->heapSize - 1) ){
 		return 1;
 	}
 	return 0;
