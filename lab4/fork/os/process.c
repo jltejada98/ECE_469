@@ -431,7 +431,7 @@ int ProcessRealFork(PCB* parent) {
   RestoreIntrs(intrs);
 
   printf("Printing Pagetable for parent and child procs\n");
-
+  printPtes(parent, child);
 
 }
 
@@ -443,9 +443,20 @@ printPtes(PCB* proc1, PCB* proc2){
   {
     if(proc1[i] & MEM_PTE_VALID || proc2[i] & MEM_PTE_VALID)
     {
-
+      //Col0
       printf("      %d |", i);
-      printf(" %9d | %9d |\n");
+
+      //Col1
+      if(proc1[i] & MEM_PTE_VALID)
+        printf(" %9d |", proc1[i]);
+      else
+        printf("    ---    |");
+
+      //Col2
+      if(proc2[i] & MEM_PTE_VALID)
+        printf(" %9d |", proc2[i]);
+      else
+        printf("    ---    |");
     }
   }
 }
