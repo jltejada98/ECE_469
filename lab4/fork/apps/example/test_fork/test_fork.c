@@ -16,6 +16,8 @@ void main (int argc, char *argv[])
 
   Printf("PID: %d", getpid());
 
+  child_proc+=1;
+
   /*
   if (child_proc == 0) //Child Process
   {
