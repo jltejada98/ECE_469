@@ -420,8 +420,8 @@ int ProcessRealFork(PCB* parent) {
   stackframe[PROCESS_STACK_PTBASE] = (uint32) &(child->pagetable[0]);
   printf("Attempting to instert child into queue\n");
 
-  printf("Child iar: 0x%x isr: 0x%x", child->sysStackPtr[PROCESS_STACK_IAR],child->sysStackPtr[PROCESS_STACK_ISR])
-  printf("parent iar: 0x%x isr: 0x%x", parent->sysStackPtr[PROCESS_STACK_IAR],parent->sysStackPtr[PROCESS_STACK_ISR])
+  printf("Child iar: 0x%x isr: 0x%x", child->sysStackPtr[PROCESS_STACK_IAR],child->sysStackPtr[PROCESS_STACK_ISR]);
+  printf("parent iar: 0x%x isr: 0x%x", parent->sysStackPtr[PROCESS_STACK_IAR],parent->sysStackPtr[PROCESS_STACK_ISR]);
 
   intrs = DisableIntrs();
   //Insert child into runQueue
