@@ -279,19 +279,19 @@ int MemoryPageFaultHandler(PCB *pcb) {
 
 	if(fault_addr >= (user_stack_ptr & 0x1FF000))
 	{
-		printf("Allocating new page in pte %x\n", user_stack_idx-1);
+		printf("Allocating new page in pte %x\n", user_stack_idx);
 		//If new page is already being used
-		if(pcb->pagetable[user_stack_idx - 1] & MEM_PTE_VALID)
+		if(pcb->pagetable[user_stack_idx] & MEM_PTE_VALID)
 		{
 			//Cannot create new pagetable entry, out of virtual memory space
 			printf("Process %d ran out of memory\n", GetPidFromAddress(pcb));
 			ProcessKill();
 		}
 		printf("1\n");
-		pcb->pagetable[user_stack_idx - 1] = MemoryGetPte(MEM_PTE_VALID);
+		pcb->pagetable[user_stack_idx] = MemoryGetPte(MEM_PTE_VALID);
 		printf("2\n");
 
-		if(pcb->pagetable[user_stack_idx - 1] == MEM_FAIL)
+		if(pcb->pagetable[user_stack_idx] == MEM_FAIL)
 		{
 			printf("Unable to allocate new page to stack for Process %d\n", GetPidFromAddress(pcb));
 			ProcessKill();
