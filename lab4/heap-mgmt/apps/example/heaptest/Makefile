@@ -6,7 +6,10 @@
 # this way because the build procedure for all apps is basically the same.
 
 
-SRCS=part1.c
-EXEC=part1.dlx.obj
+SRCS=heaptest.c
+EXEC=heaptest.dlx.obj
+
 include ../Makerules
+
 include $(APPROOT)/Makerules
+
