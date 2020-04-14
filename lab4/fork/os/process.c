@@ -570,7 +570,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   }
   (pcb->npages)++;
 
-  prtinf("Printing ptes right aftter allocation\n");
+  printf("Printing ptes right aftter allocation\n");
   printPtes(pcb, pcb);
 
   // Allocate System Stack
