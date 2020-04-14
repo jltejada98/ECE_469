@@ -14,7 +14,9 @@ void main (int argc, char *argv[])
 
   child_proc = fork();
 
+  print("PID: %d | Child_proc: %d\n", getpid(), child_proc);
 
+  /*
   if (child_proc == 0) //Child Process
   {
   	Printf("child_proc with pid:", getpid());
@@ -28,6 +30,6 @@ void main (int argc, char *argv[])
   	++val;
   	Printf("Finished ROP exception, Val: %d, PID:", val, getpid());
   }
-
+  */
 
 }
