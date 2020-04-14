@@ -409,8 +409,6 @@ void MemoryRopHandler(PCB* pcb){
 
 	uint32 newPage;
 
-	printf("In ROPHandler (pid %d)\nfault_address: 0x%x\n", GetPidFromAddress(pcb), fault_address);
-
 	if(num_refs[pageIdx] > 1)
 	{
 		//Allocate new page, NOTE: Page will only be marked as valid, and not Read only
@@ -435,8 +433,6 @@ void MemoryRopHandler(PCB* pcb){
 		//This page does not need to be read only
 		pcb->pagetable[pteIdx] &= invert(MEM_PTE_READONLY);
 	}
-
-	printf("Proc %d Leaving ROP handler\n", GetPidFromAddress(pcb));
 
 }
 

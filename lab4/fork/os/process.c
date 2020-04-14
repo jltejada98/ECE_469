@@ -391,7 +391,6 @@ int ProcessRealFork(PCB* parent) {
     }
   }
 
-
   //Copy parent to child
   bcopy((char*) parent, (char*) child, sizeof(PCB));
 
@@ -409,18 +408,13 @@ int ProcessRealFork(PCB* parent) {
   //Copy the parents systemStack to the child's system stack
   bcopy((char*) (parent->sysStackArea), (char*) (child->sysStackArea), MEM_PAGESIZE);
 
-  printf("Child->sysStackArea: 0x%x\nMEM_PAGESIZE-4: 0x%x\nPROCESS_STACK_FRAME_SIZE: 0x%x\n", child->sysStackArea, MEM_PAGESIZE-4, PROCESS_STACK_FRAME_SIZE);
   stackframe = (uint32 *) (child->sysStackArea + (MEM_PAGESIZE - 4));
-  printf("Top (end) of stackframe: 0x%x\n", stackframe);
   stackframe -= PROCESS_STACK_FRAME_SIZE;
-  printf("bottom (beginning) of stackframe: 0x%x\n", stackframe);
 
   child->sysStackPtr = stackframe;
   child->currentSavedFrame = stackframe;
 
-  printf("setting register in stack frame\n");
   stackframe[PROCESS_STACK_PTBASE] = (uint32) &(child->pagetable[0]);
-  printf("Attempting to instert child into queue\n");
 
   printf("Child iar:      0x%x isr: 0x%x pt addr: 0x%x\n", child->sysStackPtr[PROCESS_STACK_IAR],child->sysStackPtr[PROCESS_STACK_ISR],child->sysStackPtr[PROCESS_STACK_PTBASE]);
   printf("parent iar:     0x%x isr: 0x%x pt addr: 0x%x\n", parent->sysStackPtr[PROCESS_STACK_IAR],parent->sysStackPtr[PROCESS_STACK_ISR],parent->sysStackPtr[PROCESS_STACK_PTBASE]);
@@ -440,14 +434,12 @@ int ProcessRealFork(PCB* parent) {
     exitsim();
   }
 
-  printf("Child Pid: %d\nParent Pid: %d\n", GetPidFromAddress(child), GetPidFromAddress(parent));
-
   ProcessSetResult(child, 0);
   ProcessSetResult(parent, GetPidFromAddress(child));
 
   RestoreIntrs(intrs);
 
-  printf("Printing Pagetable for parent and child procs\n");
+  printf("Printing Pagetable for parent(proc1) and child procs(proc2)\n");
   printPtes(parent, child);
 
   return PROCESS_SUCCESS;
@@ -592,7 +584,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   // initial stack frame that will be loaded for this PCB when it gets switched in by 
   // ProcessSchedule the first time.
   stackframe -= PROCESS_STACK_FRAME_SIZE;
-  
+
   // The system stack pointer is set to the base of the current interrupt stack frame.
   pcb->sysStackPtr = stackframe;
   // The current stack frame pointer is set to the same thing.
