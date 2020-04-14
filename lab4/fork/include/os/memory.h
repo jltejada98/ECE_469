@@ -26,6 +26,8 @@ int MemoryPageFaultHandler(PCB *pcb);
 void freemapSet(int page, int inuse);
 int freemapGet(int page);
 
+void MemorySharePage(uint32 pte);
+
 uint32 MemoryAllocPage(void);
 uint32 MemoryGetPte (uint32 flags);
 int freePte(uint32 pte);

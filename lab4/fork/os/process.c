@@ -435,7 +435,7 @@ int ProcessRealFork(PCB* parent) {
 
 }
 
-printPtes(PCB* proc1, PCB* proc2){
+void printPtes(PCB* proc1, PCB* proc2){
   int i;
 
   printf(" PT Idx |   proc1   |   proc2   |");

@@ -104,6 +104,6 @@ void ProcessKill();
 // Put any functions prototypes that you define here.
 //-------------------------------------------------------
 int ProcessRealFork(PCB* parent);
-printPtes(PCB* proc1, PCB* proc2);
+void printPtes(PCB* proc1, PCB* proc2);
 
 #endif	/* __process_h__ */
