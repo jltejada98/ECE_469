@@ -409,6 +409,8 @@ void MemoryRopHandler(PCB* pcb){
 
 	uint32 newPage;
 
+	printf("In ROPHandler\n");
+
 	if(num_refs[pageIdx] > 1)
 	{
 		//Allocate new page, NOTE: Page will only be marked as valid, and not Read only
