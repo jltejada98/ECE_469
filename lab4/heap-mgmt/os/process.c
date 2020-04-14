@@ -591,7 +591,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
 
     // Flag this as a user process
     pcb->flags |= PROCESS_TYPE_USER;
-    printf("user\n")
+    printf("user\n");
   } else {
    printf("not user\n");
 
