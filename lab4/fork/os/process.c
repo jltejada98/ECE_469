@@ -414,7 +414,6 @@ int ProcessRealFork(PCB* parent) {
 
   stackframe[PROCESS_STACK_PTBASE] = (uint32) &(child->pagetable[0]);
 
-
   intrs = DisableIntrs();
   //Insert child into runQueue
   child->l = AQueueAllocLink(child);

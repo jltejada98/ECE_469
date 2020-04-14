@@ -7,14 +7,14 @@ void main (int argc, char *argv[])
   int child_proc;
   int val;
 
-  Printf("Starting test_fork\n");
+  Printf("Starting test_fork, parent_proc: %d\n", getpid());
   
   val = 0;
 
 
   child_proc = fork();
 
-  //Printf("PID: %d", getpid());
+  Printf("PID: %d, child_proc: %d", getpid());
 
   //child_proc+=1;
 
