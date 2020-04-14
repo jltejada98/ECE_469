@@ -272,39 +272,39 @@ int MemoryCopyUserToSystem (PCB *pcb, unsigned char *from,unsigned char *to, int
 // Feel free to edit.
 //---------------------------------------------------------------------
 int MemoryPageFaultHandler(PCB *pcb) {
-
 	//User stack pointer virtual address
 	uint32 user_stack_ptr = pcb->currentSavedFrame[PROCESS_STACK_USER_STACKPOINTER];
   
 	//Pointer to attempted address access
-  uint32 fault_addr = pcb->currentSavedFrame[PROCESS_STACK_FAULT];
+  	uint32 fault_addr = pcb->currentSavedFrame[PROCESS_STACK_FAULT];
 
 	//Index in pagetable where user stack currently ends
-	uint32 user_stack_idx = user_stack_ptr & (~MEM_ADDR_OFFSET_MASK);
+	uint32 user_stack_idx = user_stack_ptr >> MEM_L1FIELD_FIRST_BITNUM;
 
-	if(fault_addr >= user_stack_ptr)
+	if(fault_addr >= (user_stack_ptr & 0x1FF000))
 	{
-		//If new page is already being used by heap
-		if(pcb->pagetable[user_stack_idx - 1] & MEM_PTE_VALID)
+		//If new page is already being used
+		if(pcb->pagetable[user_stack_idx] & MEM_PTE_VALID)
 		{
 			//Cannot create new pagetable entry, out of virtual memory space
 			printf("Process %d ran out of memory\n", GetPidFromAddress(pcb));
 			ProcessKill();
 		}
-		pcb->pagetable[user_stack_idx - 1] = MemoryGetPte(MEM_PTE_VALID);
+		pcb->pagetable[user_stack_idx] = MemoryGetPte(MEM_PTE_VALID);
 
-		if(pcb->pagetable[user_stack_idx - 1] == MEM_FAIL)
+		if(pcb->pagetable[user_stack_idx] == MEM_FAIL)
 		{
 			printf("Unable to allocate new page to stack for Process %d\n", GetPidFromAddress(pcb));
 			ProcessKill();
 		}
-
 		(pcb->npages)++;
+
+		return MEM_SUCCESS;
 	}
 	else 
 	{
 		//its a segFault so kill the process
-		printf("Fatal Error: Segmentation Fault\n");
+		printf("Fatal Error: Segmentation Fault. Fautlt address: 0x%x with User Stack Pointer: 0x%x\n", fault_addr, user_stack_ptr & 0x1FF000);
 		ProcessKill();
 	}
 
