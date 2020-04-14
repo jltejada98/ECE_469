@@ -73,7 +73,7 @@ void MemoryModuleInit() {
     freemapSet(i, 1);
     i++;
   }
-
+  printf("Leaving MemoryModuleInit\n");
 }
 
 //----------------------------------------------------------------------
