@@ -395,6 +395,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
 
 
   intrs = DisableIntrs ();
+  printf("Entering ProcessFork");
   dbprintf ('I', "Old interrupt value was 0x%x.\n", intrs);
   dbprintf ('p', "Entering ProcessFork args=0x%x 0x%x %s %d\n", (int)func,
 	    param, name, isUser);
