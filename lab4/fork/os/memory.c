@@ -80,8 +80,6 @@ void MemoryModuleInit() {
     i++;
   }
 
-  printf("Done initalizing memory\n");
-
 }
 
 //----------------------------------------------------------------------
