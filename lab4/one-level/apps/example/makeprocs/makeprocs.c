@@ -82,21 +82,41 @@ void main (int argc, char *argv[])
     Printf("-------------------------------------------------------------------------------------\n");
 		Printf("makeprocs (%d): part %d\n", getpid(), part_num);
 		process_create(part1, s_procs_completed_str, NULL);
+    if (sem_wait(s_procs_completed) != SYNC_SUCCESS)
+    {
+			Printf("Bad semaphore s_procs_completed (%d) in %s\n", s_procs_completed, argv[0]);
+			Exit();
+		}
   }
 	if(part_num == 2 || part_num == 0) {
 		Printf("-------------------------------------------------------------------------------------\n");
 		Printf("makeprocs (%d): part %d\n", getpid(), part_num);
 		process_create(part2, s_procs_completed_str, NULL);
+		if (sem_wait(s_procs_completed) != SYNC_SUCCESS)
+    {
+			Printf("Bad semaphore s_procs_completed (%d) in %s\n", s_procs_completed, argv[0]);
+			Exit();
+		}
 	} 
   if(part_num == 3 || part_num == 0) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     process_create(part3, s_procs_completed_str, NULL);
+    if (sem_wait(s_procs_completed) != SYNC_SUCCESS)
+    {
+			Printf("Bad semaphore s_procs_completed (%d) in %s\n", s_procs_completed, argv[0]);
+			Exit();
+		}
   } 
   if(part_num == 4 || part_num == 0) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     process_create(part4, s_procs_completed_str, NULL);
+    if (sem_wait(s_procs_completed) != SYNC_SUCCESS)
+    {
+			Printf("Bad semaphore s_procs_completed (%d) in %s\n", s_procs_completed, argv[0]);
+			Exit();
+		}
   } 
   if(part_num == 5 || part_num == 0) {
     Printf("-------------------------------------------------------------------------------------\n");
