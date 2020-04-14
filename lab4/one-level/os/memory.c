@@ -275,6 +275,8 @@ int MemoryPageFaultHandler(PCB *pcb) {
 	//Index in pagetable where user stack currently ends
 	uint32 user_stack_idx = user_stack_ptr >> MEM_L1FIELD_FIRST_BITNUM;
 
+	printf("In memory page fault handler)";)
+
 	if(fault_addr >= (user_stack_ptr & 0x1FF000))
 	{
 		printf("Allocating new page in pte %x\n", user_stack_idx-1);
