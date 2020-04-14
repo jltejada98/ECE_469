@@ -43,9 +43,10 @@ typedef struct PCB {
   unsigned int	flags;
   char		name[80];	// Process name
   uint32	pagetable[MEM_MAX_NUM_PTE]; // Statically allocated page table
+  int     heapPteIdx; //Page table entry corresponding to the page allocated for heap
   int		npages;		// Number of pages allocated to this process
   Link		*l;		// Used for keeping PCB in queues
-  heapNode  heap[MEM_MAX_HEAP_NODES];
+  heapNode  heap[MEM_MAX_HEAP_NODES]; //Statically allocated heap tree to keep track of heap memory
 } PCB;
 
 extern PCB	*currentPCB;

@@ -17,7 +17,23 @@ int HeapInitialize(heapNode* heap, int len)
 	heap[0].allocated = 0;
 	heap[0].isSplit = 0;
 
+	//Initialize the address offsets
+	initializeAddrOffsets(&heap[0]);
+
 	return HEAP_SUCCESS;
+}
+
+void initializeAddrOffsets(heapNode* node)
+{
+	if(isAlwaysLeaf(node))
+		return;
+
+	getLeft(node)->addrOffset = node->addrOffset;
+
+	getRight(node)->addrOffset = (orderToMemsize(node->order) / 2) + node->addrOffset;
+
+	initalizeAddrOffsets(getLeft(node));
+	initalizeAddrOffsets(getRight(node));
 }
 
 int HeapInitializeNode(heapNode* node, int index, heapNode* heapArr, int heapSize){
@@ -26,7 +42,7 @@ int HeapInitializeNode(heapNode* node, int index, heapNode* heapArr, int heapSiz
 
 	node->index = index;
 	node->order = HEAP_NONE;
-	node->addr = HEAP_NONE;
+	node->addrOffset = 0;
 
 	node->inuse = 0;
 	node->allocated = 0;
@@ -165,7 +181,7 @@ int deallocNode(heapNode* node){
 	//Cannot join root node, so just dealloc and return
 	if(node->index == 0)
 	{
-		node->addr = NULL;
+		//node->addrOffset = NULL;
 		node->allocated = 0;
 		return HEAP_SUCCESS;
 	}
@@ -186,7 +202,7 @@ int deallocNode(heapNode* node){
 		return HEAP_FAIL;
 	}
 
-	node->addr = NULL;
+	//node->addrOffset = NULL;
 	node->allocated = 0;
 
 	if(sibling->allocated)
@@ -199,8 +215,17 @@ int deallocNode(heapNode* node){
 		//Sibling is not allocated, so join them
 		return joinHeapNode(parent);
 	}
+}
 
+uint32 allocNode(heapNode* node)
+{
+	if(node == NULL)
+	{
+		return HEAP_FAIL;
+	}
 
+	node->allocated = 1;
+	return node->addrOffset;
 }
 
 int isAlwaysLeaf(heapNode* n){
@@ -234,4 +259,38 @@ heapNode* getRight(heapNode* n) {
 		return NULL;
 
 	return &n->heapArr[rightIdx];
+}
+
+int sizeToOrder(int memSize)
+{
+	int order = 0;
+	int num = MEM_MIN_HEAP_NODE_SIZE;
+
+	if(memSize < 0)
+	{
+		return HEAP_FAIL;
+	}
+	while(num < memSize)
+	{
+		order++;
+		num *= 2;
+	}
+
+	return order;
+}
+
+int orderToMemsize(int order) {
+	int i;
+	int num = MEM_MIN_HEAP_NODE_SIZE;
+
+	if(order < 0)
+	{
+		return HEAP_FAIL;
+	}
+
+	for(i = 0; i < order; i++)
+	{
+		num *= 2;
+	}
+	return num;
 }

@@ -50,6 +50,8 @@
 #define MEM_MAX_NUM_PTE ((MEM_MAX_VIRTUAL_ADDRESS >> MEM_L1FIELD_FIRST_BITNUM) + 1)
 
 #define MEM_MAX_HEAP_NODES 256
+#define MEM_MIN_HEAP_NODE_SIZE 32
+#define MEM_MAX_ORDER 7
 
 
 #endif	// _memory_constants_h_

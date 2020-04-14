@@ -16,7 +16,7 @@ typedef struct heapNode {
 
 	int index; //Nodes index in array
 	int order; //Power of 2 of size
-	uint32 addr;  //Address of memory
+	uint32 addrOffset;  //Address of memory
 
 	//If a node isSplit, its children should be inuse
 	//If a node isSplit=0, its children's inuse=0
@@ -43,8 +43,14 @@ heapNode* createOrder(heapNode* root, int order);
 //If sibling node is also deallocated, it will join them
 int deallocNode(heapNode* node);
 
+//Sets a node as allocated
+int allocNode(heapNode* node);
+
 heapNode* getParent(heapNode* n);
 heapNode* getLeft(heapNode* n);
 heapNode* getRight(heapNode* n);
 
 int isAlwaysLeaf(heapNode* n);
+
+int sizeToOrder(int memSize);
+int orderToMemsize(int order);

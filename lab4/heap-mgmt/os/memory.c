@@ -378,17 +378,58 @@ void MemoryFreePage(uint32 pageIdx) {
 // Malloc and mfree
 //---------------------------------------------------------------------
 void* malloc(PCB* pcb, int memsize) {
-	int heap_node, size;
+	heapNode* root = pcb->heap[0];
+	heapNode* node;
+	int desOrder;
+	void* mem_addr;
+	uint32 mem_offset;
 
 	if ((memsize <= 0) || (memsize > MEM_PAGESIZE))
 	{
 		return NULL;
 	}
 
-	//Search for suitable existing node:
-	heap_node = 
+	printf("Determining correct order...\n");
 
-  
+	//Determine correct order
+	desOrder = sizeToOrder(memsize);
+
+	if(desOrder > MEM_MAX_ORDER || desOrder == HEAP_FAIL)
+	{
+		return NULL;
+	}
+
+	printf("Finding Available Node of correct order...\n");
+	//Find available node of correct order
+	node = findNodeOrder(root, desOrder);
+
+	if(node == NULL)
+	{
+		//Could not find node of correct order, must create one
+		printf("Could not find node of correct order, creating one...\n");
+
+		node = createOrder(createOrder, desOrder);
+
+		if(node == NULL)
+		{
+			printf("Unable to create node of correct order\n");
+			return NULL;
+		}
+	}
+
+	printf("Allocating Node that was found to mem location\n");
+	mem_offset = allocNode(node);
+	if(mem_offset == HEAP_FAIL)
+	{
+		return NULL;
+	}
+
+	printf("Calculating memory address from offset and base\n");
+	//mem_offset is uint32
+	//all page table entries are uint32
+	mem_addr = (void*) ( mem_offset + (pcb->pagetable[pcb->heapPteIdx] & MEM_MASK_PTE_TO_PAGE) );
+  	
+  	return mem_addr;
 }
 
 int mfree(PCB* pcb, void* ptr) {
