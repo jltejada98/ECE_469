@@ -8,9 +8,10 @@ void main (int argc, char *argv[])
   int val;
 
   Printf("Starting test_fork\n");
+  
+  val = 0;
 
-/*  val = 0;
-
+  /*
   child_proc = fork();
 
   if (child_proc == 0) //Child Process
