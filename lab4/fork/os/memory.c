@@ -13,6 +13,7 @@
 
 static int freemapmax = MEM_NUM_PAGES % 32 == 0 ? MEM_NUM_PAGES / 32 : MEM_NUM_PAGES / 32 + 1;
 static uint32 freemap[MEM_NUM_PAGES % 32 == 0 ? MEM_NUM_PAGES / 32 : MEM_NUM_PAGES / 32 + 1];
+static int num_refs[MEM_NUM_PAGES];
 static uint32 pagestart;	//Start of non-OS pages?
 static int nfreepages;
 
@@ -62,6 +63,10 @@ void MemoryModuleInit() {
   nfreepages = MEM_NUM_PAGES - (last_os_page + 1);
   pagestart = last_os_page + 1;
 
+  for(i = 0; i<MEM_NUM_PAGES; i++){
+  	num_refs[i] = 0;
+  }
+
   //Set entire freemap to not inuse
   for(i = 0; i<freemapmax; i++)
   	freemap[i] = 0;
@@ -71,6 +76,7 @@ void MemoryModuleInit() {
   while(i <= last_os_page){
     bit = i % 32;
     freemapSet(i, 1);
+    num_refs[i] += 1;
     i++;
   }
 
@@ -325,6 +331,7 @@ uint32 MemoryAllocPage(void) {
   	if(freemapGet(i) == 0)
   	{
   		freemapSet(i, 1);
+  		num_refs[i] = 1;
   		nfreepages--;
   		return i * MEM_PAGESIZE;
    	}
@@ -370,9 +377,30 @@ int freePte(uint32 pte) {
 
 //Takes in the pages index and frees that page
 void MemoryFreePage(uint32 pageIdx) {
-	freemapSet(pageIdx, 0);
-	nfreepages++;
+	num_refs[pageIdx]--;
+
+	if(num_refs[pageIdx] == 0)
+	{
+		freemapSet(pageIdx, 0);
+		nfreepages++;
+	}
+	if(num_refs[pageIdx] < 0)
+	{
+		printf("Fatal Error: number of references for page %d is negative (%d)\n", pageIdx, num_refs[pageIdx])
+		exitsim();
+	}
 }
+
+//Takes a page table entry and marks that physical page as
+//shared by another proc
+void MemorySharePage(uint32 pte){
+	int pageIdx;
+
+	pageIdx = (pte & MEM_MASK_PTE_TO_PAGE) / MEM_PAGESIZE;
+
+	num_refs[pageIdx]++;
+}
+
 
 void* malloc(PCB* pcb, int memsize) {
   return NULL;

@@ -353,6 +353,103 @@ static void ProcessExit () {
   exit ();
 }
 
+int ProcessRealFork(PCB* parent) {
+  PCB* child;
+  int i;
+  int intrs;
+  uint32* stackframe;
+
+  intrs = DisableIntrs();
+
+  //Check if there are available PCBs
+  if(AQueueEmpty(&freepcbs)){
+    printf("Fatal Error: No free pcbs to create new process in ProcessRealFork\n");
+    exitsim();
+  }
+
+  //Allocate PCB to new child proc
+  child = (PCB *)AQueueObject(AQueueFirst (&freepcbs));
+  if(AQueueRemove(&(child->l)) != QUEUE_SUCCESS){
+    printf("Fatal Error: Unable to remove process from freepcbsQueue in ProcessRealFork\n");
+    exitsim();
+  }
+
+  //We need to mark all the pages as readonly because they will at
+  //first be shared between the child and parent proc until one tries
+  //to write to one of those values. Then a handler will be called to copy the
+  //memory once we know that data needs to be accessed
+
+  //Mark the parents pcb table used entries as read only
+  for(i = 0; i < MEM_MAX_NUM_PTE; i++){
+    if(parent->pagetable[i] & MEM_PTE_VALID)
+    {
+      parent->pagetable[i] |= MEM_PTE_READONLY;
+      MemorySharePage(parent->pagetable[i]);
+    }
+  }
+
+  //Copy parent to child
+  bcopy((char*) parent, (char*) child, sizeof(PCB));
+
+  //Now grab a page for the childs systemStack
+  child->sysStackArea = MemoryGetPte(MEM_PTE_VALID);
+  if(child->sysStackArea == MEM_FAIL)
+  {
+    printf("Error: Could not get page for child process system stack\n");
+    ProcessFreeResources(child);
+    return PROCESS_FAIL;
+  }
+
+  //Copy the parents systemStack to the child's system stack
+  bcopy((char*) parent->sysStackArea, (char*) child->sysStackArea, MEM_PAGESIZE);
+
+
+  stackframe = (uint32 *)(child->sysStackArea + MEM_PAGESIZE - 4);
+  stackframe -= PROCESS_STACK_FRAME_SIZE;
+
+  child->sysStackPtr = stackframe;
+  child->currentSavedFrame = stackframe;
+
+  stackframe[PROCESS_STACK_PTBASE] = (uint32) &child->pagetable[0];
+
+  //Insert child into runQueue
+  child->l = AQueueAllocLink(child);
+
+  if(child->l == NULL){
+    printf("Fatal Error: Could not get link for child process in ProcessRealFork\n");
+    exitsim();
+  }
+
+  if(AQueueInsertLast(&runQueue, child->l) != QUEUE_SUCCESS) {
+    printf("Fatal Error: Child process could not be inserted into runQueue.\n");
+    exitsim();
+  }
+
+  ProcessSetResult(child, 0);
+  ProcessSetResult(parent, GetPidFromAddress(child));
+
+  RestoreIntrs(intrs);
+
+  printf("Printing Pagetable for parent and child procs\n");
+
+
+}
+
+printPtes(PCB* proc1, PCB* proc2){
+  int i;
+
+  printf(" PT Idx |   proc1   |   proc2   |")
+  for(i = MEM_MAX_NUM_PTE; i >= 0; i--)
+  {
+    if(proc1[i] & MEM_PTE_VALID || proc2[i] & MEM_PTE_VALID)
+    {
+
+      printf("      %d |", i);
+      printf(" %9d | %9d |\n");
+    }
+  }
+}
+
 
 //----------------------------------------------------------------------
 //
@@ -451,7 +548,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   (pcb->npages)++;
 
   // Allocate System Stack
-  pcb->sysStackArea = MemoryAllocPage();
+  pcb->sysStackArea = MemoryGetPte(MEM_PTE_VALID);
   if(pcb->sysStackArea == MEM_FAIL)
   {
     printf("Fatal Error: Unable to allocate page for system stack\n");
