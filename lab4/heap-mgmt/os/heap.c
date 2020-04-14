@@ -94,3 +94,23 @@ heapNode* getParent(heapNode* n) {
 
 heapNode* getLeft(heapNode* n) {return &n->heapArr[(n->index*2)+1];}
 heapNode* getRight(heapNode* n) {return &n->heapArr[(n->index*2)+2];}
+
+
+heapNode* searchNode(heapNode * node, int mem_size){
+	heapNode *left;
+	heapNode *right;
+
+	if (node == NULL)
+	{
+		return HEAP_FAIL;
+	}
+
+	//Check if left is in use
+	left = getLeft(node);
+	if (left->inuse == 0)
+	{
+		/* code */
+	}
+
+
+}

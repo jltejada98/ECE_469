@@ -374,10 +374,23 @@ void MemoryFreePage(uint32 pageIdx) {
 	nfreepages++;
 }
 
+//---------------------------------------------------------------------
+// Malloc and mfree
+//---------------------------------------------------------------------
 void* malloc(PCB* pcb, int memsize) {
-  return NULL;
+	int heap_node, size;
+
+	if ((memsize <= 0) || (memsize > MEM_PAGESIZE))
+	{
+		return NULL;
+	}
+
+	//Search for suitable existing node:
+	heap_node = 
+
+  
 }
 
 int mfree(PCB* pcb, void* ptr) {
-  return -1;
+
 }
