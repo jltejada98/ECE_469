@@ -407,19 +407,26 @@ int ProcessRealFork(PCB* parent) {
     return PROCESS_FAIL;
   }
 
-  printf("Copying parent systemStackArea to Child systemStackArea");
+  printf("Copying parent systemStackArea to Child systemStackArea\n");
   //Copy the parents systemStack to the child's system stack
   bcopy((char*) parent->sysStackArea, (char*) child->sysStackArea, MEM_PAGESIZE);
 
   printf("Editing stackframe\n");
 
   stackframe = (uint32 *)(child->sysStackArea + MEM_PAGESIZE - 4);
+  printf("1\n");
   stackframe -= PROCESS_STACK_FRAME_SIZE;
+  printf("2\n");
 
   child->sysStackPtr = stackframe;
+  printf("3\n");
+
   child->currentSavedFrame = stackframe;
+  printf("4\n");
 
   stackframe[PROCESS_STACK_PTBASE] = (uint32) &child->pagetable[0];
+  printf("5\n");
+
 
   intrs = DisableIntrs();
   printf("Inserting child into runQueue\n");
