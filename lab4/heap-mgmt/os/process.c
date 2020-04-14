@@ -635,7 +635,8 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
 	      (int)pcb, (int)(pcb->currentSavedFrame));
     currentPCB = pcb;
   }
-
+  
+  printf("Leave processFork");
   dbprintf ('p', "Leaving ProcessFork (%s)\n", name);
   // Return the process number (found by subtracting the PCB number
   // from the base of the PCB array).
