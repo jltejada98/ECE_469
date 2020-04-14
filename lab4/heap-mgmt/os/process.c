@@ -519,6 +519,8 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
       // Copy the data to user memory.  Note that the user memory needs to
       // have enough space so that this copy will succeed!
       MemoryCopySystemToUser (pcb, buf, (char *)(addr - n), n);
+      printf("test1\n");
+
     }
     FsClose (fd);
     stackframe[PROCESS_STACK_ISR] = PROCESS_INIT_ISR_USER;
@@ -616,7 +618,6 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     // Mark this as a system process.
     pcb->flags |= PROCESS_TYPE_SYSTEM;
   }
-  printf("test1\n");
 
   // Place the PCB onto the run queue.
   intrs = DisableIntrs ();
