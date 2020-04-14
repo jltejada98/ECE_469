@@ -8,7 +8,7 @@ void main (int argc, char *argv[])
   int val;
 
   Printf("Starting test_fork, parent_proc: %d\n", getpid());
-  
+  Printf("child_proc virtual address: %d\n", &child_proc);
   val = 0;
 
 
