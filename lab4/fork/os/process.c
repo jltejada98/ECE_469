@@ -453,7 +453,7 @@ void printPtes(PCB* proc1, PCB* proc2){
     if((proc1->pagetable[i] & MEM_PTE_VALID) || (proc2->pagetable[i] & MEM_PTE_VALID))
     {
       //Col0
-      printf("      %d |", i);
+      printf("%7d |", i);
 
       //Col1
       if(proc1->pagetable[i] & MEM_PTE_VALID)
