@@ -498,7 +498,6 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
 		stackframe[PROCESS_STACK_PTBASE] = (uint32)&pcb->pagetable[0];
 		stackframe[PROCESS_STACK_PTBITS] = (MEM_L1FIELD_FIRST_BITNUM << 16) | MEM_L1FIELD_FIRST_BITNUM;
 		stackframe[PROCESS_STACK_PTSIZE] = MEM_L1PAGETABLE_SIZE; 
-   printf("test1\n");
 
   if (isUser) {
     dbprintf ('p', "About to load %s\n", name);
@@ -592,7 +591,10 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
 
     // Flag this as a user process
     pcb->flags |= PROCESS_TYPE_USER;
+    printf("user\n")
   } else {
+   printf("not user\n");
+
     // Don't worry about messing with any code here for kernel processes because
     // there aren't any kernel processes in DLXOS.
 
