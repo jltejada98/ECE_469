@@ -4,6 +4,7 @@
 
 #include "ostraps.h"
 #include "dlxos.h"
+#include "memory_constants.h"
 
 #define HEAP_NONE 0
 #define HEAP_FAIL -1
@@ -44,7 +45,7 @@ heapNode* createOrder(heapNode* root, int order);
 int deallocNode(heapNode* node);
 
 //Sets a node as allocated
-int allocNode(heapNode* node);
+uint32 allocNode(heapNode* node);
 
 heapNode* getParent(heapNode* n);
 heapNode* getLeft(heapNode* n);
