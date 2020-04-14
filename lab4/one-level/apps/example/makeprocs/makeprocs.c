@@ -103,6 +103,12 @@ void main (int argc, char *argv[])
     for(i = 0; i < 30; i++) {
       process_create(part6, s_procs_completed_str, NULL);
     }
+
+    if (sem_wait(s_procs_completed) != SYNC_SUCCESS)
+    {
+			Printf("Bad semaphore s_procs_completed (%d) in %s\n", s_procs_completed, argv[0]);
+			Exit();
+		}
   }
 	Printf("makeprocs (%d): All other processes completed, exiting main process.\n", getpid());
 
