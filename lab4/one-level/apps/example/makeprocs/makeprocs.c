@@ -1,6 +1,12 @@
 #include "usertraps.h"
 #include "misc.h"
 
+#define part1 "part1.dlx.obj"
+#define part2 "part2.dlx.obj"
+#define part3 "part3.dlx.obj"
+#define part4 "part4.dlx.obj"
+#define part5 "part5.dlx.obj"
+#define part6 "part6.dlx.obj"
 #define HELLO_WORLD "hello_world.dlx.obj"
 
 void main (int argc, char *argv[])
@@ -58,6 +64,13 @@ void main (int argc, char *argv[])
     }
 
     Printf("-------------------------------------------------------------------------------------\n");
-    Printf("makeprocs (%d): All other processes completed, exiting main process.\n", getpid());
   }
+  if(part_num == 1){
+    Printf("-------------------------------------------------------------------------------------\n");
+		Printf("makeprocs (%d): part %d\n", getpid(), part_num);
+		process_create(part1, s_procs_completed_str, NULL);
+  }
+
+	Printf("makeprocs (%d): All other processes completed, exiting main process.\n", getpid());
+
 }
