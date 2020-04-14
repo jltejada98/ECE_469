@@ -30,7 +30,6 @@ void main (int argc, char *argv[])
   Printf("makeprocs running part %d\n", part_num);
 
   switch(part_num) { //Number of processes to make depending in part
-    case 0: num_proccess = 30;   break;
     case -1: num_proccess = 1;   break;
     case 1: num_proccess = 1;    break;
     case 2: num_proccess = 1;    break;
@@ -52,7 +51,7 @@ void main (int argc, char *argv[])
   // on the command line, so we must first convert them from ints to strings.
   ditoa(s_procs_completed, s_procs_completed_str);
 
-  if(part_num == 6 || part_num == 0) {
+  if(part_num == 6) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     for(i = 0; i < 30; i++) {
@@ -78,7 +77,7 @@ void main (int argc, char *argv[])
       }
     }
   }
-  if(part_num == 1 || part_num == 0){
+  if(part_num == 1){
     Printf("-------------------------------------------------------------------------------------\n");
 		Printf("makeprocs (%d): part %d\n", getpid(), part_num);
 		process_create(part1, s_procs_completed_str, NULL);
@@ -87,10 +86,6 @@ void main (int argc, char *argv[])
 			Printf("Bad semaphore s_procs_completed (%d) in %s\n", s_procs_completed, argv[0]);
 			Exit();
 		}
-  }
-  if(part_num == 0) {
-		Printf("-------------------------------------------------------------------------------------\n");
-		Printf("Cannot run part 2 with all other parts because this causes a memory access error which invokes interrupt handler and calls exitsim()\n");
   }
 	if(part_num == 2) {
 		Printf("-------------------------------------------------------------------------------------\n");
@@ -102,10 +97,6 @@ void main (int argc, char *argv[])
 			Exit();
 		}
 	} 
-  if(part_num == 0) {
-		Printf("-------------------------------------------------------------------------------------\n");
-		Printf("Cannot run part 3 with all other parts because this causes a memory access error which invokes interrupt handler and calls exitsim()\n");
-  }
   if(part_num == 3) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
@@ -116,7 +107,7 @@ void main (int argc, char *argv[])
 			Exit();
 		}
   } 
-  if(part_num == 4 || part_num == 0) {
+  if(part_num == 4) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     process_create(part4, s_procs_completed_str, NULL);
@@ -126,7 +117,7 @@ void main (int argc, char *argv[])
 			Exit();
 		}
   } 
-  if(part_num == 5 || part_num == 0) {
+  if(part_num == 5) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     for(i = 0; i < 100; i++) {
