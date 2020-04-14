@@ -277,6 +277,7 @@ int MemoryPageFaultHandler(PCB *pcb) {
 
 	if(fault_addr >= (user_stack_ptr & 0x1FF000))
 	{
+		printf("Allocating new page\n");
 		//If new page is already being used by heap
 		if(pcb->pagetable[user_stack_idx - 1] & MEM_PTE_VALID)
 		{
@@ -293,6 +294,8 @@ int MemoryPageFaultHandler(PCB *pcb) {
 		}
 
 		(pcb->npages)++;
+
+		return MEM_SUCCESS;
 	}
 	else 
 	{
