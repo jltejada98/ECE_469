@@ -435,7 +435,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   //---------------------------------------------------------
 
   //Allocate the 4 blocks for code/data
-  for(i = 0; i < 5; i++)
+  for(i = 0; i < 6; i++)
   {
     pcb->pagetable[i] = MemoryGetPte(MEM_PTE_VALID);
     if (pcb->pagetable[i] == MEM_FAIL)
@@ -445,7 +445,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     }
     (pcb->npages)++;
   }
-  pcb->heapPteIdx = 4;
+  pcb->heapPteIdx = 5;
 
   // Allocate User Stack
   pcb->pagetable[MEM_MAX_NUM_PTE-1] = MemoryGetPte(MEM_PTE_VALID);
