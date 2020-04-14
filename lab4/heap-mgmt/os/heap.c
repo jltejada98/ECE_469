@@ -7,7 +7,7 @@ int HeapInitialize(heapNode* heap, int len)
 	//Initialize all the values in the heap array
 	for(i = 0; i < len; i++)
 	{
-		HeapInitializeNode(&heap[i], i, &heap[i].heapArr, len);
+		HeapInitializeNode(&heap[i], i, heap, len);
 		heap[i].index = i;
 		heap[i].heapArr = heap;
 	}

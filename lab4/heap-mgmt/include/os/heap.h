@@ -28,6 +28,7 @@ typedef struct heapNode {
 
 int HeapInitialize(heapNode* heap, int len);
 int HeapInitializeNode(heapNode* heap, int index, heapNode* heapArr, int heapSize);
+void initializeAddrOffsets(heapNode* node);
 
 int splitHeapNode(heapNode* heapNode);
 int joinHeapNode(heapNode* parent);
