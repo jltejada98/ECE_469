@@ -30,6 +30,7 @@ void main (int argc, char *argv[])
   Printf("makeprocs running part %d\n", part_num);
 
   switch(part_num) { //Number of processes to make depending in part
+    case 0: num_proccess = 30;   break;
     case -1: num_proccess = 1;   break;
     case 1: num_proccess = 1;    break;
     case 2: num_proccess = 1;    break;
@@ -51,6 +52,19 @@ void main (int argc, char *argv[])
   // on the command line, so we must first convert them from ints to strings.
   ditoa(s_procs_completed, s_procs_completed_str);
 
+  if(part_num == 6 || part_num == 0) {
+    Printf("-------------------------------------------------------------------------------------\n");
+    Printf("makeprocs (%d): part %d\n", getpid(), part_num);
+    for(i = 0; i < 30; i++) {
+      process_create(part6, s_procs_completed_str, NULL);
+    }
+
+    if (sem_wait(s_procs_completed) != SYNC_SUCCESS)
+    {
+			Printf("Bad semaphore s_procs_completed (%d) in %s\n", s_procs_completed, argv[0]);
+			Exit();
+		}
+  }
   if(part_num == -1){
     // Create Hello World processes
     Printf("-------------------------------------------------------------------------------------\n");
@@ -64,27 +78,27 @@ void main (int argc, char *argv[])
       }
     }
   }
-  if(part_num == 1){
+  if(part_num == 1 || part_num == 0){
     Printf("-------------------------------------------------------------------------------------\n");
 		Printf("makeprocs (%d): part %d\n", getpid(), part_num);
 		process_create(part1, s_procs_completed_str, NULL);
   }
-	if(part_num == 2) {
+	if(part_num == 2 || part_num == 0) {
 		Printf("-------------------------------------------------------------------------------------\n");
 		Printf("makeprocs (%d): part %d\n", getpid(), part_num);
 		process_create(part2, s_procs_completed_str, NULL);
 	} 
-  if(part_num == 3) {
+  if(part_num == 3 || part_num == 0) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     process_create(part3, s_procs_completed_str, NULL);
   } 
-  if(part_num == 4) {
+  if(part_num == 4 || part_num == 0) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     process_create(part4, s_procs_completed_str, NULL);
   } 
-  if(part_num == 5) {
+  if(part_num == 5 || part_num == 0) {
     Printf("-------------------------------------------------------------------------------------\n");
     Printf("makeprocs (%d): part %d\n", getpid(), part_num);
     for(i = 0; i < 100; i++) {
@@ -97,19 +111,7 @@ void main (int argc, char *argv[])
 			}
     }
   } 
-  if(part_num == 6) {
-    Printf("-------------------------------------------------------------------------------------\n");
-    Printf("makeprocs (%d): part %d\n", getpid(), part_num);
-    for(i = 0; i < 30; i++) {
-      process_create(part6, s_procs_completed_str, NULL);
-    }
-
-    if (sem_wait(s_procs_completed) != SYNC_SUCCESS)
-    {
-			Printf("Bad semaphore s_procs_completed (%d) in %s\n", s_procs_completed, argv[0]);
-			Exit();
-		}
-  }
+  Printf("-------------------------------------------------------------------------------------\n");
 	Printf("makeprocs (%d): All other processes completed, exiting main process.\n", getpid());
 
 }
