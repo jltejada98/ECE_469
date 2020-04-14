@@ -25,7 +25,7 @@ void main (int argc, char *argv[])
   }
   else{ //Parent Process
     Printf("This is the parent (%d), child_proc=%d\n", getpid(), child_proc);
-    val += 2;
+    val += 5;
     Printf("Val: %d, PID:\n", val, getpid());
   }
 
