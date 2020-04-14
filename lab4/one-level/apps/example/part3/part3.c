@@ -23,7 +23,7 @@ void main (int argc, char *argv[])
 
   //Attempt to access memory location that is outside the set of allocated pages
   address = (MEM_MAX_VIRTUAL_ADDRESS + 1 - MEM_PAGESIZE) - 4;
-  Printf("part3 : address to be accessed: %x\n", address);
+  Printf("part3 : address to be accessed: %d\n", address);
   Printf("part3 : Accessing Memory Location: %d \n", *address);
   Printf("part3 : DONE!\n");
 
