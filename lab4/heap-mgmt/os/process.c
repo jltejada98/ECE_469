@@ -93,6 +93,7 @@ void ProcessModuleInit () {
     pcbs[i].npages = 0;
 
     // Initialize the heap for heap memory
+    printf("Starting to initialize heap %d/31\n", i);
     HeapInitialize(pcbs[i].heap, MEM_MAX_HEAP_NODES);
     printf("Initialized heap %d/31\n", i);
 
