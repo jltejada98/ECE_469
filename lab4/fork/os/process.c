@@ -411,11 +411,8 @@ int ProcessRealFork(PCB* parent) {
 
   child->sysStackPtr = stackframe;
   child->currentSavedFrame = stackframe;
-  printf("4\n");
 
-  printf("stackframe: %d", stackframe);
   stackframe[PROCESS_STACK_PTBASE] = (uint32) &(child->pagetable[0]);
-  printf("5\n");
 
 
   intrs = DisableIntrs();
