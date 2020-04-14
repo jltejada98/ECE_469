@@ -94,6 +94,7 @@ void ProcessModuleInit () {
 
     // Initialize the heap for heap memory
     HeapInitialize(pcbs[i].heap, MEM_MAX_HEAP_NODES);
+    printf("Initialized heap %d/31\n", i);
 
     // Finally, insert the link into the queue
     if (AQueueInsertFirst(&freepcbs, pcbs[i].l) != QUEUE_SUCCESS) {
