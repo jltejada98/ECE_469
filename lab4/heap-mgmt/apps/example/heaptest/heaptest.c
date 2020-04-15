@@ -4,7 +4,7 @@
 
 void main (int argc, char *argv[])
 {
-  int num_alloc = 40;
+  int num_alloc = 5;
   int *array;
 
   //Attempt to allocate memory.
