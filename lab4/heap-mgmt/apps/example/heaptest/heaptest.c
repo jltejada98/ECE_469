@@ -43,7 +43,6 @@ void main (int argc, char *argv[])
   }
   Printf("Heaptest: Successfully freed %d bytes.\n", num_alloc * sizeof(int));
 
-
   //=========================================================================//
   printDiv();
   Printf("Test 2: Fill levels\n");
