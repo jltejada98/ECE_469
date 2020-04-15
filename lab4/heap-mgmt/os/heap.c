@@ -220,15 +220,8 @@ int deallocNode(heapNode* node){
 	else
 	{
 		//Sibling is not allocated, so join them
-		if(joinHeapNode(parent) == HEAP_SUCCESS)
-		{
-			printf("Coalesced buddy nodes ");
-			printNodeData(getLeft(parent));
-			printf(" & ");
-			printNodeData(getRight(parent));
-			printf(" into the parent node ");
-			printNodeData(parent);
-			printf("\n");
+		if(coalessNodes(parent) == HEAP_SUCCESS)
+		{	
 			return HEAP_SUCCESS;
 		}
 		else
@@ -236,6 +229,33 @@ int deallocNode(heapNode* node){
 			return HEAP_FAIL;
 		}
 	}
+}
+
+int caolessNodes(heapNode parent)
+{
+	if(joinHeapNode(parent) != HEAP_SUCCESS)
+		return HEAP_FAIL;
+
+	printf("Coalesced buddy nodes ");
+	printNodeData(getLeft(parent));
+	printf(" & ");
+	printNodeData(getRight(parent));
+	printf(" into the parent node ");
+	printNodeData(parent);
+	printf("\n");
+
+	if(parent->index == 0){
+		//This is the root node, cannot coaless anymore
+		return HEAP_SUCCESS;
+	}
+
+	parent = getParent(parent);
+
+	if(!(getLeft(parent)->allocated) && !(getLeft(parent)->allocated))
+		return coalessNodes(parent);
+	else
+		return HEAP_SUCCESS;
+
 }
 
 
