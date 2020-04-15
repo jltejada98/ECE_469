@@ -9,6 +9,8 @@ void main (int argc, char *argv[])
   int num_alloc = 5;
   int *array;
 
+  int i, j;
+
   int num_ptrs;
   int *ptrs[128];
   int mem_size;
