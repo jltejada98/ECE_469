@@ -215,8 +215,10 @@ int coalessNodes(heapNode* child){
 		return HEAP_FAIL;
 	}
 
+	//Determine if we need to combine the sibling with the child
 	if(!(sibling->allocated)){
 		joinHeapNode(parent);
+		//Check if parent can also be combined with its sibling
 		return coalessNodes(parent);
 	} else
 		return HEAP_SUCCESS;
