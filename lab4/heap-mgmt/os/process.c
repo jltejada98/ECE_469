@@ -503,7 +503,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   printf("3\n");
 
   if (isUser) {
-    printf("4a\n");
+    printf("4\n");
     dbprintf ('p', "About to load %s\n", name);
     fd = ProcessGetCodeInfo (name, &start, &codeS, &codeL, &dataS, &dataL);
     if (fd < 0) {
@@ -511,6 +511,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
       ProcessFreeResources (pcb);
       return (-1);
     }
+    printf("5\n");
 
     dbprintf ('p', "File %s -> start=0x%08x\n", name, start);
     dbprintf ('p', "File %s -> code @ 0x%08x (size=0x%08x)\n", name, codeS,
