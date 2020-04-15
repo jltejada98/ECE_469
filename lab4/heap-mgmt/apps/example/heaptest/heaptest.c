@@ -88,7 +88,7 @@ void main (int argc, char *argv[])
   ptrs[0] = malloc(10);
   Printf("Requesting block of 2049 bytes\n");
   ptrs[1] = malloc(2049);
-  if(ptrs[1] == MEM_FAIL)
+  if(ptrs[1] == NULL)
   {
     Printf("malloc Successfully failed when there wasn't enough space\n");
   }
