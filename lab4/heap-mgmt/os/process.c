@@ -503,6 +503,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   printf("3\n");
 
   if (isUser) {
+    printf("4a\n");
     dbprintf ('p', "About to load %s\n", name);
     fd = ProcessGetCodeInfo (name, &start, &codeS, &codeL, &dataS, &dataL);
     if (fd < 0) {
@@ -595,6 +596,8 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     // Flag this as a user process
     pcb->flags |= PROCESS_TYPE_USER;
   } else {
+    printf("4b\n");
+
     // Don't worry about messing with any code here for kernel processes because
     // there aren't any kernel processes in DLXOS.
 
