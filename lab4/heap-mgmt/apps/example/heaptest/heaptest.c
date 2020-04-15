@@ -4,11 +4,6 @@
 
 void printDiv();
 
-void printDiv()
-{
-  Printf("--------------------------------------------------------------------------------\n");
-}
-
 void main (int argc, char *argv[])
 {
   int num_alloc = 5;
@@ -80,8 +75,9 @@ void main (int argc, char *argv[])
     mem_size /= 2;
     num_ptrs *= 2;
   }
+}
 
-
-
-
+void printDiv()
+{
+  Printf("--------------------------------------------------------------------------------\n");
 }
