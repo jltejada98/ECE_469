@@ -145,7 +145,7 @@ heapNode* createOrder(heapNode* root, int order){
 	int i;
 	heapNode* node;
 
-	for(lowest_order = order+1; lowest_order < root->order; lowest_order++)
+	for(lowest_order = order+1; lowest_order <= root->order; lowest_order++)
 	{
 		node = findNodeOrder(root, lowest_order);
 
