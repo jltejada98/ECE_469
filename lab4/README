@@ -1,0 +1,85 @@
+Lab4 README
+
+Jose Tejada
+Josh Majors
+
+Everything is pretty standard on how to build and run, there is a note under Q5
+
+Q1 and Q2 in ./one-level
+	
+	Build:
+		1) Navigate to ./one-level/os and execute 'make clean' then 'make' to build the OS
+		2) Then navigate to ./one-level/apps/example and execute 'make clean' then 'make' to make the tests
+	Running:
+		We have several tests, to run all tests in succession, execute 'make runall'
+		We have 6 tests, to execute tests individually, execute 'make runX' where X = [1,6]
+
+	Files changed:
+		./one-level
+			/apps
+				/example/*
+			/include
+				/os
+					memory_constants.h
+					memory.h
+					process.h
+			/os
+				process.c
+				memory.c
+
+
+==========================================================================================================
+
+Q3 and Q4 in ./fork
+
+	Build:
+		1) Navigate to ./fork/os and execute 'make clean' then 'make' to build the OS
+		2) Then navigate to ./fork/apps/example and execute 'make clean' then 'make' to make the tests
+	Run:
+		We have one simple test, simply execute 'make run'
+
+	Files changed:
+		./fork
+			/apps
+				/example/*
+			/include
+				usertraps.h
+				/os
+					memory_constants.h
+					memory.h
+					process.h
+					traps.h
+			/os
+				process.c
+				memory.c
+				usertraps.s
+
+==========================================================================================================
+
+Q5 in ./heap-mgmt
+
+	Build:
+		1) Navigate to ./heap-mgmt/os and execute 'make clean' then 'make' to build the OS
+		2) Then navigate to ./heap-mgmt/apps/example and execute 'make clean' then 'make' to make the tests
+	Run:
+		We have one test file, simply execute 'make run'
+		This single test file contains 3 different tests
+
+	NOTE: 	Due to the execution order of the program, the program will print that it coalesses some blocks
+			before frees one of the children.
+
+	Files changed:
+		./fork
+			/apps
+				/example/*
+			/include
+				/os
+					memory_constants.h
+					memory.h
+					process.h
+					heap.h << we created this file
+			/os
+				process.c
+				memory.c
+				heap.c << we created this file
+				Makefile
