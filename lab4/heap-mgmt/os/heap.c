@@ -185,7 +185,7 @@ int deallocNode(heapNode* node){
 	//node->addrOffset = NULL;
 	node->allocated = 0;
 
-	coalessNodes(node);
+	return coalessNodes(node);
 }
 
 int coalessNodes(heapNode* child){
@@ -200,12 +200,12 @@ int coalessNodes(heapNode* child){
 	}
 
 	//Get the parent and the sibling
-	parent = getParent(node);
-	if(getLeft(parent) == node)
+	parent = getParent(child);
+	if(getLeft(parent) == child)
 	{
 		sibling = getRight(parent);
 	} 
-	else if(getRight(parent) == node)
+	else if(getRight(parent) == child)
 	{
 		sibling = getLeft(parent);
 	}
