@@ -16,6 +16,7 @@ int HeapInitialize(heapNode* heap, int len)
 	heap[0].inuse = 1;
 	heap[0].allocated = 0;
 	heap[0].isSplit = 0;
+	heap[0].order = 7;
 
 	//Initialize the address offsets
 	initializeAddrOffsets(&heap[0]);
