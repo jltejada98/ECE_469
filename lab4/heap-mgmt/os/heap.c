@@ -176,6 +176,10 @@ heapNode* createOrder(heapNode* root, int order){
 
 int deallocNode(heapNode* node){
 	//We do not want to join a node if its split, this should never happen
+	if(node == NULL)
+	{
+		return HEAP_FAIL;
+	}
 	if(node->isSplit)
 	{
 		printf("Error: Attempted deallocating a split node\n");

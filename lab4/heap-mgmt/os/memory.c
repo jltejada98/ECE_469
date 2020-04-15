@@ -430,28 +430,34 @@ void* malloc(PCB* pcb, int memsize) {
 int mfree(PCB* pcb, void* ptr) {
 	uint32 mem_offset;
 	heapNode* node;
+	heapNode* dealloc;
 	int i;
 
 	mem_offset = ((uint32) ptr) & MEM_PAGE_OFFSET_MASK;
+
+	dealloc = NULL;
 
 	for(i = 0; i < MEM_MAX_HEAP_NODES; i++)
 	{
 		node = &pcb->heap[i];
 		if(node->allocated && node->addrOffset == mem_offset)
 		{
+			dealloc = node;
 			break;
 		}
+	}
+
+	if(dealloc == NULL)
+	{
+		printf("Could not find a heap node that matches the mem_offset=0x%x\n", mem_offset);
+		return MEM_FAIL;
 	}
 
 	if(deallocNode(node) == HEAP_FAIL)
 	{
 		return MEM_FAIL;
 	}
-	if(i >= MEM_MAX_HEAP_NODES)
-	{
-		printf("Could not find a heap node that matches the mem_offset\n");
-		return MEM_FAIL;
-	}
+
 
 	printf("Freed the block: order = %d, addr = 0x%x, size = %d\n", node->order, (int)ptr, orderToMemsize(node->order));
 
