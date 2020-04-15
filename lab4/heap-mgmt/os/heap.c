@@ -157,6 +157,9 @@ heapNode* createOrder(heapNode* root, int order){
 	{
 		return NULL;
 	}
+	
+	printf("Found node of order %d to start splitting\n", node->order);
+
 
 	for(i = lowest_order; i > order; i--)
 	{
