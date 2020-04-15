@@ -386,14 +386,10 @@ void* malloc(PCB* pcb, int memsize) {
 	uint32 heap_pte;
 	uint32 heap_virt_addr_start;
 
-	printf("Entering malloc\n");
-
 	if ((memsize <= 0) || (memsize > MEM_PAGESIZE))
 	{
 		return NULL;
 	}
-
-	printf("Determining correct order...\n");
 
 	//Determine correct order
 	desOrder = sizeToOrder(memsize);
@@ -403,15 +399,12 @@ void* malloc(PCB* pcb, int memsize) {
 		return NULL;
 	}
 
-	printf("Finding Available Node of correct order...\n");
 	//Find available node of correct order
 	node = findNodeOrder(root, desOrder);
 
 	if(node == NULL)
 	{
 		//Could not find node of correct order, must create one
-		printf("Could not find node of correct order, creating one...\n");
-
 		node = createOrder(root, desOrder);
 
 		if(node == NULL)
@@ -421,21 +414,16 @@ void* malloc(PCB* pcb, int memsize) {
 		}
 	}
 
-	printf("Allocating Node that was found to mem location\n");
 	mem_offset = allocNode(node);
 	if(mem_offset == HEAP_FAIL)
 	{
 		return NULL;
 	}
 
-	printf("Calculating memory address from offset and base\n");
-
 	heap_virt_addr_start = (pcb->heapPteIdx) << MEM_L1FIELD_FIRST_BITNUM;
 	mem_addr = (void*) ( mem_offset + heap_virt_addr_start );
 
-	printf("heap_virt_addr_start: 0x%x\n", heap_virt_addr_start);
-	printf("mem_offset: 0x%x\n", mem_offset);
-	printf("mem_addr: 0x%x\n", mem_addr);
+	printf("Allocated the block: order = %d, addr = %d, requested mem size = %d, block size = %d", node->order, mem_addr, memsize, orderToMemsize(node->order))
   	
   	return mem_addr;
 }
@@ -444,8 +432,6 @@ int mfree(PCB* pcb, void* ptr) {
 	uint32 mem_offset;
 	heapNode* node;
 	int i;
-
-	printf("Entering mfree\n");
 
 	mem_offset = ((uint32) ptr) & MEM_PAGE_OFFSET_MASK;
 
@@ -467,6 +453,8 @@ int mfree(PCB* pcb, void* ptr) {
 		printf("Could not find a heap node that matches the mem_offset\n");
 		return MEM_FAIL;
 	}
+
+	printf("Freed the block: order = %d, addr = %d, size = %d", node->order, ptr, orderToMemsize(node->order));
 
 	return MEM_SUCCESS;
 }
