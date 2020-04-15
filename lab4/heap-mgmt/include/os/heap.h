@@ -44,6 +44,7 @@ heapNode* createOrder(heapNode* root, int order);
 //Deallocs memory from a node
 //If sibling node is also deallocated, it will join them
 int deallocNode(heapNode* node);
+int caolessNodes(heapNode parent);
 
 //Sets a node as allocated
 uint32 allocNode(heapNode* node);
