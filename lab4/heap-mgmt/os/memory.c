@@ -404,6 +404,7 @@ void* malloc(PCB* pcb, int memsize) {
 	if(node == NULL)
 	{
 		//Could not find node of correct order, must create one
+		printf("Could not find node of correct order, creating one...\n");
 		node = createOrder(root, desOrder);
 
 		if(node == NULL)

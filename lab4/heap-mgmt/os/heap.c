@@ -62,7 +62,9 @@ int splitHeapNode(heapNode* parent){
 
 	if(parent->allocated)
 	{
-		printf("Error: Attempted to split a node that had memory allocated\n");
+		printf("Error: Attempted to split a node that had memory allocated:");
+		printNodeData(parent);
+		printf("\n");
 		return HEAP_FAIL;
 	}
 
@@ -110,9 +112,6 @@ int joinHeapNode(heapNode* parent){
 }
 
 
-
-
-
 heapNode* findNodeOrder(heapNode* root, int order){
 	heapNode *find;
 
@@ -144,6 +143,8 @@ heapNode* createOrder(heapNode* root, int order){
 	int lowest_order;
 	int i;
 	heapNode* node;
+
+	node = NULL;
 
 	for(lowest_order = order+1; lowest_order <= root->order; lowest_order++)
 	{
