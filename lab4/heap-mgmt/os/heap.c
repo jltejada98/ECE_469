@@ -228,7 +228,7 @@ int deallocNode(heapNode* node){
 			printNodeData(getRight(parent));
 			printf(" into the parent node ");
 			printNodeData(parent);
-			printf("\n")
+			printf("\n");
 			return HEAP_SUCCESS;
 		}
 		else

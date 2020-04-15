@@ -56,3 +56,4 @@ int isAlwaysLeaf(heapNode* n);
 
 int sizeToOrder(int memSize);
 int orderToMemsize(int order);
+void printNodeData(heapNode* node);
