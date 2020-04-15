@@ -505,7 +505,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     if (fd < 0) {
       // Free newpage and pcb so we don't run out...
       ProcessFreeResources (pcb);
-      printf("failed to open process, fd: %d\n", fd);
+      printf("failed to open file %s, fd: %d\n", name, fd);
       return (-1);
     }
     printf("5\n");
