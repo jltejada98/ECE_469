@@ -64,7 +64,7 @@ void main (int argc, char *argv[])
     }
     Printf("Writing to pages...\n");
     for(j = 0; j < num_ptrs; j++){
-      ptrs[j] = 1;
+      ptrs[j][0] = 1;
     }
     Printf("Freeing pages...\n");
     for(j = 0; j < num_ptrs; j++){
