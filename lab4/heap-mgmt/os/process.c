@@ -465,6 +465,7 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   stackframe = (uint32 *) (pcb->sysStackArea + MEM_PAGESIZE - 4);
 
 
+  printf("changing stackpointers\n");
   // Now that the stack frame points at the bottom of the system stack memory area, we need to
   // move it up (decrement it) by one stack frame size because we're about to fill in the
   // initial stack frame that will be loaded for this PCB when it gets switched in by 
