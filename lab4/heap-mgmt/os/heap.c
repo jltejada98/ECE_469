@@ -175,9 +175,6 @@ heapNode* createOrder(heapNode* root, int order){
 }
 
 int deallocNode(heapNode* node){
-	heapNode* parent;
-	heapNode* sibling;
-
 	//We do not want to join a node if its split, this should never happen
 	if(node->isSplit)
 	{
@@ -185,17 +182,25 @@ int deallocNode(heapNode* node){
 		return HEAP_FAIL;
 	}
 
-	//Cannot join root node, so just dealloc and return
-	if(node->index == 0)
+	//node->addrOffset = NULL;
+	node->allocated = 0;
+
+	coalessNodes(node);
+}
+
+int coalessNodes(heapNode* child){
+	heapNode* parent;
+	heapNode* sibling;
+
+	if(child->index == 0)
 	{
-		//node->addrOffset = NULL;
-		printf("Caught Parent node to not coaless\n");
-		node->allocated = 0;
+		// This is the root node,
+		// no other node to merge with
 		return HEAP_SUCCESS;
 	}
 
+	//Get the parent and the sibling
 	parent = getParent(node);
-
 	if(getLeft(parent) == node)
 	{
 		sibling = getRight(parent);
@@ -210,29 +215,16 @@ int deallocNode(heapNode* node){
 		return HEAP_FAIL;
 	}
 
-	//node->addrOffset = NULL;
-	node->allocated = 0;
-
-	if(sibling->allocated)
-	{
-		//Sibling is allocated, so do not join
+	if(!(sibling->allocated)){
+		joinHeapNode(parent);
+		return coalessNodes(parent);
+	} else
 		return HEAP_SUCCESS;
-	}
-	else
-	{
-		//Sibling is not allocated, so join them
-		if(coalessNodes(parent) == HEAP_SUCCESS)
-		{	
-			return HEAP_SUCCESS;
-		}
-		else
-		{
-			return HEAP_FAIL;
-		}
-	}
+
+
 }
 
-int coalessNodes(heapNode* parent)
+/*int coalessNodes(heapNode* parent)
 {
 	if(joinHeapNode(parent) != HEAP_SUCCESS)
 		return HEAP_FAIL;
@@ -257,7 +249,7 @@ int coalessNodes(heapNode* parent)
 	else
 		return HEAP_SUCCESS;
 
-}
+}*/
 
 
 
