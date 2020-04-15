@@ -77,7 +77,7 @@ void main (int argc, char *argv[])
     mem_size /= 2;
     num_ptrs *= 2;
   }
-  Printf("Test 2 Success!\n")
+  Printf("Test 2 Success!\n");
 
   //=========================================================================//
   printDiv();
