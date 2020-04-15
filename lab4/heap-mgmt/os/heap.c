@@ -219,6 +219,15 @@ int coalessNodes(heapNode* child){
 	//Determine if we need to combine the sibling with the child
 	if(!(sibling->allocated) && !(sibling->isSplit)){
 		joinHeapNode(parent);
+
+		printf("Coalesced buddy nodes ");
+		printNodeData(getLeft(parent));
+		printf(" & ");
+		printNodeData(getRight(parent));
+		printf(" into the parent node ");
+		printNodeData(parent);
+		printf("\n");
+		
 		//Check if parent can also be combined with its sibling
 		return coalessNodes(parent);
 	} else
