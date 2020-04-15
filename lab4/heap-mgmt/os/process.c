@@ -465,7 +465,6 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   stackframe = (uint32 *) (pcb->sysStackArea + MEM_PAGESIZE - 4);
 
 
-  printf("changing stackpointers\n");
   // Now that the stack frame points at the bottom of the system stack memory area, we need to
   // move it up (decrement it) by one stack frame size because we're about to fill in the
   // initial stack frame that will be loaded for this PCB when it gets switched in by 
@@ -505,10 +504,9 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     if (fd < 0) {
       // Free newpage and pcb so we don't run out...
       ProcessFreeResources (pcb);
-      printf("failed to open file %s, fd: %d\n", name, fd);
+      printf("Failed to open file %s, fd: %d\n", name, fd);
       return (-1);
     }
-    printf("5\n");
 
     dbprintf ('p', "File %s -> start=0x%08x\n", name, start);
     dbprintf ('p', "File %s -> code @ 0x%08x (size=0x%08x)\n", name, codeS,

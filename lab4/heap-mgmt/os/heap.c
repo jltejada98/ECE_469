@@ -159,6 +159,7 @@ heapNode* createOrder(heapNode* root, int order){
 
 	for(i = lowest_order; i > order; i--)
 	{
+		printf("Splitting node of order %d\n", node->order);
 		if(splitHeapNode(node) == HEAP_FAIL)
 		{
 			return NULL;
