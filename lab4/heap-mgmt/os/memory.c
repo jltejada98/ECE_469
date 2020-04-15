@@ -383,7 +383,6 @@ void* malloc(PCB* pcb, int memsize) {
 	int desOrder;
 	void* mem_addr;
 	uint32 mem_offset;
-	uint32 heap_pte;
 	uint32 heap_virt_addr_start;
 
 	if ((memsize <= 0) || (memsize > MEM_PAGESIZE))
@@ -423,7 +422,7 @@ void* malloc(PCB* pcb, int memsize) {
 	heap_virt_addr_start = (pcb->heapPteIdx) << MEM_L1FIELD_FIRST_BITNUM;
 	mem_addr = (void*) ( mem_offset + heap_virt_addr_start );
 
-	printf("Allocated the block: order = %d, addr = %d, requested mem size = %d, block size = %d", node->order, mem_addr, memsize, orderToMemsize(node->order))
+	printf("Allocated the block: order = %d, addr = %d, requested mem size = %d, block size = %d", node->order, (int)mem_addr, memsize, orderToMemsize(node->order));
   	
   	return mem_addr;
 }
@@ -454,7 +453,7 @@ int mfree(PCB* pcb, void* ptr) {
 		return MEM_FAIL;
 	}
 
-	printf("Freed the block: order = %d, addr = %d, size = %d", node->order, ptr, orderToMemsize(node->order));
+	printf("Freed the block: order = %d, addr = %d, size = %d", node->order, (int)ptr, orderToMemsize(node->order));
 
 	return MEM_SUCCESS;
 }
