@@ -189,6 +189,7 @@ int deallocNode(heapNode* node){
 	if(node->index == 0)
 	{
 		//node->addrOffset = NULL;
+		printf("Caught Parent node to not coaless\n");
 		node->allocated = 0;
 		return HEAP_SUCCESS;
 	}

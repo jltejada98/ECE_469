@@ -71,6 +71,7 @@ void main (int argc, char *argv[])
       if(mfree(ptrs[j]) == MEM_FAIL)
       {
         Printf("FAIL IN TEST 2 FREE\n");
+        return;
       }
     }
 
