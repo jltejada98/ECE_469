@@ -53,7 +53,7 @@ void main (int argc, char *argv[])
   mem_size = MEM_PAGESIZE;
   num_ptrs = 1;
   for(i = 7; i >= 0; i--){
-    Printf("Filling level with order=%d. Allocating %d blocks of size %d\n", i, num_ptrs, MEM_PAGESIZE);
+    Printf("Filling level with order=%d. Allocating %d blocks of size %d\n", i, num_ptrs, mem_size);
     Printf("Allocating pages...\n");
     for(j = 0; j < num_ptrs; j++){
       ptrs[j] = malloc(mem_size);

@@ -98,7 +98,7 @@ int joinHeapNode(heapNode* parent){
 
 	if(left->allocated || left->isSplit || right->allocated || right->isSplit)
 	{
-		printf("Error: attempted to combine a parent node that had children that were doing something\n");
+		printf("Error: attempted to combine a parent node that had a child that was either split or allocated\n");
 		return HEAP_FAIL;
 	}
 
