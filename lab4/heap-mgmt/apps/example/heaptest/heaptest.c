@@ -14,7 +14,7 @@ void main (int argc, char *argv[])
   int mem_size;
 
   //=========================================================================//
-  Printf("Test 1: Basic Memory Allocate\n")
+  Printf("Test 1: Basic Memory Allocate\n");
   printDiv();
   //=========================================================================//
   //Attempt to allocate memory.
@@ -44,7 +44,7 @@ void main (int argc, char *argv[])
 
   //=========================================================================//
   printDiv();
-  Printf("Test 2: Fill levels\n")
+  Printf("Test 2: Fill levels\n");
   printDiv();
   //=========================================================================//
 
