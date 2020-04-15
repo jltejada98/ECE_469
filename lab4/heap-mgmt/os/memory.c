@@ -383,6 +383,7 @@ void* malloc(PCB* pcb, int memsize) {
 	int desOrder;
 	void* mem_addr;
 	uint32 mem_offset;
+	uint32 heap_pte;
 
 	printf("Entering malloc\n");
 
@@ -429,7 +430,12 @@ void* malloc(PCB* pcb, int memsize) {
 	printf("Calculating memory address from offset and base\n");
 	//mem_offset is uint32
 	//all page table entries are uint32
-	mem_addr = (void*) ( mem_offset + (pcb->pagetable[pcb->heapPteIdx] & MEM_MASK_PTE_TO_PAGE) );
+	heap_pte = pcb->pagetable[pcb->heapPteIdx];
+	mem_addr = (void*) ( mem_offset + (heap_pte & MEM_MASK_PTE_TO_PAGE) );
+
+	printf("heap_pte: 0x%x\n", heap_pte);
+	printf("mem_offset: 0x%x\n", mem_offset);
+	printf("mem_addr: 0x%x\n", mem_addr);
   	
   	return mem_addr;
 }
