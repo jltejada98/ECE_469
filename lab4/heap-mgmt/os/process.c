@@ -476,7 +476,6 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   pcb->sysStackPtr = stackframe;
   // The current stack frame pointer is set to the same thing.
   pcb->currentSavedFrame = stackframe;
-  printf("1\n");
   //----------------------------------------------------------------------
   // This section sets up the stack frame for the process.  This is done
   // so that the frame looks to the interrupt handler like the process
@@ -489,7 +488,6 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
   // previous frame.
   dbprintf('m', "ProcessFork: stackframe = 0x%x\n", (int)stackframe);
   stackframe[PROCESS_STACK_PREV_FRAME] = 0;
-  printf("2\n");
 
   //----------------------------------------------------------------------
   // STUDENT: setup the PTBASE, PTBITS, and PTSIZE here on the current
@@ -500,15 +498,14 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     stackframe[PROCESS_STACK_PTBITS] = (MEM_L1FIELD_FIRST_BITNUM << 16) | MEM_L1FIELD_FIRST_BITNUM;
     stackframe[PROCESS_STACK_PTSIZE] = MEM_L1PAGETABLE_SIZE; 
 
-  printf("3\n");
 
   if (isUser) {
-    printf("4\n");
     dbprintf ('p', "About to load %s\n", name);
     fd = ProcessGetCodeInfo (name, &start, &codeS, &codeL, &dataS, &dataL);
     if (fd < 0) {
       // Free newpage and pcb so we don't run out...
       ProcessFreeResources (pcb);
+      printf("failed to open process\n");
       return (-1);
     }
     printf("5\n");
@@ -597,8 +594,6 @@ int ProcessFork (VoidFunc func, uint32 param, char *name, int isUser) {
     // Flag this as a user process
     pcb->flags |= PROCESS_TYPE_USER;
   } else {
-    printf("4b\n");
-
     // Don't worry about messing with any code here for kernel processes because
     // there aren't any kernel processes in DLXOS.
 
