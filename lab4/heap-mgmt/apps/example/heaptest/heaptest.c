@@ -74,10 +74,18 @@ void main (int argc, char *argv[])
         return;
       }
     }
-
     mem_size /= 2;
     num_ptrs *= 2;
   }
+  Printf("Test 2 Success!\n")
+
+  //=========================================================================//
+  printDiv();
+  Printf("Test 3: Request too much\n");
+  printDiv();
+  //=========================================================================//
+  
+
 }
 
 void printDiv()
