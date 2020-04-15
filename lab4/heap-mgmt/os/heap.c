@@ -157,7 +157,7 @@ heapNode* createOrder(heapNode* root, int order){
 	{
 		return NULL;
 	}
-	
+
 	printf("Found node of order %d to start splitting\n", node->order);
 
 
@@ -220,9 +220,25 @@ int deallocNode(heapNode* node){
 	else
 	{
 		//Sibling is not allocated, so join them
-		return joinHeapNode(parent);
+		if(joinHeapNode(parent) == HEAP_SUCCESS)
+		{
+			printf("Coalesced buddy nodes ");
+			printNodeData(getLeft(parent));
+			printf(" & ");
+			printNodeData(getRight(parent));
+			printf(" into the parent node ");
+			printNodeData(parent);
+			printf("\n")
+			return HEAP_SUCCESS;
+		}
+		else
+		{
+			return HEAP_FAIL;
+		}
 	}
 }
+
+
 
 uint32 allocNode(heapNode* node)
 {
@@ -300,4 +316,10 @@ int orderToMemsize(int order) {
 		num *= 2;
 	}
 	return num;
+}
+
+void printNodeData(heapNode* node)
+{
+	printf("(order = %d, addr = %d, size = %d)", node->order, node->addrOffset, orderToMemsize(node->order));
+	return;
 }
