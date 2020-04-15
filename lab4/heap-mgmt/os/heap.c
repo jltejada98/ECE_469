@@ -231,7 +231,7 @@ int deallocNode(heapNode* node){
 	}
 }
 
-int caolessNodes(heapNode parent)
+int caolessNodes(heapNode* parent)
 {
 	if(joinHeapNode(parent) != HEAP_SUCCESS)
 		return HEAP_FAIL;
