@@ -26,7 +26,7 @@ void main (int argc, char *argv[])
   Printf("Heaptest: Attempting to free %d bytes.\n", num_alloc * sizeof(int));
   if(mfree(array) == MEM_FAIL)
   {
-    Printf("Heaptest: could not free heap. Exiting");
+    Printf("Heaptest: could not free heap. Exiting\n");
     return; //Exit ??
   }
   Printf("Heaptest: Successfully freed %d bytes.\n", num_alloc * sizeof(int));

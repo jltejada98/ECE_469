@@ -429,9 +429,7 @@ void* malloc(PCB* pcb, int memsize) {
 	}
 
 	printf("Calculating memory address from offset and base\n");
-	//mem_offset is uint32
-	//all page table entries are uint32
-	//heap_pte = pcb->pagetable[pcb->heapPteIdx];
+
 	heap_virt_addr_start = (pcb->heapPteIdx) << MEM_L1FIELD_FIRST_BITNUM;
 	mem_addr = (void*) ( mem_offset + heap_virt_addr_start );
 
@@ -444,16 +442,12 @@ void* malloc(PCB* pcb, int memsize) {
 
 int mfree(PCB* pcb, void* ptr) {
 	uint32 mem_offset;
-	uint32 page_addr;
 	heapNode* node;
 	int i;
 
 	printf("Entering mfree\n");
 
-
-	page_addr = pcb->pagetable[pcb->heapPteIdx] & MEM_MASK_PTE_TO_PAGE;
-
-	mem_offset = ((uint32) ptr) - page_addr;
+	mem_offset = ((uint32) ptr) & MEM_PAGE_OFFSET_MASK;
 
 	for(i = 0; i < MEM_MAX_HEAP_NODES; i++)
 	{
