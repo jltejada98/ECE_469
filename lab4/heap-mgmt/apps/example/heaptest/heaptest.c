@@ -84,7 +84,27 @@ void main (int argc, char *argv[])
   Printf("Test 3: Request too much\n");
   printDiv();
   //=========================================================================//
-  
+  Printf("Requesting block for 10\n");
+  ptrs[0] = malloc(10);
+  Printf("Requesting block of 2049 bytes\n");
+  ptrs[1] = malloc(2049);
+  if(ptrs[1] == MEM_FAIL)
+  {
+    Printf("malloc Successfully failed when there wasn't enough space\n");
+  }
+  else
+  {
+    Printf("ERROR IN TEST 3: MALLOC DID NOT FAIL!\n");
+    return;
+  }
+
+  if(mfree(ptrs[0]) == MEM_FAIL){
+    Printf("ERROR IN TEST 3: Could not free memory\n");
+    return;
+  }
+
+
+  return;
 
 }
 
