@@ -220,7 +220,7 @@ int coalessNodes(heapNode* child){
 	}
 
 	//Determine if we need to combine the sibling with the child
-	if(!(sibling->allocated)){
+	if(!(sibling->allocated) && !(sibling->split)){
 		joinHeapNode(parent);
 		//Check if parent can also be combined with its sibling
 		return coalessNodes(parent);
