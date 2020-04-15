@@ -103,6 +103,7 @@ void main (int argc, char *argv[])
     return;
   }
 
+  Printf("Test 3 Success!\n");
 
   return;
 
