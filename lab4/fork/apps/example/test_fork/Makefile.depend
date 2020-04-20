@@ -1,0 +1,2 @@
+work/test_fork.o: test_fork.c ../../../include/usertraps.h \
+ ../../../include/misc.h

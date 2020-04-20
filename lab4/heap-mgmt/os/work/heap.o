@@ -1,0 +1,1525 @@
+; Compiled by GCC
+.text
+	.align 2
+.proc _isspace
+.global _isspace
+_isspace:
+;  Function 'isspace'; 0 bytes of locals, 3 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	lb	r2,3(r30)
+	addi	r1,r0,#0
+	andi	r3,r2,#0x00ff
+	seqi	r4,r3,#32
+	bnez	r4,L3
+	nop	; delay slot nop
+	andi	r3,r2,#0x00ff
+	seqi	r4,r3,#9
+	bnez	r4,L3
+	nop	; delay slot nop
+	andi	r3,r2,#0x00ff
+	seqi	r4,r3,#10
+	bnez	r4,L3
+	nop	; delay slot nop
+	j	L2
+	nop	; delay slot nop
+L3:
+	addi	r1,r0,#1
+L2:
+	j	L1
+	nop	; delay slot nop
+L1:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _isspace
+	.align 2
+.proc _isxdigit
+.global _isxdigit
+_isxdigit:
+;  Function 'isxdigit'; 0 bytes of locals, 3 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	lb	r2,3(r30)
+	addi	r1,r0,#0
+	andi	r3,r2,#0x00ff
+	sgtui	r4,r3,#47
+	beqz	r4,L7
+	nop	; delay slot nop
+	andi	r3,r2,#0x00ff
+	sleui	r4,r3,#57
+	bnez	r4,L6
+	nop	; delay slot nop
+	j	L7
+	nop	; delay slot nop
+L7:
+	andi	r3,r2,#0x00ff
+	sgtui	r4,r3,#96
+	beqz	r4,L8
+	nop	; delay slot nop
+	andi	r3,r2,#0x00ff
+	sleui	r4,r3,#102
+	bnez	r4,L6
+	nop	; delay slot nop
+	j	L8
+	nop	; delay slot nop
+L8:
+	andi	r3,r2,#0x00ff
+	sgtui	r4,r3,#64
+	beqz	r4,L5
+	nop	; delay slot nop
+	andi	r3,r2,#0x00ff
+	sleui	r4,r3,#65
+	bnez	r4,L6
+	nop	; delay slot nop
+	j	L5
+	nop	; delay slot nop
+L6:
+	addi	r1,r0,#1
+L5:
+	j	L4
+	nop	; delay slot nop
+L4:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _isxdigit
+	.align 2
+.proc _DisableIntrs
+.global _DisableIntrs
+_DisableIntrs:
+;  Function 'DisableIntrs'; 0 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#16	; alloc local storage
+	sw	0(r29),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	addi	r2,r0,#15
+	sw	(r1),r2
+	jal	_SetIntrs
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	add	r1,r0,r2
+	j	L9
+	nop	; delay slot nop
+L9:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _DisableIntrs
+	.align 2
+.proc _EnableIntrs
+.global _EnableIntrs
+_EnableIntrs:
+;  Function 'EnableIntrs'; 0 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#16	; alloc local storage
+	sw	0(r29),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	addi	r2,r0,#0
+	sw	(r1),r2
+	jal	_SetIntrs
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	add	r1,r0,r2
+	j	L10
+	nop	; delay slot nop
+L10:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _EnableIntrs
+	.align 2
+.proc _RestoreIntrs
+.global _RestoreIntrs
+_RestoreIntrs:
+;  Function 'RestoreIntrs'; 0 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#16	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	lw	r2,(r30)
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	sw	(r1),r2
+	jal	_SetIntrs
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	add	r3,r0,r1
+	add	r1,r0,r3
+	j	L11
+	nop	; delay slot nop
+L11:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _RestoreIntrs
+	.align 2
+.proc _HeapInitialize
+.global _HeapInitialize
+_HeapInitialize:
+;  Function 'HeapInitialize'; 8 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	nop
+	addi	r1,r0,#0
+	sw	-12(r30),r1
+L13:
+	lw	r1,-12(r30)
+	lw	r2,4(r30)
+	slt	r1,r1,r2
+	bnez	r1,L16
+	nop	; delay slot nop
+	j	L14
+	nop	; delay slot nop
+L16:
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	add	r3,r0,r2
+	slli	r2,r3,#0x5
+	lw	r3,(r30)
+	add	r2,r3,r2
+	sw	(r1),r2
+	lw	r2,-12(r30)
+	sw	4(r1),r2
+	lw	r2,(r30)
+	sw	8(r1),r2
+	lw	r2,4(r30)
+	sw	12(r1),r2
+	jal	_HeapInitializeNode
+	nop	; delay slot nop
+	addi	r29,r29,#16
+	lw	r1,-12(r30)
+	addi	r2,r0,#32
+	movi2fp	f0,r1
+	movi2fp	f1,r2
+	mult	f0,f0,f1
+	movfp2i	r1,f0
+	lw	r2,(r30)
+	add	r1,r1,r2
+	lw	r2,-12(r30)
+	sw	8(r1),r2
+	lw	r1,-12(r30)
+	addi	r2,r0,#32
+	movi2fp	f0,r1
+	movi2fp	f1,r2
+	mult	f0,f0,f1
+	movfp2i	r1,f0
+	lw	r2,(r30)
+	add	r1,r1,r2
+	lw	r2,(r30)
+	sw	(r1),r2
+L15:
+	lw	r2,-12(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-12(r30),r2
+	j	L13
+	nop	; delay slot nop
+L14:
+	lw	r1,(r30)
+	addi	r2,r0,#1
+	sw	20(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#0
+	sw	24(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#0
+	sw	28(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#7
+	sw	12(r1),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_initializeAddrOffsets
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#1
+	j	L12
+	nop	; delay slot nop
+L12:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _HeapInitialize
+	.align 2
+.proc _initializeAddrOffsets
+.global _initializeAddrOffsets
+_initializeAddrOffsets:
+;  Function 'initializeAddrOffsets'; 0 bytes of locals, 3 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_isAlwaysLeaf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L18
+	nop	; delay slot nop
+	j	L17
+	nop	; delay slot nop
+L18:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getLeft
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	lw	r2,(r30)
+	lw	r3,16(r2)
+	sw	16(r1),r3
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getRight
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r3,(r30)
+	lw	r4,12(r3)
+	sw	(r1),r4
+	jal	_orderToMemsize
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	srai	r3,r1,#0x1f
+	srli	r4,r3,#0x1f
+	add	r3,r1,r4
+	srai	r1,r3,#0x1
+	lw	r3,(r30)
+	lw	r4,16(r3)
+	add	r1,r1,r4
+	sw	16(r2),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getLeft
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	sw	(r2),r1
+	jal	_initializeAddrOffsets
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getRight
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	sw	(r2),r1
+	jal	_initializeAddrOffsets
+	nop	; delay slot nop
+	addi	r29,r29,#8
+L17:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _initializeAddrOffsets
+	.align 2
+.proc _HeapInitializeNode
+.global _HeapInitializeNode
+_HeapInitializeNode:
+;  Function 'HeapInitializeNode'; 0 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#16	; alloc local storage
+	sw	0(r29),r2
+	lw	r1,(r30)
+	lw	r2,8(r30)
+	sw	(r1),r2
+	lw	r1,(r30)
+	lw	r2,12(r30)
+	sw	4(r1),r2
+	lw	r1,(r30)
+	lw	r2,4(r30)
+	sw	8(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#0
+	sw	12(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#0
+	sw	16(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#0
+	sw	20(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#0
+	sw	24(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#0
+	sw	28(r1),r2
+	addi	r1,r0,#1
+	j	L19
+	nop	; delay slot nop
+L19:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _HeapInitializeNode
+.data
+	.align 2
+LC0:
+	.ascii "Error: Attempted to split a node that had memory allocated:\000"
+	.align 2
+LC1:
+	.ascii "\n\000"
+.text
+	.align 2
+.proc _splitHeapNode
+.global _splitHeapNode
+_splitHeapNode:
+;  Function 'splitHeapNode'; 8 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	lw	r1,(r30)
+	lw	r2,24(r1)
+	snei	r1,r2,#0
+	beqz	r1,L21
+	nop	; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC0)>>16)&0xffff
+	addui	r2,r2,(LC0)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_printNodeData
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC1)>>16)&0xffff
+	addui	r2,r2,(LC1)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L20
+	nop	; delay slot nop
+L21:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getLeft
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getRight
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-16(r30),r1
+	lw	r1,-12(r30)
+	lw	r2,(r30)
+	lw	r3,12(r2)
+	addi	r2,r3,#-1
+	sw	12(r1),r2
+	lw	r1,-12(r30)
+	addi	r2,r0,#1
+	sw	20(r1),r2
+	lw	r1,-12(r30)
+	addi	r2,r0,#0
+	sw	28(r1),r2
+	lw	r1,-12(r30)
+	addi	r2,r0,#0
+	sw	24(r1),r2
+	lw	r1,-16(r30)
+	lw	r2,(r30)
+	lw	r3,12(r2)
+	addi	r2,r3,#-1
+	sw	12(r1),r2
+	lw	r1,-16(r30)
+	addi	r2,r0,#1
+	sw	20(r1),r2
+	lw	r1,-16(r30)
+	addi	r2,r0,#0
+	sw	28(r1),r2
+	lw	r1,-16(r30)
+	addi	r2,r0,#0
+	sw	24(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#1
+	sw	28(r1),r2
+	addi	r1,r0,#1
+	j	L20
+	nop	; delay slot nop
+L20:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _splitHeapNode
+.data
+	.align 2
+LC2:
+	.ascii "Tried joining heap node that was always a leafnode, it cannot have chi"
+	.ascii "ldren\n\000"
+	.align 2
+LC3:
+	.ascii "Error: attempted to combine a parent node that had a child that was ei"
+	.ascii "ther split or allocated\n\000"
+.text
+	.align 2
+.proc _joinHeapNode
+.global _joinHeapNode
+_joinHeapNode:
+;  Function 'joinHeapNode'; 8 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_isAlwaysLeaf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L23
+	nop	; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC2)>>16)&0xffff
+	addui	r2,r2,(LC2)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L22
+	nop	; delay slot nop
+L23:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getLeft
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getRight
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-16(r30),r1
+	lw	r1,-12(r30)
+	lw	r2,24(r1)
+	snei	r1,r2,#0
+	bnez	r1,L25
+	nop	; delay slot nop
+	lw	r1,-12(r30)
+	lw	r2,28(r1)
+	snei	r1,r2,#0
+	bnez	r1,L25
+	nop	; delay slot nop
+	lw	r1,-16(r30)
+	lw	r2,24(r1)
+	snei	r1,r2,#0
+	bnez	r1,L25
+	nop	; delay slot nop
+	lw	r1,-16(r30)
+	lw	r2,28(r1)
+	snei	r1,r2,#0
+	bnez	r1,L25
+	nop	; delay slot nop
+	j	L24
+	nop	; delay slot nop
+L25:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3)>>16)&0xffff
+	addui	r2,r2,(LC3)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L22
+	nop	; delay slot nop
+L24:
+	lw	r1,-12(r30)
+	addi	r2,r0,#0
+	sw	20(r1),r2
+	lw	r1,-16(r30)
+	addi	r2,r0,#0
+	sw	20(r1),r2
+	lw	r1,(r30)
+	addi	r2,r0,#0
+	sw	28(r1),r2
+	addi	r1,r0,#1
+	j	L22
+	nop	; delay slot nop
+L22:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _joinHeapNode
+	.align 2
+.proc _findNodeOrder
+.global _findNodeOrder
+_findNodeOrder:
+;  Function 'findNodeOrder'; 8 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	lw	r1,(r30)
+	snei	r2,r1,#0
+	beqz	r2,L28
+	nop	; delay slot nop
+	lw	r1,(r30)
+	lw	r2,24(r1)
+	snei	r1,r2,#0
+	bnez	r1,L28
+	nop	; delay slot nop
+	lw	r1,(r30)
+	lw	r2,20(r1)
+	snei	r1,r2,#0
+	bnez	r1,L27
+	nop	; delay slot nop
+	j	L28
+	nop	; delay slot nop
+L28:
+	addi	r1,r0,#0
+	j	L26
+	nop	; delay slot nop
+L27:
+	lw	r1,(r30)
+	lw	r2,12(r1)
+	lw	r1,4(r30)
+	slt	r2,r2,r1
+	beqz	r2,L29
+	nop	; delay slot nop
+	addi	r1,r0,#0
+	j	L26
+	nop	; delay slot nop
+L29:
+	lw	r1,(r30)
+	lw	r2,12(r1)
+	lw	r1,4(r30)
+	seq	r2,r2,r1
+	beqz	r2,L30
+	nop	; delay slot nop
+	lw	r1,(r30)
+	lw	r2,20(r1)
+	snei	r1,r2,#0
+	beqz	r1,L30
+	nop	; delay slot nop
+	lw	r1,(r30)
+	lw	r2,24(r1)
+	snei	r1,r2,#0
+	bnez	r1,L30
+	nop	; delay slot nop
+	lw	r1,(r30)
+	lw	r2,28(r1)
+	snei	r1,r2,#0
+	bnez	r1,L30
+	nop	; delay slot nop
+	lw	r1,(r30)
+	j	L26
+	nop	; delay slot nop
+L30:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getLeft
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	sw	(r2),r1
+	lw	r1,4(r30)
+	sw	4(r2),r1
+	jal	_findNodeOrder
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+	lw	r1,-12(r30)
+	snei	r2,r1,#0
+	bnez	r2,L31
+	nop	; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getRight
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	sw	(r2),r1
+	lw	r1,4(r30)
+	sw	4(r2),r1
+	jal	_findNodeOrder
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+L31:
+	lw	r1,-12(r30)
+	j	L26
+	nop	; delay slot nop
+L26:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _findNodeOrder
+	.align 2
+.proc _createOrder
+.global _createOrder
+_createOrder:
+;  Function 'createOrder'; 16 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#32	; alloc local storage
+	sw	0(r29),r2
+	addi	r1,r0,#0
+	sw	-20(r30),r1
+	lw	r1,4(r30)
+	addi	r2,r1,#1
+	sw	-12(r30),r2
+L33:
+	lw	r1,(r30)
+	lw	r2,-12(r30)
+	lw	r1,12(r1)
+	sle	r2,r2,r1
+	bnez	r2,L36
+	nop	; delay slot nop
+	j	L34
+	nop	; delay slot nop
+L36:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	lw	r2,-12(r30)
+	sw	4(r1),r2
+	jal	_findNodeOrder
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-20(r30),r1
+	lw	r1,-20(r30)
+	snei	r2,r1,#0
+	beqz	r2,L35
+	nop	; delay slot nop
+	j	L34
+	nop	; delay slot nop
+L37:
+L35:
+	lw	r2,-12(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-12(r30),r2
+	j	L33
+	nop	; delay slot nop
+L34:
+	lw	r1,-20(r30)
+	snei	r2,r1,#0
+	bnez	r2,L38
+	nop	; delay slot nop
+	addi	r1,r0,#0
+	j	L32
+	nop	; delay slot nop
+L38:
+	nop
+	lw	r1,-12(r30)
+	sw	-16(r30),r1
+L39:
+	lw	r1,-16(r30)
+	lw	r2,4(r30)
+	sgt	r1,r1,r2
+	bnez	r1,L42
+	nop	; delay slot nop
+	j	L40
+	nop	; delay slot nop
+L42:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-20(r30)
+	sw	(r1),r2
+	jal	_splitHeapNode
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	seqi	r2,r1,#-1
+	beqz	r2,L43
+	nop	; delay slot nop
+	addi	r1,r0,#0
+	j	L32
+	nop	; delay slot nop
+L43:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-20(r30)
+	sw	(r1),r2
+	jal	_getLeft
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-20(r30),r1
+L41:
+	lw	r2,-16(r30)
+	addi	r1,r2,#-1
+	add	r2,r0,r1
+	sw	-16(r30),r2
+	j	L39
+	nop	; delay slot nop
+L40:
+	lw	r1,-20(r30)
+	j	L32
+	nop	; delay slot nop
+L32:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _createOrder
+.data
+	.align 2
+LC4:
+	.ascii "Error: Attempted deallocating a split node\n\000"
+.text
+	.align 2
+.proc _deallocNode
+.global _deallocNode
+_deallocNode:
+;  Function 'deallocNode'; 0 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#16	; alloc local storage
+	sw	0(r29),r2
+	lw	r1,(r30)
+	snei	r2,r1,#0
+	bnez	r2,L45
+	nop	; delay slot nop
+	addi	r1,r0,#-1
+	j	L44
+	nop	; delay slot nop
+L45:
+	lw	r1,(r30)
+	lw	r2,28(r1)
+	snei	r1,r2,#0
+	beqz	r1,L46
+	nop	; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC4)>>16)&0xffff
+	addui	r2,r2,(LC4)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L44
+	nop	; delay slot nop
+L46:
+	lw	r1,(r30)
+	addi	r2,r0,#0
+	sw	24(r1),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_coalessNodes
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	add	r1,r0,r2
+	j	L44
+	nop	; delay slot nop
+L44:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _deallocNode
+.data
+	.align 2
+LC5:
+	.ascii "Error: could not find sibling correctly\n\000"
+	.align 2
+LC6:
+	.ascii "Coalesced buddy nodes \000"
+	.align 2
+LC7:
+	.ascii " & \000"
+	.align 2
+LC8:
+	.ascii " into the parent node \000"
+.text
+	.align 2
+.proc _coalessNodes
+.global _coalessNodes
+_coalessNodes:
+;  Function 'coalessNodes'; 8 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	lw	r1,(r30)
+	lw	r2,8(r1)
+	snei	r1,r2,#0
+	bnez	r1,L48
+	nop	; delay slot nop
+	addi	r1,r0,#1
+	j	L47
+	nop	; delay slot nop
+L48:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_getParent
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_getLeft
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	lw	r2,(r30)
+	seq	r1,r1,r2
+	beqz	r1,L49
+	nop	; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_getRight
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-16(r30),r1
+	j	L50
+	nop	; delay slot nop
+L49:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_getRight
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	lw	r2,(r30)
+	seq	r1,r1,r2
+	beqz	r1,L51
+	nop	; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_getLeft
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-16(r30),r1
+	j	L50
+	nop	; delay slot nop
+L51:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC5)>>16)&0xffff
+	addui	r2,r2,(LC5)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L47
+	nop	; delay slot nop
+L52:
+L50:
+	lw	r1,-16(r30)
+	lw	r2,24(r1)
+	snei	r1,r2,#0
+	bnez	r1,L53
+	nop	; delay slot nop
+	lw	r1,-16(r30)
+	lw	r2,28(r1)
+	snei	r1,r2,#0
+	bnez	r1,L53
+	nop	; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_joinHeapNode
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC6)>>16)&0xffff
+	addui	r2,r2,(LC6)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_getLeft
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	sw	(r2),r1
+	jal	_printNodeData
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC7)>>16)&0xffff
+	addui	r2,r2,(LC7)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_getRight
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	sw	(r2),r1
+	jal	_printNodeData
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC8)>>16)&0xffff
+	addui	r2,r2,(LC8)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_printNodeData
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC1)>>16)&0xffff
+	addui	r2,r2,(LC1)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_coalessNodes
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r1
+	add	r1,r0,r2
+	j	L47
+	nop	; delay slot nop
+	j	L54
+	nop	; delay slot nop
+L53:
+	addi	r1,r0,#1
+	j	L47
+	nop	; delay slot nop
+L54:
+L47:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _coalessNodes
+	.align 2
+.proc _allocNode
+.global _allocNode
+_allocNode:
+;  Function 'allocNode'; 0 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#16	; alloc local storage
+	sw	0(r29),r2
+	lw	r1,(r30)
+	snei	r2,r1,#0
+	bnez	r2,L56
+	nop	; delay slot nop
+	addi	r1,r0,#-1
+	j	L55
+	nop	; delay slot nop
+L56:
+	lw	r1,(r30)
+	addi	r2,r0,#1
+	sw	24(r1),r2
+	lw	r2,(r30)
+	lw	r1,16(r2)
+	j	L55
+	nop	; delay slot nop
+L55:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _allocNode
+	.align 2
+.proc _isAlwaysLeaf
+.global _isAlwaysLeaf
+_isAlwaysLeaf:
+;  Function 'isAlwaysLeaf'; 0 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#16	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	lw	r1,(r30)
+	lw	r2,8(r1)
+	add	r1,r0,r2
+	slli	r2,r1,#0x1
+	addi	r1,r2,#1
+	lw	r2,(r30)
+	lw	r3,4(r2)
+	addi	r2,r3,#-1
+	sgt	r1,r1,r2
+	beqz	r1,L58
+	nop	; delay slot nop
+	addi	r1,r0,#1
+	j	L57
+	nop	; delay slot nop
+L58:
+	addi	r1,r0,#0
+	j	L57
+	nop	; delay slot nop
+L57:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _isAlwaysLeaf
+	.align 2
+.proc _getParent
+.global _getParent
+_getParent:
+;  Function 'getParent'; 8 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	lw	r1,(r30)
+	lw	r2,8(r1)
+	addi	r1,r2,#-1
+	srai	r2,r1,#0x1f
+	srli	r3,r2,#0x1f
+	add	r1,r1,r3
+	srai	r2,r1,#0x1
+	sw	-12(r30),r2
+	lw	r1,-12(r30)
+	slti	r2,r1,#0
+	beqz	r2,L60
+	nop	; delay slot nop
+	addi	r1,r0,#0
+	j	L59
+	nop	; delay slot nop
+L60:
+	lw	r1,(r30)
+	lw	r2,-12(r30)
+	add	r3,r0,r2
+	slli	r2,r3,#0x5
+	lw	r1,(r1)
+	add	r2,r2,r1
+	add	r1,r0,r2
+	j	L59
+	nop	; delay slot nop
+L59:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _getParent
+	.align 2
+.proc _getLeft
+.global _getLeft
+_getLeft:
+;  Function 'getLeft'; 8 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	lw	r1,(r30)
+	lw	r2,8(r1)
+	add	r1,r0,r2
+	slli	r2,r1,#0x1
+	addi	r1,r2,#1
+	sw	-12(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_isAlwaysLeaf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L62
+	nop	; delay slot nop
+	addi	r1,r0,#0
+	j	L61
+	nop	; delay slot nop
+L62:
+	lw	r1,(r30)
+	lw	r2,-12(r30)
+	add	r3,r0,r2
+	slli	r2,r3,#0x5
+	lw	r1,(r1)
+	add	r2,r2,r1
+	add	r1,r0,r2
+	j	L61
+	nop	; delay slot nop
+L61:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _getLeft
+	.align 2
+.proc _getRight
+.global _getRight
+_getRight:
+;  Function 'getRight'; 8 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	lw	r1,(r30)
+	lw	r2,8(r1)
+	add	r1,r0,r2
+	slli	r2,r1,#0x1
+	addi	r1,r2,#2
+	sw	-12(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_isAlwaysLeaf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#0
+	beqz	r2,L64
+	nop	; delay slot nop
+	addi	r1,r0,#0
+	j	L63
+	nop	; delay slot nop
+L64:
+	lw	r1,(r30)
+	lw	r2,-12(r30)
+	add	r3,r0,r2
+	slli	r2,r3,#0x5
+	lw	r1,(r1)
+	add	r2,r2,r1
+	add	r1,r0,r2
+	j	L63
+	nop	; delay slot nop
+L63:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _getRight
+	.align 2
+.proc _sizeToOrder
+.global _sizeToOrder
+_sizeToOrder:
+;  Function 'sizeToOrder'; 8 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	addi	r1,r0,#0
+	sw	-12(r30),r1
+	addi	r1,r0,#32
+	sw	-16(r30),r1
+	lw	r1,(r30)
+	slti	r2,r1,#0
+	beqz	r2,L66
+	nop	; delay slot nop
+	addi	r1,r0,#-1
+	j	L65
+	nop	; delay slot nop
+L66:
+	nop
+L67:
+	lw	r1,-16(r30)
+	lw	r2,(r30)
+	slt	r1,r1,r2
+	bnez	r1,L69
+	nop	; delay slot nop
+	j	L68
+	nop	; delay slot nop
+L69:
+	lw	r2,-12(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-12(r30),r2
+	lw	r1,-16(r30)
+	add	r2,r0,r1
+	slli	r1,r2,#0x1
+	sw	-16(r30),r1
+	j	L67
+	nop	; delay slot nop
+L68:
+	lw	r1,-12(r30)
+	j	L65
+	nop	; delay slot nop
+L65:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _sizeToOrder
+	.align 2
+.proc _orderToMemsize
+.global _orderToMemsize
+_orderToMemsize:
+;  Function 'orderToMemsize'; 8 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	addi	r1,r0,#32
+	sw	-16(r30),r1
+	lw	r1,(r30)
+	slti	r2,r1,#0
+	beqz	r2,L71
+	nop	; delay slot nop
+	addi	r1,r0,#-1
+	j	L70
+	nop	; delay slot nop
+L71:
+	nop
+	addi	r1,r0,#0
+	sw	-12(r30),r1
+L72:
+	lw	r1,-12(r30)
+	lw	r2,(r30)
+	slt	r1,r1,r2
+	bnez	r1,L75
+	nop	; delay slot nop
+	j	L73
+	nop	; delay slot nop
+L75:
+	lw	r1,-16(r30)
+	add	r2,r0,r1
+	slli	r1,r2,#0x1
+	sw	-16(r30),r1
+L74:
+	lw	r2,-12(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-12(r30),r2
+	j	L72
+	nop	; delay slot nop
+L73:
+	lw	r1,-16(r30)
+	j	L70
+	nop	; delay slot nop
+L70:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _orderToMemsize
+.data
+	.align 2
+LC9:
+	.ascii "(order = %d, addr = %d, size = %d)\000"
+.text
+	.align 2
+.proc _printNodeData
+.global _printNodeData
+_printNodeData:
+;  Function 'printNodeData'; 0 bytes of locals, 3 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	lw	r3,12(r2)
+	sw	(r1),r3
+	jal	_orderToMemsize
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-16
+	add	r2,r0,r29
+	lhi	r3,((LC9)>>16)&0xffff
+	addui	r3,r3,(LC9)&0xffff
+	sw	(r2),r3
+	lw	r3,(r30)
+	lw	r4,12(r3)
+	sw	4(r2),r4
+	lw	r3,(r30)
+	lw	r4,16(r3)
+	sw	8(r2),r4
+	sw	12(r2),r1
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#16
+	j	L76
+	nop	; delay slot nop
+L76:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _printNodeData

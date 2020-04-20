@@ -263,9 +263,10 @@ L16:
 L17:
 	lhi	r1,((_freemapmax)>>16)&0xffff
 	addui	r1,r1,(_freemapmax)&0xffff
-	lw	r2,(r1)
-	snei	r1,r2,#0
-	bnez	r1,L20
+	lw	r2,-12(r30)
+	lw	r1,(r1)
+	slt	r2,r2,r1
+	bnez	r2,L20
 	nop	; delay slot nop
 	j	L18
 	nop	; delay slot nop
@@ -324,6 +325,10 @@ L24:
 	jal	_freemapSet
 	nop	; delay slot nop
 	addi	r29,r29,#8
+	lw	r2,-12(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-12(r30),r2
 	j	L21
 	nop	; delay slot nop
 L22:
@@ -572,12 +577,15 @@ L32:
 	.align 2
 LC3:
 	.ascii "Fatal Error: Attempting to translate virtual address that does not hav"
-	.ascii "e a corresponding PTE\n\000"
+	.ascii "e a corresponding PTE for proccess %d\n\000"
 	.align 2
 LC4:
-	.ascii "Error: Reading Page Table Entry that is invalid!\n\000"
+	.ascii "addr: %x\n Index: %d\n MEM_MAX_NUM_PTE: %d\n\000"
 	.align 2
 LC5:
+	.ascii "Error: Reading Page Table Entry that is invalid!\n\000"
+	.align 2
+LC6:
 	.ascii "Error: in MemoryTranslateUserToSystem:\nAttempting to translate addres"
 	.ascii "s that is greater than system physcal memory size!\n\000"
 .text
@@ -600,17 +608,39 @@ _MemoryTranslateUserToSystem:
 	andi	r2,r1,#4095
 	sw	-20(r30),r2
 	lw	r1,-12(r30)
-	sgti	r2,r1,#254
+	sgti	r2,r1,#255
 	beqz	r2,L36
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC3)>>16)&0xffff
-	addui	r2,r2,(LC3)&0xffff
+	lw	r2,(r30)
 	sw	(r1),r2
+	jal	_GetPidFromAddress
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	lhi	r3,((LC3)>>16)&0xffff
+	addui	r3,r3,(LC3)&0xffff
+	sw	(r2),r3
+	sw	4(r2),r1
 	jal	_printf
 	nop	; delay slot nop
 	addi	r29,r29,#8
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r2,((LC4)>>16)&0xffff
+	addui	r2,r2,(LC4)&0xffff
+	sw	(r1),r2
+	lw	r2,4(r30)
+	sw	4(r1),r2
+	lw	r2,-12(r30)
+	sw	8(r1),r2
+	addi	r2,r0,#256
+	sw	12(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#16
 	add	r2,r0,r29
 	jal	_exitsim
 	nop	; delay slot nop
@@ -633,8 +663,8 @@ L36:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC4)>>16)&0xffff
-	addui	r2,r2,(LC4)&0xffff
+	lhi	r2,((LC5)>>16)&0xffff
+	addui	r2,r2,(LC5)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -657,8 +687,8 @@ L37:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC5)>>16)&0xffff
-	addui	r2,r2,(LC5)&0xffff
+	lhi	r2,((LC6)>>16)&0xffff
+	addui	r2,r2,(LC6)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -866,14 +896,15 @@ L48:
 .endproc _MemoryCopyUserToSystem
 .data
 	.align 2
-LC6:
+LC7:
 	.ascii "Process %d ran out of memory\n\000"
 	.align 2
-LC7:
+LC8:
 	.ascii "Unable to allocate new page to stack for Process %d\n\000"
 	.align 2
-LC8:
-	.ascii "Fatal Error: Segmentation Fault\n\000"
+LC9:
+	.ascii "Fatal Error: Segmentation Fault. Fautlt address: 0x%x with User Stack "
+	.ascii "Pointer: 0x%x\n\000"
 .text
 	.align 2
 .proc _MemoryPageFaultHandler
@@ -899,68 +930,29 @@ _MemoryPageFaultHandler:
 	lw	r2,(r1)
 	sw	-16(r30),r2
 	lw	r1,-12(r30)
-	addi	r5,r0,#-4096
-	and	r2,r1,r5
+	srli	r2,r1,#0xc
 	sw	-20(r30),r2
-	lw	r1,-16(r30)
 	lw	r2,-12(r30)
-	sgeu	r1,r1,r2
+	lhi	r5,#31
+	addui	r5,r5,#61440
+	and	r1,r2,r5
+	lw	r2,-16(r30)
+	sgeu	r1,r2,r1
 	beqz	r1,L50
 	nop	; delay slot nop
 	lw	r1,(r30)
 	lw	r2,-20(r30)
-	add	r3,r0,r2
-	slli	r2,r3,#0x2
-	add	r1,r1,r2
-	addi	r2,r1,#92
+	addi	r3,r0,#4
+	movi2fp	f0,r2
+	movi2fp	f1,r3
+	mult	f0,f0,f1
+	movfp2i	r2,f0
+	add	r1,r2,r1
+	addi	r2,r1,#96
 	lw	r3,(r2)
 	andi	r1,r3,#1
 	snei	r2,r1,#0
 	beqz	r2,L51
-	nop	; delay slot nop
-	addi	r29,r29,#-8
-	add	r1,r0,r29
-	lw	r2,(r30)
-	sw	(r1),r2
-	jal	_GetPidFromAddress
-	nop	; delay slot nop
-	addi	r29,r29,#8
-	addi	r29,r29,#-8
-	add	r2,r0,r29
-	lhi	r3,((LC6)>>16)&0xffff
-	addui	r3,r3,(LC6)&0xffff
-	sw	(r2),r3
-	sw	4(r2),r1
-	jal	_printf
-	nop	; delay slot nop
-	addi	r29,r29,#8
-	add	r2,r0,r29
-	jal	_ProcessKill
-	nop	; delay slot nop
-L51:
-	addi	r29,r29,#-8
-	add	r1,r0,r29
-	addi	r2,r0,#1
-	sw	(r1),r2
-	jal	_MemoryGetPte
-	nop	; delay slot nop
-	addi	r29,r29,#8
-	lw	r2,(r30)
-	lw	r3,-20(r30)
-	add	r4,r0,r3
-	slli	r3,r4,#0x2
-	add	r2,r2,r3
-	addi	r3,r2,#92
-	sw	(r3),r1
-	lw	r1,(r30)
-	lw	r2,-20(r30)
-	add	r3,r0,r2
-	slli	r2,r3,#0x2
-	add	r1,r1,r2
-	addi	r2,r1,#92
-	lw	r1,(r2)
-	seqi	r2,r1,#-1
-	beqz	r2,L52
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
@@ -981,25 +973,85 @@ L51:
 	add	r2,r0,r29
 	jal	_ProcessKill
 	nop	; delay slot nop
+L51:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	addi	r2,r0,#1
+	sw	(r1),r2
+	jal	_MemoryGetPte
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	lw	r2,(r30)
+	lw	r3,-20(r30)
+	addi	r4,r0,#4
+	movi2fp	f0,r3
+	movi2fp	f1,r4
+	mult	f0,f0,f1
+	movfp2i	r3,f0
+	add	r2,r3,r2
+	addi	r3,r2,#96
+	sw	(r3),r1
+	lw	r1,(r30)
+	lw	r2,-20(r30)
+	addi	r3,r0,#4
+	movi2fp	f0,r2
+	movi2fp	f1,r3
+	mult	f0,f0,f1
+	movfp2i	r2,f0
+	add	r1,r2,r1
+	addi	r2,r1,#96
+	lw	r1,(r2)
+	seqi	r2,r1,#-1
+	beqz	r2,L52
+	nop	; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_GetPidFromAddress
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	lhi	r3,((LC8)>>16)&0xffff
+	addui	r3,r3,(LC8)&0xffff
+	sw	(r2),r3
+	sw	4(r2),r1
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	add	r2,r0,r29
+	jal	_ProcessKill
+	nop	; delay slot nop
 L52:
 	lw	r2,(r30)
 	lw	r1,(r30)
 	lw	r2,(r30)
-	lw	r3,1116(r2)
+	lw	r3,1120(r2)
 	addi	r2,r3,#1
 	add	r3,r0,r2
-	sw	1116(r1),r3
+	sw	1120(r1),r3
+	addi	r1,r0,#1
+	j	L49
+	nop	; delay slot nop
 	j	L53
 	nop	; delay slot nop
 L50:
-	addi	r29,r29,#-8
+	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC8)>>16)&0xffff
-	addui	r2,r2,(LC8)&0xffff
+	lhi	r2,((LC9)>>16)&0xffff
+	addui	r2,r2,(LC9)&0xffff
 	sw	(r1),r2
+	lw	r2,-16(r30)
+	sw	4(r1),r2
+	lw	r2,-12(r30)
+	lhi	r5,#31
+	addui	r5,r5,#61440
+	and	r3,r2,r5
+	sw	8(r1),r3
 	jal	_printf
 	nop	; delay slot nop
-	addi	r29,r29,#8
+	addi	r29,r29,#16
 	add	r2,r0,r29
 	jal	_ProcessKill
 	nop	; delay slot nop
@@ -1020,7 +1072,7 @@ L49:
 .endproc _MemoryPageFaultHandler
 .data
 	.align 2
-LC9:
+LC10:
 	.ascii "Fatal Error: System could not find free page although nfreepages > 0!\n"
 	.ascii "\000"
 .text
@@ -1102,8 +1154,8 @@ L58:
 L57:
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC9)>>16)&0xffff
-	addui	r2,r2,(LC9)&0xffff
+	lhi	r2,((LC10)>>16)&0xffff
+	addui	r2,r2,(LC10)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -1163,7 +1215,7 @@ L61:
 .endproc _MemoryGetPte
 .data
 	.align 2
-LC10:
+LC11:
 	.ascii "Error: Attempting to free page that was not allocated!\n\000"
 .text
 	.align 2
@@ -1184,8 +1236,8 @@ _freePte:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC10)>>16)&0xffff
-	addui	r2,r2,(LC10)&0xffff
+	lhi	r2,((LC11)>>16)&0xffff
+	addui	r2,r2,(LC11)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop

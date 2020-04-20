@@ -3348,6 +3348,15 @@ L188:
 	j	L174
 	nop	; delay slot nop
 L189:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_currentPCB)>>16)&0xffff
+	addui	r2,r2,(_currentPCB)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_MemoryRopHandler
+	nop	; delay slot nop
+	addi	r29,r29,#8
 	j	L174
 	nop	; delay slot nop
 L190:
