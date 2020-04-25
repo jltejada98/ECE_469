@@ -82,19 +82,22 @@ void main (int argc, char *argv[])
   {
     fbv[i] = 0;
   }
-  //write free block vector to the disk.
+  //write free block vector to the disk (Set all to free, then write to disk.)
   for (i = sb.start_block_num; i < num_fs_blocks; ++i)
   {
-    //Insert function Here Josh.
+    setFbvBit(i, 1); //Set to one to indicate free in fbv
   }
   for (i = sb.start_free_block_num; i < count; ++i)
   {
-    /* code */
+    bcopy(&((char *)fbv)[sb.block_size(i-sb.start_free_block_num)], new_block.data, sb.block_size);
+    FdiskWriteBlock(i, &new_block)
   }
-
 
   // Finally, setup superblock as valid filesystem and write superblock and boot record to disk: 
   sb.valid = 1;
+  bzero(new_block.data, sb.block_size); 
+  bcopy((char *)&sb, &(new_block.data[diskblocksize]), sizeof(sb)); //Write Superblock to disk block 0.
+  FdiskWriteBlock(0, &new_block); //Write block 0.
 
 
   // boot record is all zeros in the first physical block, and superblock structure goes into the second physical block
