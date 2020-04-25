@@ -19,7 +19,7 @@ typedef unsigned int uint32;
 #define FDISK_BLOCKSIZE DFS_BLOCKSIZE
 #define DISK_BLOCKSIZE 512
 
-typedef struct diskblock{
+typedef struct disk_block{
 	char data[DISK_BLOCKSIZE]; //Holds data for one block
 }diskblock;
 

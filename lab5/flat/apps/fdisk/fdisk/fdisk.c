@@ -19,18 +19,26 @@ void main (int argc, char *argv[])
 	// You need to think of the finer details. You can use bzero() to zero out bytes in memory
 
   //Initializations and argc check
+  if (argc != 1)
+  {
+    Printf("Incorrect Argument Number for fdisk.c/main\n");
+    GracefulExit();
+  }
 
   // Need to invalidate filesystem before writing to it to make sure that the OS
   // doesn't wipe out what we do here with the old version in memory
   // You can use dfs_invalidate(); but it will be implemented in Problem 2. You can just do 
   // sb.valid = 0
 
-  //disksize = 
-  //diskblocksize = 
-  //num_filesystem_blocks = 
+  disksize = DiskSize();
+  diskblocksize = disk_blocksize();
+  num_filesystem_blocks = DFS
 
   // Make sure the disk exists before doing anything else
- 
+  if ()
+  {
+    /* code */
+  }
 
   // Write all inodes as not in use and empty (all zeros)
   // Next, setup free block vector (fbv) and write free block vector to the disk
@@ -41,4 +49,6 @@ void main (int argc, char *argv[])
 
 int FdiskWriteBlock(uint32 blocknum, dfs_block *b) {
   // STUDENT: put your code here
+
+
 }
