@@ -17,6 +17,9 @@ void main (int argc, char *argv[])
 {
 	// STUDENT: put your code here. Follow the guidelines below. They are just the main steps. 
 	// You need to think of the finer details. You can use bzero() to zero out bytes in memory
+  int i;
+  disk_block new_block;
+
 
   //Initializations and argc check
   if (argc != 1)
@@ -25,6 +28,14 @@ void main (int argc, char *argv[])
     GracefulExit();
   }
 
+  //Initialize superblock
+  sb.valid = 0; //a valid indicator for the file system
+  sb.block_size = FDISK_BLOCKSIZE; //The file system block size 
+  sb.num_fs_blocks = FDISK_NUM_BLOCKS; //The total number of file system blocks
+  sb.start_block_num = FDISK_FBV_BLOCK_START + (DFS_FBV_MAX_NUM_WORDS * 4) / DFS_BLOCKSIZE; //The starting file system block number for the array of inodes
+  sb.num_inodes = FDISK_NUM_INODES; //The number of inodes in the inodes array
+  sb.start_free_block_num = FDISK_FBV_BLOCK_START; //
+
   // Need to invalidate filesystem before writing to it to make sure that the OS
   // doesn't wipe out what we do here with the old version in memory
   // You can use dfs_invalidate(); but it will be implemented in Problem 2. You can just do 
@@ -32,15 +43,23 @@ void main (int argc, char *argv[])
 
   disksize = DiskSize();
   diskblocksize = disk_blocksize();
-  num_filesystem_blocks = DFS
+  num_filesystem_blocks = FDISK_INODE_NUM_BLOCKS; //Number of file system blocks to use for inodes
 
   // Make sure the disk exists before doing anything else
-  if ()
+  if (disk_create() == DISK_FAIL)
   {
-    /* code */
+    Printf("Unable to create disk in fdisk.c/main\n ");
+    GracefulExit();
   }
 
   // Write all inodes as not in use and empty (all zeros)
+  bzero(new_block.data, sb.block_size);
+  for (i = sb.start_block_num; i < sb.start_free_block_num; ++i)
+  {
+    FdiskWriteBlock(i, &new_block);
+  }
+
+
   // Next, setup free block vector (fbv) and write free block vector to the disk
   // Finally, setup superblock as valid filesystem and write superblock and boot record to disk: 
   // boot record is all zeros in the first physical block, and superblock structure goes into the second physical block

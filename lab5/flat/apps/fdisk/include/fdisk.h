@@ -17,11 +17,12 @@ typedef unsigned int uint32;
 
 //STUDENT: define additional parameters here, if any
 #define FDISK_BLOCKSIZE DFS_BLOCKSIZE
+#define FDISK_NUM_BLOCKS DFS_NUM_BLOCKS
 #define DISK_BLOCKSIZE 512
 
 typedef struct disk_block{
 	char data[DISK_BLOCKSIZE]; //Holds data for one block
-}diskblock;
+}disk_block;
 
 #define DISK_SUCCESS 1
 #define DISK_FAIL -1
