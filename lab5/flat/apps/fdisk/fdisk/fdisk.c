@@ -28,6 +28,11 @@ void main (int argc, char *argv[])
     GracefulExit();
   }
 
+  // Need to invalidate filesystem before writing to it to make sure that the OS
+  // doesn't wipe out what we do here with the old version in memory
+  // You can use dfs_invalidate(); but it will be implemented in Problem 2. You can just do 
+  // sb.valid = 0
+
   //Initialize superblock
   sb.valid = 0; //a valid indicator for the file system
   sb.block_size = FDISK_BLOCKSIZE; //The file system block size 
@@ -36,11 +41,7 @@ void main (int argc, char *argv[])
   sb.num_inodes = FDISK_NUM_INODES; //The number of inodes in the inodes array
   sb.start_free_block_num = FDISK_FBV_BLOCK_START; //
 
-  // Need to invalidate filesystem before writing to it to make sure that the OS
-  // doesn't wipe out what we do here with the old version in memory
-  // You can use dfs_invalidate(); but it will be implemented in Problem 2. You can just do 
-  // sb.valid = 0
-
+  //Initialize sizes/blocks
   disksize = DiskSize();
   diskblocksize = disk_blocksize();
   num_filesystem_blocks = FDISK_INODE_NUM_BLOCKS; //Number of file system blocks to use for inodes
@@ -59,10 +60,28 @@ void main (int argc, char *argv[])
     FdiskWriteBlock(i, &new_block);
   }
 
+  // Next, setup free block vector (fbv)
+  for (i = 0; i < DFS_FBV_MAX_NUM_WORDS; ++i)
+  {
+    fbv[i] = 0;
+  }
+  //write free block vector to the disk.
+  for (i = sb.start_block_num; i < num_fs_blocks; ++i)
+  {
+    //Insert function Here Josh.
+  }
+  for (i = sb.start_free_block_num; i < count; ++i)
+  {
+    /* code */
+  }
 
-  // Next, setup free block vector (fbv) and write free block vector to the disk
+
   // Finally, setup superblock as valid filesystem and write superblock and boot record to disk: 
+  sb.valid = 1;
+
+
   // boot record is all zeros in the first physical block, and superblock structure goes into the second physical block
+  
   Printf("fdisk (%d): Formatted DFS disk for %d bytes.\n", getpid(), disksize);
 }
 
