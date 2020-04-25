@@ -3,9 +3,9 @@
 
 #include "fdisk.h"
 
-//dfs_superblock sb;
-//dfs_inode inodes[DFS_INODE_MAX_NUM];
-//uint32 fbv[DFS_FBV_MAX_NUM_WORDS];
+dfs_superblock sb;
+dfs_inode inodes[DFS_INODE_MAX_NUM];
+uint32 fbv[DFS_FBV_MAX_NUM_WORDS];
 
 int diskblocksize = 0; // These are global in order to speed things up
 int disksize = 0;      // (i.e. fewer traps to OS to get the same number)
