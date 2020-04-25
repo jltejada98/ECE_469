@@ -13,6 +13,23 @@ int disksize = 0;      // (i.e. fewer traps to OS to get the same number)
 int FdiskWriteBlock(uint32 blocknum, dfs_block *b); //You can use your own function. This function 
 //calls disk_write_block() to write physical blocks to disk
 
+void setFbvBit(int bit, int val);
+static inline uint32 invert(uint val);
+
+static int negOne = 0xFFFFFFFF;
+static inline uint32 invert(uint val) {
+  return (n ^ negOne);
+}
+
+void setFbvBit(int bit, int val)
+{
+  uint32 idx = bit / 32;
+  uint32 bit_idx = bit % 32;
+
+  uint32 mask = fbv[idx] & invert(1 << bit_idx);
+  fbv[idx] = mask | (b << val);
+}
+
 void main (int argc, char *argv[])
 {
 	// STUDENT: put your code here. Follow the guidelines below. They are just the main steps. 
